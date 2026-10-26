@@ -14,8 +14,9 @@
  * - note — служебная пометка, на сайт не выводится.
  */
 
-export type Locale = 'ru' | 'en';
-export type Localized = Record<Locale, string>;
+import type { Localized } from '@/i18n/locale';
+
+export type { Locale, Localized } from '@/i18n/locale';
 
 /** Целевая аудитория: по ней фильтруется каталог. */
 export type Audience =

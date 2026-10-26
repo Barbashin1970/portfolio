@@ -1,9 +1,18 @@
-import type { Locale } from '@/data/projects';
+import { Header } from '@/components/layout/Header';
+import { getDict, type Locale } from '@/i18n';
+import { I18nContext } from '@/i18n/context';
+import { SmoothScroll } from '@/motion/SmoothScroll';
+import { Hero } from '@/sections/Hero';
 
+/** Первая версия — hero; карточки, каталог, контакт и футер — фаза 2 (PLAN §5). */
 export default function App({ locale }: { locale: Locale }) {
   return (
-    <main id="top" lang={locale}>
-      <h1>Олег Барбашин</h1>
-    </main>
+    <I18nContext value={{ locale, dict: getDict(locale) }}>
+      <SmoothScroll />
+      <Header />
+      <main>
+        <Hero />
+      </main>
+    </I18nContext>
   );
 }

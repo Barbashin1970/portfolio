@@ -9,8 +9,10 @@ import { bootHead } from './src/boot.ts';
 // BASE_PATH из имени репозитория, локально — /portfolio/.
 const base = process.env.BASE_PATH ?? '/portfolio/';
 
-export default defineConfig({
+export default defineConfig(({ isSsrBuild }) => ({
   base,
+  // Серверной сборке public/ не нужен: она только рендерит разметку для предсборки.
+  build: { copyPublicDir: !isSsrBuild },
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
@@ -30,4 +32,4 @@ export default defineConfig({
     include: ['tests/**/*.test.{ts,tsx}'],
     environment: 'node',
   },
-});
+}));

@@ -1,0 +1,195 @@
+/*
+ * Hero: типографика первого экрана и движение без JavaScript.
+ * Числа движения — CSS-переменные из src/motion/tokens.ts: src/boot.ts вставляет их
+ * в <head>. Медиазапросы совпадают с MEDIA там же — сверяет tests/motion-css.test.ts.
+ */
+
+@layer components {
+  .hero-eyebrow {
+    margin: 0;
+  }
+
+  .hero-title {
+    margin: 0.75rem 0 1.25rem;
+    font-family: var(--font-display);
+    font-weight: 720;
+    font-variation-settings: 'SHRP' 40;
+    /* 10vw: самый длинный неразрывный кусок («до работающего», ~8,3 em) помещается и на 320 px (Б-19). */
+    font-size: clamp(2rem, 10vw, 6.5rem);
+    line-height: 0.97;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  /* Группа слов не рвётся внутри: так держатся неразрывные пробелы типографа. */
+  .hero-title .w {
+    display: inline-block;
+  }
+
+  .hero-title .accent {
+    color: var(--accent);
+  }
+
+  .hero-lead {
+    max-width: 40rem;
+    margin: 0 0 1.75rem;
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    color: var(--text-muted);
+  }
+
+  /* На десктопе места хватает: отступы как в макете. */
+  @media (min-width: 1024px) {
+    .hero-title {
+      margin: 1rem 0 1.5rem;
+    }
+
+    .hero-lead {
+      margin-bottom: 2.25rem;
+    }
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .hero-hint {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding-block: 1rem 1.5rem;
+  }
+
+  .hint-line {
+    position: relative;
+    width: 1px;
+    height: 2.5rem;
+    overflow: hidden;
+    background: var(--border-strong);
+  }
+
+  .hint-dot {
+    position: absolute;
+    top: 0;
+    left: -1.5px;
+    width: 4px;
+    height: 0.75rem;
+    border-radius: 2px;
+    background: var(--accent-2);
+  }
+
+  /* Фон: граф справа, под текстом гаснет. Вылет режет только сам фон, а не H1 (Б-19). */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 25%, #000 70%);
+    mask-image: linear-gradient(90deg, transparent 25%, #000 70%);
+  }
+
+  .hero-graph {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .graph-edges {
+    stroke: var(--edge);
+    stroke-width: 1.2;
+  }
+
+  .graph-node {
+    fill: var(--text-subtle);
+  }
+
+  .graph-data {
+    fill: var(--accent-2);
+  }
+
+  .graph-hub {
+    fill: var(--accent);
+  }
+
+  .graph-halo {
+    fill: none;
+    stroke: var(--accent);
+    stroke-opacity: 0.35;
+  }
+
+  /* На телефоне граф ложится под подзаголовок — приглушаем, чтобы текст читался спокойно. */
+  @media (max-width: 1023.98px) {
+    .hero-graph {
+      opacity: 0.55;
+    }
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(var(--appear-y));
+  }
+}
+
+@keyframes intro-fallback {
+  to {
+    visibility: visible;
+  }
+}
+
+@keyframes hint-run {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  30% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(1.75rem);
+  }
+}
+
+/* Телефон: слова и блоки проявляются CSS-анимацией — LCP не ждёт JavaScript. */
+@media (max-width: 1023.98px) and (prefers-reduced-motion: no-preference) {
+  .hero-eyebrow {
+    animation: appear var(--dur-slow) var(--ease-out) var(--at-eyebrow) both;
+  }
+
+  .hero-title .w {
+    animation: appear var(--dur-slow) var(--ease-out) calc(var(--at-title) + var(--i) * var(--stagger-words)) both;
+  }
+
+  .hero-lead {
+    animation: appear var(--dur-slow) var(--ease-out) var(--at-lead) both;
+  }
+
+  .hero-action {
+    animation: appear var(--dur-slow) var(--ease-out) calc(var(--at-actions) + var(--n, 0) * var(--stagger-cards)) both;
+  }
+
+  .hero-hint {
+    animation: appear var(--dur-slow) var(--ease-out) var(--at-hint) both;
+  }
+}
+
+/*
+ * Десктоп: элементы интро ждут таймлайна GSAP (класс intro ставит src/boot.ts).
+ * Если JavaScript не пришёл, CSS проявит их сам.
+ */
+html.intro [data-intro] {
+  visibility: hidden;
+  animation: intro-fallback 0s linear var(--intro-fallback) forwards;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hint-dot {
+    animation: hint-run var(--dur-hint) var(--ease-in-out) infinite;
+  }
+}

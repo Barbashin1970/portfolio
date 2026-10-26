@@ -37,6 +37,25 @@ export const SPLIT_FROM = { opacity: 0, yPercent: 50 } as const;
 /** Порядок интро hero, секунды от старта таймлайна. */
 export const INTRO_AT = { eyebrow: 0, title: 0.1, lead: 0.55, actions: 0.7, hint: 1.2 } as const;
 
+/**
+ * Подстраховка интро на десктопе, секунды: столько ждём шрифты перед разрезкой букв,
+ * и через столько CSS проявит всё сам, если JavaScript не пришёл.
+ */
+export const INTRO = { fontWait: 2, fallback: 2.5 } as const;
+
+/** Живой фон hero — граф знаний: React Bits Particles со связями (Р-07). */
+export const GRAPH = {
+  count: 150,
+  spread: 10,
+  speed: 0.08,
+  baseSize: 90,
+  camera: 20,
+  connectionDistance: 120,
+  hoverFactor: 0.6,
+  twinkle: 0.25,
+  glow: { dark: 0.5, light: 0.15 },
+} as const;
+
 /** Lenis: колесо сглаживается, тач нативный. */
 export const LENIS = { lerp: 0.1, smoothWheel: true, syncTouch: false } as const;
 
@@ -54,6 +73,7 @@ export const MAGNET = {
  */
 export const MEDIA = {
   desktop: '(min-width: 1024px)',
+  phone: '(max-width: 1023.98px)',
   reduceMotion: '(prefers-reduced-motion: reduce)',
   desktopMotion: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
   phoneMotion: '(max-width: 1023.98px) and (prefers-reduced-motion: no-preference)',
@@ -66,6 +86,14 @@ export const MOTION_CSS_VARS = {
   '--dur-fast': `${DUR.fast}s`,
   '--dur-base': `${DUR.base}s`,
   '--dur-slow': `${DUR.slow}s`,
+  '--dur-hint': `${DUR.slow * 2}s`,
   '--stagger-words': `${STAGGER.words}s`,
+  '--stagger-cards': `${STAGGER.cards}s`,
   '--appear-y': `${APPEAR.y}px`,
+  '--at-eyebrow': `${INTRO_AT.eyebrow}s`,
+  '--at-title': `${INTRO_AT.title}s`,
+  '--at-lead': `${INTRO_AT.lead}s`,
+  '--at-actions': `${INTRO_AT.actions}s`,
+  '--at-hint': `${INTRO_AT.hint}s`,
+  '--intro-fallback': `${INTRO.fallback}s`,
 } as const;
