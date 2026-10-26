@@ -45,7 +45,10 @@ The source of the portfolio site: pages are prerendered at build time and publis
 Vite 8 · React 19 · TypeScript 6 · Tailwind CSS 4 · shadcn/ui · GSAP + ScrollTrigger · Lenis · React Bits.
 
 ```bash
-nvm use && npm ci && npm run dev   # http://localhost:5173/portfolio/
+nvm use          # Node 22 from .nvmrc
+npm ci
+npm run dev      # http://localhost:5173/portfolio/
+npm run check    # lint, types, tests, build
 ```
 
 ## License
