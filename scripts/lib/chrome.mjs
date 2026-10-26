@@ -87,6 +87,8 @@ export async function launchChrome() {
       return result.value;
     };
     return {
+      /** Любой метод протокола DevTools — например, Input.synthesizeScrollGesture. */
+      call,
       goto: (url) => call('Page.navigate', { url }),
       evaluate,
       /** Ждёт, пока выражение станет истинным; false — не дождались. */

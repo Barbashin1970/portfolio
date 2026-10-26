@@ -11,6 +11,7 @@ export default function App({ locale }: { locale: Locale }) {
       <SmoothScroll />
       <Header />
       <main>
+        {/* Раздела работ ещё нет: «Смотреть работы» и «Листайте» вернутся с карточками (фаза 2). */}
         <Hero />
       </main>
     </I18nContext>

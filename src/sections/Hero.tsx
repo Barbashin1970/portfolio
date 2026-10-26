@@ -19,8 +19,11 @@ const INTRO_PROPS = 'opacity,visibility,transform,animation';
  * Первый экран. Сильный эффект секции — SplitText по буквам и живой граф (PLAN §2).
  * Телефон и reduced-motion: CSS-появление по словам из предсобранной разметки, статичный
  * SVG, Magnet молчит. Десктоп: один таймлайн GSAP, затем живой граф.
+ *
+ * `workHref` — адрес раздела работ. Пока его нет, нет ни кнопки «Смотреть работы»,
+ * ни подсказки «Листайте»: они не обещают того, чего на странице нет.
  */
-export function Hero() {
+export function Hero({ workHref }: { workHref?: string }) {
   const { dict, locale } = useI18n();
   const t = dict.hero;
   const scope = useRef<HTMLElement>(null);
@@ -57,14 +60,15 @@ export function Hero() {
           gsap.set(items, { animation: 'none' });
           const reveal = splitReveal(title, { from: SPLIT_FROM, duration: DUR.intro, ease: EASE.out, stagger: STAGGER.chars });
           split = reveal.split;
-          gsap
+          const timeline = gsap
             .timeline({ defaults: { duration: DUR.base, ease: EASE.out }, onComplete: finish })
             .fromTo(q('[data-intro="eyebrow"]'), appearFrom, appearTo, INTRO_AT.eyebrow)
             .set(title, { autoAlpha: 1 }, INTRO_AT.title)
             .add(reveal.tween, INTRO_AT.title)
             .fromTo(q('[data-intro="lead"]'), appearFrom, appearTo, INTRO_AT.lead)
-            .fromTo(q('[data-intro="action"]'), appearFrom, { ...appearTo, stagger: STAGGER.cards }, INTRO_AT.actions)
-            .fromTo(q('[data-intro="hint"]'), { autoAlpha: 0 }, { autoAlpha: 1 }, INTRO_AT.hint);
+            .fromTo(q('[data-intro="action"]'), appearFrom, { ...appearTo, stagger: STAGGER.cards }, INTRO_AT.actions);
+          const hint = q('[data-intro="hint"]');
+          if (hint.length) timeline.fromTo(hint, { autoAlpha: 0 }, { autoAlpha: 1 }, INTRO_AT.hint);
         });
 
         // Буквы режем по настоящему шрифту, но ждём его не дольше, чем CSS-подстраховку.
@@ -114,31 +118,35 @@ export function Hero() {
                 </a>
               </Button>
             </Magnet>
-            <Magnet
-              className="hero-action"
-              data-intro="action"
-              style={{ '--n': 1 } as CSSProperties}
-              padding={MAGNET.padding}
-              magnetStrength={MAGNET.strength}
-              maxOffset={MAGNET.maxOffset}
-              spring={MAGNET.spring}
-            >
-              <Button asChild variant="ghost">
-                <a href="#featured">
-                  {t.work}
-                  <ArrowDown />
-                </a>
-              </Button>
-            </Magnet>
+            {workHref && (
+              <Magnet
+                className="hero-action"
+                data-intro="action"
+                style={{ '--n': 1 } as CSSProperties}
+                padding={MAGNET.padding}
+                magnetStrength={MAGNET.strength}
+                maxOffset={MAGNET.maxOffset}
+                spring={MAGNET.spring}
+              >
+                <Button asChild variant="ghost">
+                  <a href={workHref}>
+                    {t.work}
+                    <ArrowDown />
+                  </a>
+                </Button>
+              </Magnet>
+            )}
           </div>
         </div>
       </div>
-      <div className="hero-hint" aria-hidden="true" data-intro="hint">
-        <span className="label-mono">{t.hint}</span>
-        <span className="hint-line">
-          <span className="hint-dot" />
-        </span>
-      </div>
+      {workHref && (
+        <div className="hero-hint" aria-hidden="true" data-intro="hint">
+          <span className="label-mono">{t.hint}</span>
+          <span className="hint-line">
+            <span className="hint-dot" />
+          </span>
+        </div>
+      )}
     </section>
   );
 }

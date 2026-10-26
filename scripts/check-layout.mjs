@@ -5,8 +5,9 @@
  * - у H1 scrollWidth ≤ clientWidth — проверяется сам заголовок: overflow у секции
  *   спрятал бы вылет от проверки страницы (Б-19);
  * - у страницы нет горизонтальной прокрутки;
- * - на 375×667 и 1440×900 роль, H1, подзаголовок и обе кнопки — в первом экране
+ * - на 375×667 и 1440×900 роль, H1, подзаголовок и кнопки hero — в первом экране
  *   и видны (UC-1);
+ * - каждая ссылка-якорь ведёт на элемент, который есть на странице;
  * - ошибок гидратации 0; интро закончилось: класса intro и разрезанных букв нет;
  * - фон: на десктопе — живой граф, на телефоне и при reduced-motion — статичный (UC-6).
  *
@@ -56,6 +57,9 @@ const MEASURE = `(() => {
     introClass: document.documentElement.classList.contains('intro'),
     splitChars: h1 ? h1.querySelectorAll('.split-char').length : -1,
     graph: document.querySelector('.hero-bg')?.dataset.graph ?? null,
+    deadAnchors: [...document.querySelectorAll('a[href^="#"]')]
+      .map((a) => a.getAttribute('href'))
+      .filter((href) => href.length > 1 && !document.getElementById(decodeURIComponent(href.slice(1)))),
   };
 })()`;
 
@@ -70,8 +74,10 @@ export function judge(m, screen) {
       expect(item.top >= 0 && item.bottom <= m.viewport, `${item.sel} не в первом экране: ${item.top}…${item.bottom} из ${m.viewport}`);
       expect(item.shown, `${item.sel} не виден`);
     }
-    expect(m.firstScreen.filter((i) => i.sel === '.hero-actions a').length === 2, 'кнопок в hero не две');
+    // До фазы 2 кнопка одна: «Смотреть работы» вернётся вместе с карточками.
+    expect(m.firstScreen.some((i) => i.sel === '.hero-actions a'), 'в hero нет ни одной кнопки');
   }
+  expect(m.deadAnchors.length === 0, `ссылки на якоря, которых нет на странице: ${m.deadAnchors.join(', ')}`);
   expect(m.hydrationErrors === 0, `ошибок гидратации: ${m.hydrationErrors}`);
   expect(!m.introClass, 'класс intro остался — интро не закончилось');
   expect(m.splitChars === 0, `в H1 остались разрезанные буквы: ${m.splitChars}`);
