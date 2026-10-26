@@ -5,7 +5,8 @@
  * владеет содержимым H1, поэтому SplitText меняет DOM без спора с реконсиляцией.
  *
  * Группа — кусок между обычными пробелами: неразрывные пробелы типографа держат
- * «до работающего» вместе, и строка не рвётся там, где её склеил типограф.
+ * «за дни,» и «а не за год» вместе, и строка не рвётся там, где её склеил типограф.
+ * Акцент может кончаться внутри группы: у «за дни,» запятая остаётся обычного цвета.
  */
 import type { Locale } from '@/i18n/locale';
 import { typograf } from './typograf';
@@ -16,32 +17,38 @@ export interface TitleSegment {
   accent?: boolean;
 }
 
-export interface TitleWord {
+export interface TitlePart {
   text: string;
   accent: boolean;
+}
+
+export interface TitleWord {
+  parts: TitlePart[];
   index: number;
 }
 
 export function titleWords(segments: TitleSegment[], locale: Locale): TitleWord[] {
-  segments.forEach((segment, i) => {
-    const previous = segments[i - 1];
-    if (previous && !previous.text.endsWith(' ') && !segment.text.startsWith(' ')) {
-      throw new Error(`Граница сегментов заголовка должна приходиться на пробел: «${previous.text}|${segment.text}»`);
-    }
-  });
-
   const joined = segments.map((segment) => segment.text).join('');
-  // Типограф видит заголовок целиком (тире на стыке сегментов) и не меняет длину строки.
-  const typed = locale === 'ru' ? typograf(joined) : joined;
+  const accentAt = segments.flatMap((segment) => [...segment.text].map(() => Boolean(segment.accent)));
+  // Типограф видит заголовок целиком и не меняет длину строки: акцент остаётся на своих символах.
+  const typed = [...(locale === 'ru' ? typograf(joined) : joined)];
+
   const words: TitleWord[] = [];
-  let offset = 0;
-  for (const segment of segments) {
-    const part = typed.slice(offset, offset + segment.text.length);
-    offset += segment.text.length;
-    for (const text of part.split(' ')) {
-      if (text) words.push({ text, accent: Boolean(segment.accent), index: words.length });
+  let parts: TitlePart[] = [];
+  const close = () => {
+    if (parts.length) words.push({ parts, index: words.length });
+    parts = [];
+  };
+  typed.forEach((char, i) => {
+    if (char === ' ') {
+      close();
+      return;
     }
-  }
+    const last = parts.at(-1);
+    if (last && last.accent === accentAt[i]) last.text += char;
+    else parts.push({ text: char, accent: accentAt[i] });
+  });
+  close();
   return words;
 }
 
@@ -51,11 +58,19 @@ const escapeHtml = (text: string) =>
 /** Внутренняя разметка H1: группы через обычный пробел, у каждой — номер для задержки. */
 export function titleHtml(words: TitleWord[]): string {
   return words
-    .map((word) => `<span class="w${word.accent ? ' accent' : ''}" style="--i:${word.index}">${escapeHtml(word.text)}</span>`)
+    .map((word) => {
+      const inner = word.parts
+        .map((part) => (part.accent ? `<span class="accent">${escapeHtml(part.text)}</span>` : escapeHtml(part.text)))
+        .join('');
+      return `<span class="w" style="--i:${word.index}">${inner}</span>`;
+    })
     .join(' ');
 }
 
+/** Текст группы без разметки. */
+export const wordText = (word: TitleWord) => word.parts.map((part) => part.text).join('');
+
 /** Текст H1 без разметки — с ним сверяется предсборка (scripts/check-dist.mjs). */
 export function titleText(words: TitleWord[]): string {
-  return words.map((word) => word.text).join(' ');
+  return words.map(wordText).join(' ');
 }

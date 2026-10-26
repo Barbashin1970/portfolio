@@ -5,7 +5,7 @@ export const en = {
   meta: {
     title: 'Oleg Barbashin — systems analyst and AI systems developer',
     description:
-      'From idea and spec to a working prototype: AI agents, semantic graphs and digital platforms for Novosibirsk State University, industry and construction.',
+      'I test a software product idea in days, not a year: a prototype at a link for your audience to judge. AI agents, semantic graphs, digital platforms.',
   },
   header: {
     name: 'Oleg Barbashin',
@@ -13,9 +13,9 @@ export const en = {
   },
   hero: {
     eyebrow: 'Systems analyst · AI systems developer · Novosibirsk',
-    title: [{ text: 'From idea to working prototype — ' }, { text: 'one prompt', accent: true }],
-    lead: 'Describe the task in one message — the rest is my job: analysis, a spec, a prototype at a link, and testing. AI agents, semantic graphs and digital platforms — for Novosibirsk State University, industry and construction.',
-    discuss: 'Discuss a project',
+    title: [{ text: 'I test a product idea ' }, { text: 'in days', accent: true }, { text: ', not a year' }],
+    lead: 'A prototype at a link that your audience opens and judges — before you hire a team and spend a year building. AI-assisted development gives 50× leverage: we compare several directions and keep the best.',
+    discuss: 'Test an idea',
     discussNote: 'on Telegram, opens in a new tab',
     work: 'See the work',
     hint: 'Scroll',

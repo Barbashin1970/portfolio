@@ -7,7 +7,8 @@
 export const NBSP = ' ';
 export const NB_HYPHEN = '‑';
 
-const SHORT_WORDS = ['в', 'и', 'с', 'к', 'о', 'у', 'на', 'по', 'за', 'до', 'не', 'от'];
+// Союзы «а» и «но» добавлены 2026-10-26: в заголовке «…за дни, а не за год» «а» повисал в конце строки.
+const SHORT_WORDS = ['в', 'и', 'с', 'к', 'о', 'у', 'а', 'но', 'на', 'по', 'за', 'до', 'не', 'от'];
 
 const AFTER_SHORT_WORD = new RegExp(`(?<![\\p{L}\\p{N}])(${SHORT_WORDS.join('|')}) `, 'giu');
 const BEFORE_DASH = / (?=[—–])/g;
