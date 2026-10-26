@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="ru" data-theme="dark" translate="no">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="google" content="notranslate">
+<title>Портфолио — дизайн-токены</title>
+<!-- Только для макета: на сайте шрифты лежат на нашем домене (@fontsource-variable) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geologica:wght,SHRP@300..800,0..100&family=Onest:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root, [data-theme="dark"] {
+    --bg: #0B0C0F; --surface: #14161B;
+    --text: #F2F1EE; --text-muted: #A3A6AE; --text-subtle: #8A8E97;
+    --accent: #FF6B35; --on-accent: #0B0C0F; --accent-2: #4FD1E8;
+    --border: rgb(242 241 238 / 0.08); --border-strong: rgb(242 241 238 / 0.16);
+    --glass: rgb(20 22 27 / 0.55); --glow: rgb(255 107 53 / 0.28); --edge: rgb(163 166 174 / 0.24);
+    color-scheme: dark;
+  }
+  [data-theme="light"] {
+    --bg: #F6F5F2; --surface: #FFFFFF;
+    --text: #121317; --text-muted: #555A63; --text-subtle: #6B7079;
+    --accent: #C2410C; --on-accent: #FFFFFF; --accent-2: #0B6E7C;
+    --border: rgb(18 19 23 / 0.10); --border-strong: rgb(18 19 23 / 0.18);
+    --glass: rgb(255 255 255 / 0.6); --glow: rgb(194 65 12 / 0.18); --edge: rgb(85 90 99 / 0.28);
+    color-scheme: light;
+  }
+  :root {
+    --font-display: "Geologica", system-ui, sans-serif;
+    --font-text: "Onest", system-ui, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, monospace;
+    --r-sm: 12px; --r-md: 24px; --r-lg: 32px;
+    --gutter: clamp(1rem, 4vw, 2.5rem);
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 400 17px/1.6 var(--font-text);
+    transition: background-color .3s, color .3s;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent-2); outline-offset: 3px; border-radius: 6px; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding-inline: var(--gutter); }
+  .mono { font: 500 13px/1.4 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+  .display { font-family: var(--font-display); font-variation-settings: "SHRP" 40; letter-spacing: -0.03em; text-wrap: balance; }
+  .accent { color: var(--accent); }
+
+  header.bar { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding-block: 1.25rem; border-bottom: 1px solid var(--border); }
+  .toggle { font: inherit; font-size: 15px; color: var(--text); background: var(--glass); border: 1px solid var(--border-strong); border-radius: 999px; padding: .5rem 1rem; cursor: pointer; backdrop-filter: blur(16px); }
+
+  section { padding-block: clamp(3.5rem, 2rem + 5vw, 6.5rem); border-bottom: 1px solid var(--border); }
+  h2.section { font: 700 clamp(1.75rem, 1.2rem + 2.4vw, 3rem)/1.05 var(--font-display); margin: .5rem 0 2rem; }
+
+  /* hero */
+  .hero { position: relative; overflow: hidden; }
+  .hero svg.graph { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;
+    -webkit-mask-image: linear-gradient(90deg, transparent 25%, #000 70%); mask-image: linear-gradient(90deg, transparent 25%, #000 70%); }
+  .hero .inner { position: relative; max-width: 54rem; }
+  /* 10vw: самый длинный неразрывный кусок H1 («до работающего», ~8,3 em) помещается даже на 320 px */
+  .hero h1 { font-weight: 720; font-size: clamp(2rem, 10vw, 6.5rem); line-height: .97; margin: 1rem 0 1.5rem; }
+  .lead { font-size: clamp(1.125rem, 1rem + .5vw, 1.375rem); color: var(--text-muted); max-width: 40rem; margin: 0 0 2.25rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .btn { display: inline-flex; align-items: center; gap: .5rem; font: 600 16px/1 var(--font-text); text-decoration: none; padding: 1rem 1.5rem; border-radius: var(--r-sm); border: 1px solid transparent; transition: transform .2s, box-shadow .2s; }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--accent); color: var(--on-accent); box-shadow: 0 0 0 0 var(--glow); }
+  .btn-primary:hover { box-shadow: 0 10px 40px -8px var(--glow); }
+  .btn-ghost { background: var(--glass); color: var(--text); border-color: var(--border-strong); backdrop-filter: blur(16px); }
+  .btn-sm { padding: .7rem 1rem; font-size: 15px; }
+
+  /* palette */
+  .grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr)); }
+  .swatch { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r-md); overflow: hidden; }
+  .swatch .chip { height: 92px; border-bottom: 1px solid var(--border); }
+  .swatch .meta { padding: .9rem 1rem 1rem; }
+  .swatch b { display: block; font-weight: 600; }
+  .swatch code { font: 13px var(--font-mono); color: var(--text-muted); }
+  .ratio { float: right; font: 600 13px var(--font-mono); }
+  .ratio.ok { color: var(--accent-2); } .ratio.bad { color: var(--accent); }
+
+  /* type */
+  .spec { display: grid; gap: 1.75rem; }
+  .spec .row { display: grid; gap: .35rem; }
+  .h2s { font-weight: 700; font-size: clamp(2rem, 1.3rem + 3vw, 4rem); line-height: 1.02; margin: 0; }
+  .h3s { font: 650 clamp(1.25rem, 1rem + 1vw, 1.75rem)/1.2 var(--font-display); margin: 0; }
+  .body { max-width: 68ch; margin: 0; }
+
+  /* components */
+  .glass { background: var(--glass); border: 1px solid var(--border); border-radius: var(--r-md); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .card { padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); display: grid; gap: 1rem; transition: border-color .2s, transform .2s; }
+  .card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
+  .card h3 { font: 680 clamp(1.4rem, 1.1rem + 1.2vw, 2rem)/1.1 var(--font-display); margin: 0; letter-spacing: -0.02em; }
+  .card p { margin: 0; color: var(--text-muted); }
+  .tags { display: flex; flex-wrap: wrap; gap: .5rem; padding: 0; margin: 0; list-style: none; }
+  .tag { font: 500 12px/1 var(--font-mono); letter-spacing: .04em; color: var(--text-muted); border: 1px solid var(--border-strong); border-radius: 999px; padding: .45rem .7rem; }
+  .filters { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .filter { font: 500 15px/1 var(--font-text); color: var(--text); background: transparent; border: 1px solid var(--border-strong); border-radius: 999px; padding: .65rem 1rem; cursor: pointer; }
+  .filter[aria-pressed="true"] { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .filter span { color: var(--text-subtle); margin-left: .35rem; }
+  .filter[aria-pressed="true"] span { color: inherit; opacity: .7; }
+  .bento { position: relative; padding: 2rem; border-radius: var(--r-lg); overflow: hidden; display: grid; gap: 1rem; min-height: 260px; align-content: end; }
+  .bento::before { content: ""; position: absolute; inset: auto -20% -60% auto; width: 70%; aspect-ratio: 1; background: radial-gradient(closest-side, var(--glow), transparent); pointer-events: none; }
+  .bento > * { position: relative; }
+  .proof a { text-decoration: none; border-bottom: 1px solid var(--border-strong); }
+  .numbers { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); }
+  .num b { display: block; font: 700 clamp(2.5rem, 1.8rem + 2.6vw, 4rem)/1 var(--font-display); letter-spacing: -0.03em; }
+  .num.pending b { color: var(--text-subtle); }
+  .steps { display: grid; gap: .75rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); counter-reset: s; padding: 0; margin: 0; list-style: none; }
+  .steps li { border-top: 2px solid var(--border-strong); padding-top: .9rem; }
+  .steps li:first-child { border-top-color: var(--accent); }
+  .steps li::before { counter-increment: s; content: "0" counter(s); display: block; font: 500 13px var(--font-mono); color: var(--accent-2); margin-bottom: .35rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 15px; }
+  td, th { text-align: left; padding: .7rem .5rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  th { font: 500 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--text-muted); }
+  .note { color: var(--text-subtle); font-size: 15px; }
+  footer { padding-block: 2.5rem 4rem; }
+  @media (prefers-reduced-motion: reduce) { *, *::before { transition: none !important; } .btn:hover, .card:hover { transform: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="bar">
+    <span class="mono">portfolio · дизайн-токены · черновик фазы 0</span>
+    <button class="toggle" type="button" id="theme" aria-pressed="false">Светлая тема</button>
+  </header>
+
+  <section class="hero" aria-labelledby="hero-title">
+    <svg class="graph" viewBox="0 0 1200 600" preserveAspectRatio="xMaxYMid slice" aria-hidden="true">
+      <g stroke="var(--edge)" stroke-width="1.2">
+        <line x1="760" y1="120" x2="880" y2="80"/><line x1="880" y1="80" x2="1010" y2="140"/><line x1="1010" y1="140" x2="1120" y2="90"/>
+        <line x1="760" y1="120" x2="820" y2="240"/><line x1="880" y1="80" x2="820" y2="240"/><line x1="820" y1="240" x2="950" y2="260"/>
+        <line x1="1010" y1="140" x2="950" y2="260"/><line x1="950" y1="260" x2="1080" y2="230"/><line x1="1120" y1="90" x2="1080" y2="230"/>
+        <line x1="1080" y1="230" x2="1180" y2="190"/><line x1="1120" y1="90" x2="1180" y2="190"/><line x1="820" y1="240" x2="700" y2="330"/>
+        <line x1="700" y1="330" x2="860" y2="380"/><line x1="950" y1="260" x2="860" y2="380"/><line x1="860" y1="380" x2="1000" y2="370"/>
+        <line x1="1080" y1="230" x2="1000" y2="370"/><line x1="1000" y1="370" x2="1140" y2="330"/><line x1="1140" y1="330" x2="1170" y2="450"/>
+        <line x1="860" y1="380" x2="760" y2="480"/><line x1="760" y1="480" x2="920" y2="500"/><line x1="920" y1="500" x2="1060" y2="470"/>
+        <line x1="1000" y1="370" x2="1060" y2="470"/><line x1="1060" y1="470" x2="1170" y2="450"/><line x1="760" y1="120" x2="640" y2="200"/>
+        <line x1="640" y1="200" x2="700" y2="330"/><line x1="700" y1="330" x2="600" y2="420"/><line x1="600" y1="420" x2="760" y2="480"/>
+        <line x1="1140" y1="330" x2="1180" y2="190"/>
+      </g>
+      <g fill="var(--text-subtle)">
+        <circle cx="760" cy="120" r="3.5"/><circle cx="1120" cy="90" r="3"/><circle cx="700" cy="330" r="3"/><circle cx="1140" cy="330" r="3.5"/>
+        <circle cx="760" cy="480" r="3"/><circle cx="1060" cy="470" r="3"/><circle cx="640" cy="200" r="2.5"/><circle cx="600" cy="420" r="2.5"/>
+        <circle cx="1180" cy="190" r="2.5"/><circle cx="1170" cy="450" r="3"/><circle cx="820" cy="240" r="3"/>
+      </g>
+      <g fill="var(--accent-2)">
+        <circle cx="880" cy="80" r="4"/><circle cx="1010" cy="140" r="4.5"/><circle cx="1080" cy="230" r="4"/><circle cx="860" cy="380" r="4.5"/>
+        <circle cx="1000" cy="370" r="4"/><circle cx="920" cy="500" r="3.5"/>
+      </g>
+      <circle cx="950" cy="260" r="7" fill="var(--accent)"/>
+      <circle cx="950" cy="260" r="16" fill="none" stroke="var(--accent)" stroke-opacity=".35"/>
+    </svg>
+    <div class="inner">
+      <p class="mono">Системный аналитик · разработчик ИИ&#8209;систем · Новосибирск</p>
+      <h1 class="display" id="hero-title">От&nbsp;идеи до&nbsp;работающего прототипа&nbsp;— <span class="accent">один промпт</span></h1>
+      <p class="lead">Опишите задачу одним сообщением&nbsp;— дальше моя работа: разбор, ТЗ, прототип по&nbsp;ссылке и&nbsp;проверка. ИИ&#8209;агенты, семантические графы и&nbsp;цифровые платформы&nbsp;— для НГУ, промышленности и&nbsp;стройки.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#components">Обсудить проект</a>
+        <a class="btn btn-ghost" href="#components">Смотреть работы</a>
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="palette-title">
+    <p class="mono">Цвет</p>
+    <h2 class="section display" id="palette-title">Графит, сигнальный оранжевый, холодный циан</h2>
+    <div class="grid" id="palette"></div>
+    <p class="note">Контраст считается на этой странице по формуле WCAG 2.x для текущей темы: «AA» — не ниже 4,5. Текст на акценте сравнивается с акцентом, остальные цвета — с фоном.</p>
+  </section>
+
+  <section aria-labelledby="type-title">
+    <p class="mono">Шрифты</p>
+    <h2 class="section display" id="type-title">Geologica, Onest, JetBrains Mono</h2>
+    <div class="spec">
+      <div class="row"><span class="mono">H2 · Geologica 700 · clamp(2rem … 4rem)</span><p class="h2s display">Системный аналитик и разработчик ИИ-систем</p></div>
+      <div class="row"><span class="mono">H3 · Geologica 650</span><p class="h3s">Цифровые платформы для вузов и промышленности</p></div>
+      <div class="row"><span class="mono">Лид · Onest 400</span><p class="lead" style="margin:0">Через дни — ссылка, которую можно открыть и потрогать, а не макет в презентации.</p></div>
+      <div class="row"><span class="mono">Текст · Onest 400 · 17/1,6</span><p class="body">Регламент записан правилом, а не спрятан в обученной модели: каждое решение предъявляет входные величины, формулу и порог. Поэтому заказчик проверяет систему так же, как проверял бы инженера, — по основаниям. Съешь же ещё этих мягких французских булок, да выпей чаю.</p></div>
+      <div class="row"><span class="mono">Метки · JetBrains Mono 500 · 13 px</span><p class="mono" style="margin:0">React 19 · Python · DuckDB · RDF/OWL · 2026</p></div>
+    </div>
+  </section>
+
+  <section id="components" aria-labelledby="comp-title">
+    <p class="mono">Компоненты</p>
+    <h2 class="section display" id="comp-title">Карточка, фильтр по аудиториям, плитка услуги</h2>
+
+    <div class="numbers" style="margin-bottom:2.5rem">
+      <div class="num"><b>2 500+</b><span class="mono">коммитов в 2026-м</span></div>
+      <div class="num"><b>28</b><span class="mono">проектов на витрине</span></div>
+      <div class="num"><b>24</b><span class="mono">живых демо</span></div>
+      <div class="num pending"><b>?</b><span class="mono">лет опыта — ждёт Олега</span></div>
+    </div>
+
+    <div class="filters" role="group" aria-label="Аудитория" style="margin-bottom:1.5rem">
+      <button class="filter" type="button" aria-pressed="true">Все<span>28</span></button>
+      <button class="filter" type="button" aria-pressed="false">Стройка и промышленность<span>5</span></button>
+      <button class="filter" type="button" aria-pressed="false">Город и безопасность<span>3</span></button>
+      <button class="filter" type="button" aria-pressed="false">Наука и R&amp;D<span>5</span></button>
+      <button class="filter" type="button" aria-pressed="false">Образование<span>4</span></button>
+      <button class="filter" type="button" aria-pressed="false">Бизнес<span>2</span></button>
+      <button class="filter" type="button" aria-pressed="false">Здоровье<span>3</span></button>
+      <button class="filter" type="button" aria-pressed="false">Игры<span>6</span></button>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr))">
+      <article class="glass card">
+        <span class="mono">Город и безопасность · 2026</span>
+        <h3>Сигма — ситуационный центр</h3>
+        <p>ИИ-подсказки оператору ЕДДС: сценарии ЧП, видеостена и тренажёр с аттестацией</p>
+        <ul class="tags"><li class="tag">React 19</li><li class="tag">Vite 8</li><li class="tag">Tailwind 4</li><li class="tag">TypeScript</li></ul>
+        <div class="actions">
+          <a class="btn btn-primary btn-sm" href="https://sigma-operator.vercel.app/operator/hospital-fire" target="_blank" rel="noopener">Открыть демо<span class="sr" style="position:absolute;left:-9999px">: Сигма — ситуационный центр</span> ↗</a>
+          <a class="btn btn-ghost btn-sm" href="https://github.com/Barbashin1970/demo-sigma-main" target="_blank" rel="noopener">Код на GitHub</a>
+        </div>
+      </article>
+      <article class="glass bento">
+        <span class="mono">Что я делаю</span>
+        <h3 class="h3s">ИИ-агенты и гибридный ИИ</h3>
+        <p style="margin:0;color:var(--text-muted)">Решение принимает проверяемое правило, а не «чёрный ящик»: система показывает входные данные и основание.</p>
+        <p class="proof mono" style="margin:0">Доказательства: <a href="#components">РАГРАФ</a> · <a href="#components">ИИ-помощник по ТБ</a> · <a href="#components">СИМА</a></p>
+      </article>
+    </div>
+
+    <ol class="steps" style="margin-top:2.5rem" aria-label="Как я работаю">
+      <li><b>Анализ</b><br><span class="note">карта задачи и список того, чего не делаем</span></li>
+      <li><b>ТЗ</b><br><span class="note">коротко или по ГОСТ 19</span></li>
+      <li><b>Прототип</b><br><span class="note">ссылка, а не макет</span></li>
+      <li><b>Внедрение</b><br><span class="note">испытания, документы, передача</span></li>
+      <li><b>Сопровождение</b><br><span class="note">бэклог и развитие</span></li>
+    </ol>
+  </section>
+
+  <section aria-labelledby="motion-title">
+    <p class="mono">Движение</p>
+    <h2 class="section display" id="motion-title">Единые easing и длительности</h2>
+    <table>
+      <thead><tr><th>Константа</th><th>Значение</th><th>Где</th></tr></thead>
+      <tbody>
+        <tr><td><code>EASE.out</code></td><td>expo.out</td><td>появления</td></tr>
+        <tr><td><code>EASE.inOut</code></td><td>power2.inOut</td><td>переходы</td></tr>
+        <tr><td><code>EASE.scrub</code></td><td>none</td><td>всё, что привязано к скроллу</td></tr>
+        <tr><td><code>DUR</code></td><td>0,3 · 0,6 · 0,9 · интро ≤ 1,1 с</td><td>fast · base · slow · intro</td></tr>
+        <tr><td><code>STAGGER</code></td><td>0,025 · 0,06 · 0,08</td><td>символы · слова · карточки</td></tr>
+        <tr><td>Появление</td><td>opacity 0 → 1, y 24 → 0 px</td><td>общий фон всех секций</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    <p class="note">Макет токенов для утверждения, не сайт. Фон hero здесь — статичный SVG: так он и будет выглядеть на телефоне и при reduced-motion. На десктопе вместо него — живой граф (Particles со связями).</p>
+  </footer>
+</div>
+<script>
+  const root = document.documentElement;
+  const btn = document.getElementById('theme');
+  const TOKENS = [
+    ['--bg', 'Фон'], ['--surface', 'Поверхность'], ['--text', 'Текст'], ['--text-muted', 'Текст приглушённый'],
+    ['--text-subtle', 'Текст тихий'], ['--accent', 'Акцент'], ['--on-accent', 'Текст на акценте'], ['--accent-2', 'Акцент 2'],
+  ];
+  const hex = (name) => getComputedStyle(root).getPropertyValue(name).trim();
+  const lum = (h) => {
+    const [r, g, b] = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255)
+      .map((c) => (c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  };
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+  function renderPalette() {
+    const bg = hex('--bg');
+    document.getElementById('palette').innerHTML = TOKENS.map(([name, label]) => {
+      const value = hex(name);
+      const against = name === '--on-accent' ? hex('--accent') : bg;
+      const showRatio = !['--bg', '--surface'].includes(name);
+      const r = showRatio ? ratio(value, against) : 0;
+      const badge = showRatio ? `<span class="ratio ${r >= 4.5 ? 'ok' : 'bad'}">${r.toFixed(2).replace('.', ',')} ${r >= 4.5 ? 'AA' : '—'}</span>` : '';
+      return `<div class="swatch"><div class="chip" style="background:${value}"></div><div class="meta">${badge}<b>${label}</b><code>${name} ${value}</code></div></div>`;
+    }).join('');
+  }
+  btn.addEventListener('click', () => {
+    const light = root.dataset.theme !== 'light';
+    root.dataset.theme = light ? 'light' : 'dark';
+    btn.textContent = light ? 'Тёмная тема' : 'Светлая тема';
+    btn.setAttribute('aria-pressed', String(light));
+    renderPalette();
+  });
+  document.querySelectorAll('.filter').forEach((f) => f.addEventListener('click', () => {
+    document.querySelectorAll('.filter').forEach((x) => x.setAttribute('aria-pressed', String(x === f)));
+  }));
+  renderPalette();
+</script>
+</body>
+</html>

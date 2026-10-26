@@ -1,0 +1,51 @@
+/*
+ * Дизайн-токены: PLAN §3, макет docs/design-preview.html.
+ * Контраст пар «текст — фон» сверяет tests/tokens.test.ts (WCAG 2.x, AA ≥ 4,5).
+ * Числа движения — не здесь: их CSS-переменные собираются из src/motion/tokens.ts.
+ */
+
+:root,
+[data-theme='dark'] {
+  --bg: #0b0c0f;
+  --surface: #14161b;
+  --text: #f2f1ee;
+  --text-muted: #a3a6ae;
+  --text-subtle: #8a8e97;
+  --accent: #ff6b35;
+  --on-accent: #0b0c0f;
+  --accent-2: #4fd1e8;
+  --border: rgb(242 241 238 / 0.08);
+  --border-strong: rgb(242 241 238 / 0.16);
+  --glass: rgb(20 22 27 / 0.55);
+  --glow: rgb(255 107 53 / 0.28);
+  --edge: rgb(163 166 174 / 0.24);
+  color-scheme: dark;
+}
+
+[data-theme='light'] {
+  --bg: #f6f5f2;
+  --surface: #ffffff;
+  --text: #121317;
+  --text-muted: #555a63;
+  --text-subtle: #6b7079;
+  --accent: #c2410c;
+  --on-accent: #ffffff;
+  --accent-2: #0b6e7c;
+  --border: rgb(18 19 23 / 0.1);
+  --border-strong: rgb(18 19 23 / 0.18);
+  --glass: rgb(255 255 255 / 0.6);
+  --glow: rgb(194 65 12 / 0.18);
+  --edge: rgb(85 90 99 / 0.28);
+  color-scheme: light;
+}
+
+:root {
+  --r-sm: 12px;
+  --r-md: 24px;
+  --r-lg: 32px;
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --section-y: clamp(6rem, 4rem + 8vw, 11rem);
+  --container: 1280px;
+  /* Высоту шапки замеряет Header и кладёт сюда; это запасное значение с избытком. */
+  --header-h: 4.5rem;
+}
