@@ -14,7 +14,7 @@ export const en = {
   hero: {
     eyebrow: 'Systems analyst · AI systems developer · Novosibirsk',
     title: [{ text: 'I test a product idea ' }, { text: 'in days', accent: true }, { text: ', not a year' }],
-    lead: 'A prototype at a link that your audience opens and judges — before you hire a team and spend a year building. AI-assisted development gives 50× leverage: we compare several directions and keep the best.',
+    lead: 'A prototype at a link that your audience opens and judges — before you hire a team and spend a year building. AI-assisted development gives up to 50× leverage: we compare several directions and keep the best.',
     discuss: 'Test an idea',
     discussNote: 'on Telegram, opens in a new tab',
     work: 'See the work',
