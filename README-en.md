@@ -1,0 +1,53 @@
+<div align="center">
+
+# Oleg Barbashin
+
+**Systems analyst and AI systems developer**<br>
+From an idea and a spec to a working prototype — for universities, industry and construction. Novosibirsk, Russia.
+
+<a href="https://barbashin1970.github.io/portfolio/"><img src=".github/readme/open-site-en.svg" alt="Open the site" height="52"></a>&nbsp;
+<a href="https://t.me/OlegBarbashin"><img src=".github/readme/telegram-en.svg" alt="Message on Telegram" height="52"></a>
+
+[banksnab@gmail.com](mailto:banksnab@gmail.com) · [GitHub](https://github.com/Barbashin1970)
+
+<sub>Russian version: [README.md](README.md)</sub>
+
+</div>
+
+---
+
+## What I do
+
+- **AI you can audit** — hybrid AI and AI agents where a written rule makes the call and the system shows its inputs, formula and threshold.
+- **Semantic graphs** — RDF, OWL and SHACL ontologies of rules and regulations.
+- **Digital platforms** for universities and industry.
+- **Prototypes at a link** — websites, PWAs, trainers and games.
+
+## Selected work
+
+- **[RAGRAF](https://ragraf.up.railway.app/)** — AI you can audit: every verdict shows its inputs, formula and threshold. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/RAGRAF_DOCS)
+- **[Sigma — situation centre](https://sigma-operator.vercel.app/operator/hospital-fire)** — AI prompts for emergency dispatch operators: incident scenarios, a video wall and a certification trainer. [Code](https://github.com/Barbashin1970/demo-sigma-main)
+- **[SIMA — Novosibirsk open data](https://nsk-opendata-bot.up.railway.app/)** — answers questions about the city from open data, with no neural network at runtime. [Code](https://github.com/Barbashin1970/NSK_OpenData_Bot)
+- **[AI in Teaching](https://barbashin1970.github.io/PROMPT-Professor/)** — a professional development course for NSU faculty. [Code](https://github.com/Barbashin1970/PROMPT-Professor)
+
+The site lists all 28 projects across seven industries; 24 of them have a live demo.
+
+## How I work: SKICODING
+
+My way of running projects is **ski-coding**: text and code alternate like ski tracks — analysis, code, documents, code. Every step leaves something you can check: a document, a commit, a test. The analysis comes before the code; a step is not done until the documents it touched are updated; deferred work goes to a backlog with a reason; every number comes with the command that produced it.
+
+It keeps a project clear of two traps: a code rush nobody can explain a week later, and documents that go stale before any code exists. Published as a skill for AI coding agents: [SKICODING in NSU-AI-SKILLS](https://github.com/Barbashin1970/NSU-AI-SKILLS/tree/main/skills/skicoding).
+
+## This repository
+
+The source of the portfolio site: pages are prerendered at build time and published on GitHub Pages. Phase 1 of 3 is in progress (October 2026).
+
+Vite 8 · React 19 · TypeScript 6 · Tailwind CSS 4 · shadcn/ui · GSAP + ScrollTrigger · Lenis · React Bits.
+
+```bash
+nvm use && npm ci && npm run dev   # http://localhost:5173/portfolio/
+```
+
+## License
+
+No code license has been chosen yet, so standard copyright applies. Texts, project descriptions and images © Oleg Barbashin, 2026.
