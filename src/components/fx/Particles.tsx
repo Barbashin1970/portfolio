@@ -36,6 +36,8 @@ export interface ParticlesProps {
   driftSpeed?: number;
   variation?: number;
   intro?: boolean;
+  /** Глубина облака относительно разброса (адаптация; в исходнике — константа 10). Меньше — облако плоское, как граф. */
+  depth?: number;
   /** Длительность появления точек, секунды (адаптация; в исходнике — константа 1,8). */
   introDuration?: number;
   /** Первый кадр нарисован: WebGL2 поднялся (адаптация). */
@@ -73,6 +75,7 @@ type Settings = {
   driftSpeed: number;
   variation: number;
   intro: boolean;
+  depth: number;
   introDuration: number;
   opacity: number;
   lightMode: boolean;
@@ -90,7 +93,8 @@ const MAX_COUNT = 20000;
 const MAX_LINKED = 900;
 const MAX_LINES = 9000;
 const MAX_BURSTS = 4;
-const DEPTH = 10;
+/** Глубина облака относительно разброса; в исходнике — константа DEPTH = 10 (адаптация: параметр depth). */
+const DEFAULT_DEPTH = 10;
 const FOCAL = 1 / Math.tan((7.5 * Math.PI) / 180);
 const NEAR = 0.1;
 const FAR = 100;
@@ -108,6 +112,7 @@ layout(location = 3) in vec3 aColor;
 uniform mat3 uRotation;
 uniform vec3 uOffset;
 uniform float uSpread;
+uniform float uDepth;
 uniform float uTime;
 uniform float uCamera;
 uniform float uAspect;
@@ -146,7 +151,7 @@ vec3 bob(vec4 r, float t) {
 
 void main() {
   vec3 pos = aPosition * uSpread;
-  pos.z *= ${DEPTH.toFixed(1)};
+  pos.z *= uDepth;
   vec3 wobble = bob(aRandom, uTime);
   vec3 world = uRotation * pos + uOffset + wobble;
   float edge = 1.0;
@@ -156,7 +161,7 @@ void main() {
     world.y = k - span * 0.5;
     edge = smoothstep(0.0, span * 0.12, k) * smoothstep(span, span * 0.88, k);
   } else if (uDrift == 3) {
-    float span = uSpread * ${DEPTH.toFixed(1)} * 2.0 + 3.0;
+    float span = uSpread * uDepth * 2.0 + 3.0;
     float k = mod(aRandom.y * span + uOffset.z + wobble.z + uTravel, span);
     world.z = k - span * 0.5;
     edge = smoothstep(0.0, span * 0.1, k);
@@ -385,6 +390,7 @@ const Particles = ({
   driftSpeed = 1,
   variation = 0,
   intro = true,
+  depth = DEFAULT_DEPTH,
   introDuration = DEFAULT_INTRO_SECONDS,
   onReady,
   opacity = 1,
@@ -425,6 +431,7 @@ const Particles = ({
     driftSpeed,
     variation: Math.max(0, Math.round(variation)),
     intro,
+    depth: Math.max(0.1, depth),
     introDuration: Math.max(0.1, introDuration),
     opacity: clamp(opacity, 0, 1),
     lightMode,
@@ -620,11 +627,11 @@ const Particles = ({
       const radius = s.hoverRadius;
       const active = s.hoverEffect !== 0 ? pointer.active : 0;
       const spanY = s.spread * 2 + 3;
-      const spanZ = s.spread * DEPTH * 2 + 3;
+      const spanZ = s.spread * s.depth * 2 + 3;
       for (let i = 0; i < total; i++) {
         const px = cloud.positions[i * 3] * s.spread;
         const py = cloud.positions[i * 3 + 1] * s.spread;
-        const pz = cloud.positions[i * 3 + 2] * s.spread * DEPTH;
+        const pz = cloud.positions[i * 3 + 2] * s.spread * s.depth;
         const r0 = cloud.randoms[i * 4];
         const r1 = cloud.randoms[i * 4 + 1];
         const r2 = cloud.randoms[i * 4 + 2];
@@ -780,6 +787,7 @@ const Particles = ({
       gl.uniformMatrix3fv(u.uRotation, false, matrix);
       gl.uniform3f(u.uOffset, ox, oy, oz);
       gl.uniform1f(u.uSpread, s.spread);
+      gl.uniform1f(u.uDepth, s.depth);
       gl.uniform1f(u.uTime, state.clock);
       gl.uniform1f(u.uCamera, s.camera);
       gl.uniform1f(u.uAspect, view.width / view.height);

@@ -63,9 +63,10 @@ export function HeroBackground({ start }: { start: boolean }) {
       {live && (
         <Suspense fallback={null}>
           <Particles
-            style={{ position: 'absolute', inset: 0 }}
+            style={{ position: 'absolute', inset: 0, left: GRAPH.left }}
             particleCount={GRAPH.count}
             particleSpread={GRAPH.spread}
+            depth={GRAPH.depth}
             speed={GRAPH.speed}
             particleBaseSize={GRAPH.baseSize}
             cameraDistance={GRAPH.camera}

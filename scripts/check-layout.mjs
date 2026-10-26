@@ -13,6 +13,7 @@
  *
  *   npm run check:layout                 (после npm run build)
  *   npm run check:layout -- --shots DIR  (ещё и скриншоты каждого экрана)
+ *   npm run check:layout -- --url https://barbashin1970.github.io/portfolio/  (живой сайт)
  */
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -38,7 +39,10 @@ const settled = (expectLive) => `(() => {
   if (document.documentElement.classList.contains('intro')) return false;
   const running = document.getAnimations().filter((a) => a.playState === 'running' && a.effect?.getComputedTiming().endTime !== Infinity);
   if (running.length) return false;
-  return ${expectLive} ? document.querySelector('.hero-bg')?.dataset.graph === 'live' : true;
+  if (!${expectLive}) return true;
+  // Живой граф поднялся, а статичный SVG догас (твин GSAP не виден в getAnimations).
+  const svg = document.querySelector('.hero-graph');
+  return document.querySelector('.hero-bg')?.dataset.graph === 'live' && !!svg && getComputedStyle(svg).visibility === 'hidden';
 })()`;
 
 const MEASURE = `(() => {
@@ -57,6 +61,7 @@ const MEASURE = `(() => {
     introClass: document.documentElement.classList.contains('intro'),
     splitChars: h1 ? h1.querySelectorAll('.split-char').length : -1,
     graph: document.querySelector('.hero-bg')?.dataset.graph ?? null,
+    staticGraphShown: getComputedStyle(document.querySelector('.hero-graph')).visibility !== 'hidden',
     deadAnchors: [...document.querySelectorAll('a[href^="#"]')]
       .map((a) => a.getAttribute('href'))
       .filter((href) => href.length > 1 && !document.getElementById(decodeURIComponent(href.slice(1)))),
@@ -83,21 +88,32 @@ export function judge(m, screen) {
   expect(m.splitChars === 0, `в H1 остались разрезанные буквы: ${m.splitChars}`);
   const graph = screen.width >= 1024 && !screen.reduce ? 'live' : 'static';
   expect(m.graph === graph, `фон: ожидался ${graph}, получен ${m.graph}`);
+  expect(m.staticGraphShown === (graph === 'static'), `статичный граф ${m.staticGraphShown ? 'виден' : 'погас'} при фоне ${m.graph}`);
   return problems;
 }
 
+const argument = (name) => {
+  const i = process.argv.indexOf(name);
+  return i > 0 ? process.argv[i + 1] : undefined;
+};
+
 async function main() {
-  const shotsArg = process.argv.indexOf('--shots');
-  const shots = shotsArg > 0 ? resolve(process.argv[shotsArg + 1]) : null;
+  const shots = argument('--shots') ? resolve(argument('--shots')) : null;
   if (shots) mkdirSync(shots, { recursive: true });
 
-  const server = await startServer(fileURLToPath(new URL('../dist/client', import.meta.url)));
+  // Живой адрес — как есть; иначе раздаём dist/client с той же приставкой, что на Pages.
+  const live = argument('--url');
+  const server = live ? null : await startServer(fileURLToPath(new URL('../dist/client', import.meta.url)));
+  const site = live ?? `${server.origin}${server.base}`;
+  // --only 1440 — только экраны, в названии которых есть эта строка.
+  const only = argument('--only');
+  const screens = only ? SCREENS.filter((screen) => screen.name.includes(only)) : SCREENS;
   const chrome = await launchChrome();
   let failures = 0;
   try {
-    for (const screen of SCREENS) {
+    for (const screen of screens) {
       const page = await chrome.openPage(screen);
-      await page.goto(`${server.origin}${server.base}`);
+      await page.goto(site);
       const expectLive = screen.width >= 1024 && !screen.reduce;
       const done = await page.until(settled(expectLive), SETTLE_TIMEOUT_MS);
       const m = await page.evaluate(MEASURE);
@@ -115,13 +131,13 @@ async function main() {
     }
   } finally {
     await chrome.close();
-    await server.close();
+    await server?.close();
   }
   if (failures) {
-    console.error(`check-layout: расхождений ${failures}`);
+    console.error(`check-layout: расхождений ${failures} (${site})`);
     return 1;
   }
-  console.log('check-layout: всё на месте');
+  console.log(`check-layout: всё на месте (${site})`);
   return 0;
 }
 

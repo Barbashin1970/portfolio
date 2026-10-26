@@ -45,15 +45,19 @@ export const INTRO = { fontWait: 2, fallback: 2.5 } as const;
 
 /** Живой фон hero — граф знаний: React Bits Particles со связями (Р-07). */
 export const GRAPH = {
-  count: 150,
-  spread: 10,
-  speed: 0.08,
-  baseSize: 90,
-  camera: 20,
-  connectionDistance: 120,
+  count: 220,
+  spread: 9,
+  /** Плоское облако: точки одной глубины — одного размера и связываются между собой. */
+  depth: 1.2,
+  speed: 0.06,
+  baseSize: 110,
+  camera: 24,
+  connectionDistance: 150,
   hoverFactor: 0.6,
-  twinkle: 0.25,
-  glow: { dark: 0.5, light: 0.15 },
+  twinkle: 0.2,
+  glow: { dark: 0.45, light: 0.15 },
+  /** Облако сдвинуто вправо: слева текст, туда граф не заходит (маска .hero-bg). */
+  left: '32%',
 } as const;
 
 /** Lenis: колесо сглаживается, тач нативный. */
