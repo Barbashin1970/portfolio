@@ -58,7 +58,7 @@
 
 Исходный код сайта-портфолио. Страницы собираются заранее, при сборке, и публикуются на GitHub Pages: поисковик получает готовый текст, а первый экран не ждёт JavaScript.
 
-**Состояние на 2026-10-26:** идёт фаза 1 из 3 — каркас, дизайн-токены, плавная прокрутка, первый экран. Опись проектов и числа с командами, которыми они получены, — в [docs/INVENTORY.md](docs/INVENTORY.md).
+**Состояние на 2026-10-26:** готова фаза 1 из 3 — каркас, дизайн-токены, плавная прокрутка и первый экран с живым графом. Дальше — карточки проектов и каталог по отраслям. Опись проектов и числа с командами, которыми они получены, — в [docs/INVENTORY.md](docs/INVENTORY.md).
 
 **Стек:** Vite 8 · React 19 · TypeScript 6 · Tailwind CSS 4 · shadcn/ui · GSAP + ScrollTrigger · Lenis · React Bits.
 
@@ -75,6 +75,21 @@ npm run check    # линтер, типы, тесты, сборка
 - Почта: [banksnab@gmail.com](mailto:banksnab@gmail.com)
 - GitHub: [Barbashin1970](https://github.com/Barbashin1970)
 
-## Лицензия
+## Лицензии и компоненты
 
-Лицензия на код выбирается. Пока её нет, действует обычное авторское право: код можно смотреть и изучать, но не копировать. Тексты, описания проектов и изображения — © Олег Барбашин, 2026.
+**Код сайта — [MIT](LICENSE):** берите с указанием авторства. MIT не распространяется на тексты сайта и описания проектов (`src/i18n`, тексты в `src/data`), документы в `docs/` и изображения — они © Олег Барбашин, 2026, все права защищены.
+
+Чужие компоненты остаются под своими лицензиями:
+
+| Компонент | Где на сайте | Лицензия |
+|---|---|---|
+| [React Bits](https://reactbits.dev) — SplitText, Magnet, Particles; адаптированные копии в [`src/components/fx`](src/components/fx) | буквы заголовка, «магнитные» кнопки, живой граф | MIT + Commons Clause — [src/components/fx/LICENSE](src/components/fx/LICENSE): в составе сайта можно, продавать или раздавать сами компоненты нельзя |
+| [shadcn/ui](https://ui.shadcn.com) — кнопка, копия в `src/components/ui` | кнопки | MIT |
+| [GSAP](https://gsap.com) и @gsap/react | вся анимация | [стандартная бесплатная лицензия GSAP](https://gsap.com/standard-license) |
+| [Lenis](https://github.com/darkroomengineering/lenis) | плавная прокрутка | MIT |
+| React, Vite, Tailwind CSS, Radix UI, clsx, tailwind-merge | интерфейс и сборка | MIT |
+| class-variance-authority | варианты кнопок | Apache-2.0 |
+| [Lucide](https://lucide.dev) | иконки | ISC |
+| Шрифты Geologica, Onest, JetBrains Mono ([Fontsource](https://fontsource.org)) | заголовки, текст, метки | SIL OFL 1.1 |
+
+Лицензии пакетов сверены по их `package.json` 2026-10-26.

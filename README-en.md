@@ -40,7 +40,7 @@ It keeps a project clear of two traps: a code rush nobody can explain a week lat
 
 ## This repository
 
-The source of the portfolio site: pages are prerendered at build time and published on GitHub Pages. Phase 1 of 3 is in progress (October 2026).
+The source of the portfolio site: pages are prerendered at build time and published on GitHub Pages. Phase 1 of 3 is done (October 2026): the scaffold, design tokens, smooth scrolling and a first screen with a live graph; project cards come next.
 
 Vite 8 · React 19 · TypeScript 6 · Tailwind CSS 4 · shadcn/ui · GSAP + ScrollTrigger · Lenis · React Bits.
 
@@ -51,6 +51,14 @@ npm run dev      # http://localhost:5173/portfolio/
 npm run check    # lint, types, tests, build
 ```
 
-## License
+## Licenses and components
 
-No code license has been chosen yet, so standard copyright applies. Texts, project descriptions and images © Oleg Barbashin, 2026.
+**The site's code is [MIT](LICENSE).** The MIT license does not cover the site texts and project descriptions (`src/i18n`, texts in `src/data`), the documents in `docs/` or the images: © Oleg Barbashin, 2026, all rights reserved.
+
+Third-party components keep their own licenses:
+
+- [React Bits](https://reactbits.dev) — SplitText, Magnet and Particles, adapted copies in [`src/components/fx`](src/components/fx): MIT + Commons Clause, see [src/components/fx/LICENSE](src/components/fx/LICENSE);
+- [GSAP](https://gsap.com) and @gsap/react: the [GSAP standard license](https://gsap.com/standard-license);
+- shadcn/ui, Lenis, React, Vite, Tailwind CSS, Radix UI, clsx, tailwind-merge: MIT;
+- class-variance-authority: Apache-2.0; [Lucide](https://lucide.dev) icons: ISC;
+- Geologica, Onest and JetBrains Mono fonts via [Fontsource](https://fontsource.org): SIL OFL 1.1.
