@@ -34,7 +34,7 @@
   }
 
   .hero-title .accent {
-    color: var(--accent);
+    color: var(--accent-ink);
   }
 
   .hero-lead {

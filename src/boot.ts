@@ -16,12 +16,6 @@ export const THEME_KEY = 'theme';
 /** Совпадает с --bg тем в tokens.css — сверяет tests/tokens.test.ts. */
 export const THEME_COLOR: Record<Theme, string> = { dark: '#0B0C0F', light: '#F6F5F2' };
 
-/** --accent и --accent-2 тем для canvas (искры), который CSS-переменных не читает; сверяет tests/tokens.test.ts. */
-export const ACCENT_COLORS: Record<Theme, [string, string]> = {
-  dark: ['#FF6B35', '#4FD1E8'],
-  light: ['#C2410C', '#0B6E7C'],
-};
-
 const json = JSON.stringify;
 
 export const bootScript = [

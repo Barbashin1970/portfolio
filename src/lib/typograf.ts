@@ -1,7 +1,7 @@
 /**
  * Типограф для русских текстов (Р-10): неразрывный пробел после коротких слов, перед
  * тире и между сокращением и числом («ГОСТ 19»), неразрывный дефис в сокращениях вида
- * «ИИ‑систем». Заменяет символ символом,
+ * «ИИ‑систем», тире вместо дефиса между словами («Ядро - это»). Заменяет символ символом,
  * поэтому длина строки не меняется — на этом держится разметка заголовка (src/lib/title.ts).
  * Повторный проход ничего не меняет.
  */
@@ -12,6 +12,8 @@ export const NB_HYPHEN = '‑';
 const SHORT_WORDS = ['в', 'и', 'с', 'к', 'о', 'у', 'а', 'но', 'на', 'по', 'за', 'до', 'не', 'от'];
 
 const AFTER_SHORT_WORD = new RegExp(`(?<![\\p{L}\\p{N}])(${SHORT_WORDS.join('|')}) `, 'giu');
+// Добавлено 2026-10-27: текст Олега пишется дословно, а дефис между словами — это тире.
+const SPACED_HYPHEN = / - /g;
 const BEFORE_DASH = / (?=[—–])/g;
 const ABBREVIATION_HYPHEN = /(?<![\p{L}\p{N}])(\p{Lu}{2,5})-(?=[\p{L}\p{N}])/gu;
 // Добавлено 2026-10-27: в описаниях проектов «по ГОСТ 19» номер мог уйти на следующую строку.
@@ -23,6 +25,7 @@ export const typo = (text: string, locale: 'ru' | 'en') => (locale === 'ru' ? ty
 export function typograf(text: string): string {
   return text
     .replace(AFTER_SHORT_WORD, `$1${NBSP}`)
+    .replace(SPACED_HYPHEN, ' — ')
     .replace(BEFORE_DASH, NBSP)
     .replace(ABBREVIATION_HYPHEN, `$1${NB_HYPHEN}`)
     .replace(ABBREVIATION_NUMBER, `$1${NBSP}`);

@@ -72,6 +72,13 @@ export const MAGNET = {
 } as const;
 
 /**
+ * Чат в «Контакте» (Р-37): «печатает…» перед приветствием — сильный эффект секции.
+ * Начинается, когда верх окна дошёл до start; точки подпрыгивают на dotLift px bounces раз
+ * со сдвигом dotStagger с; реплики поднимаются на lift px с паузой gap с между ними.
+ */
+export const CHAT = { start: 'top 75%', dotLift: 4, dotStagger: 0.12, bounces: 2, lift: 8, gap: 0.35 } as const;
+
+/**
  * Медиазапросы движения. Граница десктопа совпадает с `lg` Tailwind (64rem);
  * те же строки стоят в src/styles/globals.css — их сверяет tests/motion-tokens.test.ts.
  */
@@ -95,6 +102,7 @@ export const MOTION_CSS_VARS = {
   '--stagger-words': `${STAGGER.words}s`,
   '--stagger-cards': `${STAGGER.cards}s`,
   '--appear-y': `${APPEAR.y}px`,
+  '--appear-chat': `${CHAT.lift}px`,
   '--at-eyebrow': `${INTRO_AT.eyebrow}s`,
   '--at-title': `${INTRO_AT.title}s`,
   '--at-lead': `${INTRO_AT.lead}s`,

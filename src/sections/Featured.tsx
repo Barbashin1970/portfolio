@@ -79,6 +79,7 @@ export function Featured() {
         <h2 id="featured-title" className="section-title">
           {t.title}
         </h2>
+        <p className="section-note">{dict.card.access}</p>
       </div>
       <div className="featured-viewport">
         <ul className="featured-track">

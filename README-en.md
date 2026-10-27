@@ -26,7 +26,7 @@ Three things, and you can check each one.
 
 ## Selected work
 
-- **[RAGRAF](https://ragraf.up.railway.app/)** — AI you can audit: every verdict shows its inputs, formula and threshold. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/RAGRAF_DOCS)
+- **[RAGRAF](https://ragraf.up.railway.app/)** — a framework for building management platforms. Its core is a knowledge-based AI system: a decision is made by a rule written by a person, not by a trained model. The subject area is set by choosing datasets and regulations, not by development. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/RAGRAF_DOCS)
 - **[LEYKA](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS)** — a kanban board and a messenger in one product: a team’s tasks, discussions and deadlines in one window. The demo needs a sign-in. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS)
 - **[SIMA — Novosibirsk open data](https://nsk-opendata-bot.up.railway.app/)** — answers questions about the city from open data, with no neural network at runtime. [Code](https://github.com/Barbashin1970/NSK_OpenData_Bot)
 - **[AI in Teaching](https://barbashin1970.github.io/PROMPT-Professor/)** — a professional development course for NSU faculty. [Code](https://github.com/Barbashin1970/PROMPT-Professor)
@@ -60,7 +60,7 @@ npm run check    # lint, types, tests, build
 
 Third-party components keep their own licenses:
 
-- [React Bits](https://reactbits.dev) — SplitText, Magnet, Particles, TiltedCard and ClickSpark, adapted copies in [`src/components/fx`](src/components/fx): MIT + Commons Clause, see [src/components/fx/LICENSE](src/components/fx/LICENSE);
+- [React Bits](https://reactbits.dev) — SplitText, Magnet, Particles and TiltedCard, adapted copies in [`src/components/fx`](src/components/fx): MIT + Commons Clause, see [src/components/fx/LICENSE](src/components/fx/LICENSE);
 - [GSAP](https://gsap.com) and @gsap/react: the [GSAP standard license](https://gsap.com/standard-license);
 - shadcn/ui, Lenis, React, Vite, Tailwind CSS, Radix UI, clsx, tailwind-merge: MIT;
 - class-variance-authority: Apache-2.0; [Lucide](https://lucide.dev) icons: ISC;

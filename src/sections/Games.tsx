@@ -23,6 +23,7 @@ export function Games() {
             {t.title}
           </h2>
           <p className="section-lead">{t.lead}</p>
+          <p className="section-note">{dict.card.access}</p>
         </div>
         <ul className="catalog-grid">
           {GAMES.map((project) => (

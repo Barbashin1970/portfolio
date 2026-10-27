@@ -92,9 +92,10 @@ export const projects: Project[] = [
     audience: 'industry',
     year: 2026,
     title: { ru: 'РАГРАФ', en: 'RAGRAF' },
+    // Описание — текст Олега от 2026-10-27, дословно; дефис между словами типограф выводит тире.
     tagline: {
-      ru: 'ИИ, который можно проверить: каждое решение предъявляет входные данные, формулу и порог',
-      en: 'AI you can audit: every verdict shows its inputs, formula and threshold',
+      ru: 'РАГРАФ — фреймворк, на котором собирают платформы управления. Ядро - это ИИ-система, основанная на знаниях: решение выносит правило, записанное человеком, а не обученная модель. Предметная область задаётся выбором датасетов и регламентов, не разработкой.',
+      en: 'RAGRAF is a framework for building management platforms. Its core is a knowledge-based AI system: a decision is made by a rule written by a person, not by a trained model. The subject area is set by choosing datasets and regulations, not by development.',
     },
     stack: ['FastAPI', 'DuckDB', 'RDF · SHACL', 'React', 'React Flow'],
     demoUrl: 'https://ragraf.up.railway.app/',

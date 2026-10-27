@@ -32,6 +32,7 @@ export function Catalog() {
           <h2 id="catalog-title" className="section-title">
             {t.title}
           </h2>
+          <p className="section-note">{dict.card.access}</p>
         </div>
         <div className="catalog-filter" data-reveal>
           <FilterChips label={t.filter}>

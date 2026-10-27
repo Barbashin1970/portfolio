@@ -28,7 +28,7 @@
 
 ## Избранные проекты
 
-**[РАГРАФ](https://ragraf.up.railway.app/)** — ИИ, который можно проверить: каждое решение предъявляет входные данные, формулу и порог.<br>
+**[РАГРАФ](https://ragraf.up.railway.app/)** — фреймворк, на котором собирают платформы управления. Ядро — это ИИ-система, основанная на знаниях: решение выносит правило, записанное человеком, а не обученная модель. Предметная область задаётся выбором датасетов и регламентов, не разработкой.<br>
 <sub>FastAPI · DuckDB · RDF/SHACL · React · React Flow — [демо](https://ragraf.up.railway.app/) · [документация](https://github.com/Barbashin1970/DOCS/tree/main/RAGRAF_DOCS)</sub>
 
 **[LEYKA](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS)** — канбан-доска и мессенджер в одном продукте: задачи, обсуждения и сроки команды — в одном окне, с ИИ-модератором и диалоговым ассистентом.<br>
@@ -91,7 +91,7 @@ npm run check    # линтер, типы, тесты, сборка
 
 | Компонент | Где на сайте | Лицензия |
 |---|---|---|
-| [React Bits](https://reactbits.dev) — SplitText, Magnet, Particles, TiltedCard, ClickSpark; адаптированные копии в [`src/components/fx`](src/components/fx) | буквы заголовка, «магнитные» кнопки, живой граф, наклон картинок каталога, искры на кнопках контакта | MIT + Commons Clause — [src/components/fx/LICENSE](src/components/fx/LICENSE): в составе сайта можно, продавать или раздавать сами компоненты нельзя |
+| [React Bits](https://reactbits.dev) — SplitText, Magnet, Particles, TiltedCard; адаптированные копии в [`src/components/fx`](src/components/fx) | буквы заголовка, «магнитные» кнопки, живой граф, наклон картинок каталога | MIT + Commons Clause — [src/components/fx/LICENSE](src/components/fx/LICENSE): в составе сайта можно, продавать или раздавать сами компоненты нельзя |
 | [shadcn/ui](https://ui.shadcn.com) — кнопка, копия в `src/components/ui` | кнопки | MIT |
 | [GSAP](https://gsap.com) и @gsap/react | вся анимация | [стандартная бесплатная лицензия GSAP](https://gsap.com/standard-license) |
 | [Lenis](https://github.com/darkroomengineering/lenis) | плавная прокрутка | MIT |

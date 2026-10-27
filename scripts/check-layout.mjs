@@ -155,6 +155,65 @@ const INTERACT = `(async () => {
     }).length;
   for (let i = 0; i < 50 && hidden() > 0; i++) await sleep(100);
   result.hiddenAbove = hidden();
+  // Чат (Р-37): приветствие проявилось после «печатает…»; первая кнопка ответа пишет строку
+  // в поле запроса, и чат переходит ко второму шагу. Человек дописывает строку руками —
+  // кнопка второго шага добавляет свою строку и правку не стирает. «Отправить» несёт ровно
+  // текст поля, стоит у правого края, после щелчка в окне — отправленная реплика и подсказка.
+  const visible = (el) => {
+    if (!el) return false;
+    const style = getComputedStyle(el);
+    return style.visibility === 'visible' && Number(style.opacity) > 0.9;
+  };
+  // На коротком телефоне окно после перехода ниже экрана, и «печатает…» ждёт, пока его
+  // докрутят, — как человек, сначала докручиваем до окна.
+  document.querySelector('.chat')?.scrollIntoView({ block: 'center' });
+  await settle();
+  for (let i = 0; i < 50 && !visible(document.querySelector('.chat-greeting')); i++) await sleep(100);
+  const chat = { greeting: visible(document.querySelector('.chat-greeting')) };
+  const field = document.querySelector('.chat-text');
+  document.querySelector('.chat-chips button')?.click();
+  await sleep(300);
+  const tabs = [...document.querySelectorAll('.chat-step')];
+  chat.answered = Boolean(tabs[0]?.querySelector('svg'));
+  chat.step = tabs.findIndex((tab) => tab.getAttribute('aria-current') === 'step');
+  chat.firstLines = field ? field.value.split('\\n').length : 0;
+  // Правку руками React узнаёт по событию input; значение ставится родным сеттером поля.
+  const MANUAL = 'Пилот — на одном складе';
+  if (field) {
+    Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value').set.call(field, field.value + '\\n' + MANUAL);
+    field.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  await sleep(200);
+  document.querySelector('.chat-chips button')?.click();
+  await sleep(300);
+  chat.value = field?.value ?? '';
+  chat.kept = chat.value.endsWith(MANUAL);
+  chat.lines = chat.value.split('\\n').length;
+  const send = document.querySelector('.chat-send');
+  const href = send?.getAttribute('href') ?? '';
+  chat.sendText = href.includes('?') ? new URL(href).searchParams.get('text') : null;
+  const sendBox = send?.getBoundingClientRect();
+  const chatBox = document.querySelector('.chat')?.getBoundingClientRect();
+  chat.sendInset = sendBox && chatBox ? Math.round(chatBox.right - sendBox.right) : NaN;
+  chat.sendNarrow = Boolean(sendBox && chatBox && sendBox.width < chatBox.width - 64);
+  // «Отправить» без ухода со страницы: переход отменяет слушатель на document до React,
+  // а React показывает отправленную реплику и подсказку.
+  document.addEventListener('click', (event) => event.preventDefault(), { capture: true, once: true });
+  send?.click();
+  await sleep(300);
+  chat.own = document.querySelector('.chat-msg.is-own')?.textContent ?? '';
+  chat.note = Boolean(document.querySelector('.chat-note'));
+  result.chat = chat;
+  // Порекомендовать (UC-9): без системного окна «Поделиться» список раскрывается и несёт
+  // адрес сайта. Окно в headless Chrome непредсказуемо — его на время проверки нет.
+  Object.defineProperty(navigator, 'share', { value: undefined, configurable: true });
+  document.querySelector('.recommend summary')?.click();
+  await sleep(200);
+  const shareLink = document.querySelector('.recommend-list a[href*="t.me/share"]');
+  result.recommend = {
+    open: Boolean(document.querySelector('.recommend-menu')?.open),
+    url: shareLink ? new URL(shareLink.href).searchParams.get('url') : null,
+  };
   return result;
 })()`;
 
@@ -176,6 +235,14 @@ export function judgeActions(a, screen, expected) {
   expect(Math.abs(a.anchor.top - a.anchor.header) <= 8, `якорь «Контакт»: верх секции ${a.anchor.top}, шапка ${a.anchor.header}`);
   expect(a.contactShown, '«Контакт» не проявился за 5 с после перехода по якорю');
   expect(a.hiddenAbove === 0, `выше низа экрана не проявились блоки: ${a.hiddenAbove}`);
+  const c = a.chat;
+  expect(c.greeting, 'чат: приветствие не проявилось за 5 с, когда окно на экране');
+  expect(c.answered && c.step === 1 && c.firstLines === 2, `чат: первая кнопка — строк в поле ${c.firstLines}, шаг ${c.step}`);
+  expect(c.kept && c.lines === 4, `чат: правка руками не пережила кнопку второго шага («${c.value}»)`);
+  expect(c.sendText === c.value.trim(), `чат: «Отправить» несёт «${c.sendText}», а в поле «${c.value}»`);
+  expect(c.sendNarrow && c.sendInset >= 0 && c.sendInset <= 32, `чат: «Отправить» не у правого края окна или во всю ширину (отступ ${c.sendInset} px)`);
+  expect(c.note && c.own === c.sendText, `чат: после «Отправить» нет подсказки или реплика не та («${c.own}»)`);
+  expect(a.recommend.open && a.recommend.url === expected.site, `«Порекомендовать»: список ${a.recommend.open ? 'открыт' : 'не открылся'}, адрес ${a.recommend.url}`);
   return problems;
 }
 
@@ -228,7 +295,8 @@ async function main() {
   // Сколько карточек ждать после фильтра — из данных, а не числом в проверке.
   const { projects } = await import('../src/data/projects.ts');
   const count = (audience) => projects.filter((p) => p.audience === audience).length;
-  const expected = { work: projects.length - count('games'), games: count('games'), health: count('health') };
+  const { CONTACTS } = await import('../src/data/contacts.ts');
+  const expected = { work: projects.length - count('games'), games: count('games'), health: count('health'), site: CONTACTS.site };
   const chrome = await launchChrome();
   let failures = 0;
   try {

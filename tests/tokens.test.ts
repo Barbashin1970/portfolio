@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { ACCENT_COLORS, THEME_COLOR, type Theme } from '@/boot';
+import { THEME_COLOR, type Theme } from '@/boot';
 
 const css = readFileSync(new URL('../src/styles/tokens.css', import.meta.url), 'utf8');
 
@@ -32,10 +32,12 @@ const PAIRS: [string, string][] = [
   ['--text-muted', '--surface'],
   ['--text-subtle', '--bg'],
   ['--text-subtle', '--surface'],
-  ['--accent', '--bg'],
   ['--accent-2', '--bg'],
   ['--on-accent', '--accent'],
 ];
+
+/** Пары крупного текста (WCAG 1.4.3: от 24 px или от 18,66 px жирным — порог 3): слово-акцент в H1. */
+const LARGE_PAIRS: [string, string][] = [['--accent-ink', '--bg']];
 
 it('формула контраста сходится с эталоном: белый на #FF6B35 — 2,84, провал AA (PLAN §3)', () => {
   expect(contrast('#FFFFFF', '#FF6B35')).toBeCloseTo(2.84, 2);
@@ -48,11 +50,15 @@ describe.each<Theme>(['dark', 'light'])('токены темы %s', (theme) => {
     expect(contrast(tokens[fg], tokens[bg])).toBeGreaterThanOrEqual(4.5);
   });
 
-  it('цвет панели браузера совпадает с фоном темы', () => {
-    expect(tokens['--bg']?.toLowerCase()).toBe(THEME_COLOR[theme].toLowerCase());
+  it.each(LARGE_PAIRS)('%s на %s — крупный текст, контраст AA не ниже 3', (fg, bg) => {
+    expect(contrast(tokens[fg], tokens[bg])).toBeGreaterThanOrEqual(3);
   });
 
-  it('цвета искр совпадают с акцентами темы', () => {
-    expect(ACCENT_COLORS[theme].map((c) => c.toLowerCase())).toEqual([tokens['--accent'], tokens['--accent-2']]);
+  it('заливка акцента — морковная #FF6B35, как в тёмной теме (Р-41)', () => {
+    expect(tokens['--accent']?.toLowerCase()).toBe('#ff6b35');
+  });
+
+  it('цвет панели браузера совпадает с фоном темы', () => {
+    expect(tokens['--bg']?.toLowerCase()).toBe(THEME_COLOR[theme].toLowerCase());
   });
 });
