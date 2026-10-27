@@ -3,17 +3,21 @@ import { ProjectCard } from '@/components/project/ProjectCard';
 import { FilterChip, FilterChips } from '@/components/ui/filter-chips';
 import { AUDIENCES, projects } from '@/data/projects';
 import { useI18n } from '@/i18n/context';
-import { AUDIENCE_ORDER, audienceCounts, filterProjects, type CatalogFilter } from '@/lib/catalog';
+import { AUDIENCE_ORDER, audienceCounts, filterProjects, workProjects, type CatalogFilter } from '@/lib/catalog';
 import { ScrollTrigger } from '@/motion/gsap';
 
+const WORK = workProjects(projects);
 const COUNTS = audienceCounts(projects);
 
-/** Каталог по отраслям (UC-3). Сильный эффект секции — наклон картинки карточки (TiltedCard). */
+/**
+ * Каталог рабочих проектов по отраслям (UC-3); игры — своя секция ниже (Р-33).
+ * Сильный эффект секции — наклон картинки карточки (TiltedCard).
+ */
 export function Catalog() {
   const { dict, locale } = useI18n();
   const t = dict.catalog;
   const [filter, setFilter] = useState<CatalogFilter>('all');
-  const shown = filterProjects(projects, filter);
+  const shown = filterProjects(WORK, filter);
 
   // Сетка поменяла высоту — пин и появления ниже пересчитывают позиции (договорённость 8).
   useEffect(() => {

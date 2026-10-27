@@ -13,11 +13,11 @@ import { ProjectMedia, type VideoState } from './ProjectMedia';
 const HOVER = '(hover: hover) and (pointer: fine)';
 
 /**
- * Карточка проекта — одна для галереи избранного и каталога. Главное действие — «Открыть
- * демо» (в доступном имени — название проекта, UC-2); код и документация — тихими ссылками.
- * У приватных проектов ссылки на код нет по типу (repoUrl?: never).
+ * Карточка проекта — одна для избранного, каталога и игр. Главное действие — «Открыть
+ * демо», у игр — «Играть» (в доступном имени — название проекта, UC-2); код и документация —
+ * тихими ссылками. У приватных проектов ссылки на код нет по типу (repoUrl?: never).
  */
-export function ProjectCard({ project, variant }: { project: Project; variant: 'featured' | 'catalog' }) {
+export function ProjectCard({ project, variant }: { project: Project; variant: 'featured' | 'catalog' | 'game' }) {
   const { dict, locale } = useI18n();
   const t = dict.card;
   const title = project.title[locale];
@@ -58,7 +58,7 @@ export function ProjectCard({ project, variant }: { project: Project; variant: '
         <ProjectMedia
           project={project}
           alt={`${t.screen}: ${title}`}
-          tilt={variant === 'catalog'}
+          tilt={variant !== 'featured'}
           videoRef={videoRef}
           videoState={videoState}
           loadingLabel={t.videoLoading}
@@ -91,7 +91,7 @@ export function ProjectCard({ project, variant }: { project: Project; variant: '
           {project.demoUrl ? (
             <Button asChild size="sm">
               <a href={project.demoUrl} target="_blank" rel="noopener">
-                {t.demo}
+                {variant === 'game' ? t.play : t.demo}
                 <ArrowUpRight />
                 <span className="sr-only">
                   : {title} ({t.newTab})
@@ -99,7 +99,8 @@ export function ProjectCard({ project, variant }: { project: Project; variant: '
               </a>
             </Button>
           ) : (
-            <p className="project-nodemo">{t.noDemo}</p>
+            // Пометка о демо (у LEYKA — «только после входа») уже сказала больше, чем «Демо нет».
+            !project.demoNote && <p className="project-nodemo">{t.noDemo}</p>
           )}
           {secondary.length > 0 && (
             <ul className="project-secondary">

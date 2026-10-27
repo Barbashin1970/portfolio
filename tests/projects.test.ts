@@ -4,7 +4,7 @@ import { CONTACTS, mailtoHref } from '@/data/contacts';
 import { SHOTS, VIDEOS } from '@/data/media';
 import { PROJECT_NOTES } from '@/data/project-notes';
 import { projects } from '@/data/projects';
-import { AUDIENCE_ORDER, audienceCounts, featuredProjects, filterProjects } from '@/lib/catalog';
+import { AUDIENCE_ORDER, audienceCounts, featuredProjects, filterProjects, gameProjects, workProjects } from '@/lib/catalog';
 
 const publicFile = (path: string) => existsSync(new URL(`../public/${path}`, import.meta.url));
 
@@ -24,8 +24,20 @@ describe('данные витрины (UC-2)', () => {
     }
   });
 
-  it('избранных четыре — список подтверждён Олегом (Р-19)', () => {
-    expect(featuredProjects(projects).map((p) => p.slug)).toEqual(['ragraf', 'sigma', 'sima', 'prompt-professor']);
+  it('избранных шесть, в порядке ленты — список Олега от 2026-10-27 (Р-19)', () => {
+    expect(featuredProjects(projects).map((p) => p.slug)).toEqual([
+      'ragraf',
+      'leyka',
+      'sima',
+      'prompt-professor',
+      'sigma-audit',
+      'archi',
+    ]);
+  });
+
+  it('safety снят с витрины (Р-34), его скриншота нет', () => {
+    expect(projects.some((p) => p.slug === 'safety')).toBe(false);
+    expect(publicFile('media/safety.webp')).toBe(false);
   });
 
   it('служебные пометки живут отдельно и относятся к настоящим проектам (Б-21)', () => {
@@ -45,18 +57,37 @@ describe('данные витрины (UC-2)', () => {
 
 describe('фильтр каталога (UC-3)', () => {
   const counts = audienceCounts(projects);
+  const work = workProjects(projects);
 
-  it('«Все» равно сумме отраслей и всем проектам', () => {
+  it('«Все» равно сумме отраслей и всем рабочим проектам', () => {
     expect(AUDIENCE_ORDER.reduce((sum, a) => sum + counts[a], 0)).toBe(counts.all);
-    expect(filterProjects(projects, 'all')).toHaveLength(projects.length);
+    expect(filterProjects(work, 'all')).toHaveLength(counts.all);
+    expect(counts.all + gameProjects(projects).length).toBe(projects.length);
   });
 
   it('пустых отраслей нет, и фильтр отдаёт ровно свою отрасль', () => {
     for (const audience of AUDIENCE_ORDER) {
-      const shown = filterProjects(projects, audience);
+      const shown = filterProjects(work, audience);
       expect(shown.length, audience).toBeGreaterThan(0);
       expect(shown.length).toBe(counts[audience]);
       expect(shown.every((p) => p.audience === audience)).toBe(true);
+    }
+  });
+});
+
+describe('игры — своя секция для отдыха (Р-33, UC-8)', () => {
+  const games = gameProjects(projects);
+
+  it('в каталоге игр нет, и кнопки «Игры» в фильтре нет', () => {
+    expect(workProjects(projects).some((p) => p.audience === 'games')).toBe(false);
+    expect(AUDIENCE_ORDER).not.toContain('games');
+  });
+
+  it('каждую игру можно открыть и увидеть: демо и скриншот', () => {
+    expect(games.length).toBeGreaterThan(0);
+    for (const game of games) {
+      expect(game.demoUrl, game.slug).toBeTruthy();
+      expect(SHOTS[game.slug], game.slug).toBeTruthy();
     }
   });
 });

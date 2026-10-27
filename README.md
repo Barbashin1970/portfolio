@@ -30,8 +30,8 @@
 **[РАГРАФ](https://ragraf.up.railway.app/)** — ИИ, который можно проверить: каждое решение предъявляет входные данные, формулу и порог.<br>
 <sub>FastAPI · DuckDB · RDF/SHACL · React · React Flow — [демо](https://ragraf.up.railway.app/) · [документация](https://github.com/Barbashin1970/DOCS/tree/main/RAGRAF_DOCS)</sub>
 
-**[Сигма — ситуационный центр](https://sigma-operator.vercel.app/operator/hospital-fire)** — ИИ-подсказки оператору ЕДДС: сценарии ЧП, видеостена и тренажёр с аттестацией.<br>
-<sub>React 19 · Vite 8 · Tailwind 4 · TypeScript — [демо](https://sigma-operator.vercel.app/operator/hospital-fire) · [код](https://github.com/Barbashin1970/demo-sigma-main)</sub>
+**[LEYKA](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS)** — канбан-доска и мессенджер в одном продукте: задачи, обсуждения и сроки команды — в одном окне, с ИИ-модератором и диалоговым ассистентом.<br>
+<sub>FastAPI · SQLite · React · TanStack Query — [документация](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS); демо открывается только после входа</sub>
 
 **[СИМА — открытые данные Новосибирска](https://nsk-opendata-bot.up.railway.app/)** — отвечает на вопросы о городе по открытым данным: отключения, воздух, транспорт, стройки — без нейросети в рантайме.<br>
 <sub>Python · DuckDB · Open-Meteo · OpenStreetMap — [демо](https://nsk-opendata-bot.up.railway.app/) · [код](https://github.com/Barbashin1970/NSK_OpenData_Bot)</sub>
@@ -39,7 +39,13 @@
 **[ИИ в учебном процессе](https://barbashin1970.github.io/PROMPT-Professor/)** — курс повышения квалификации для преподавателей НГУ: лекции, библиотека промптов, конструктор и тесты.<br>
 <sub>Python · Markdown · PWA · JavaScript — [сайт курса](https://barbashin1970.github.io/PROMPT-Professor/) · [код](https://github.com/Barbashin1970/PROMPT-Professor)</sub>
 
-Всего на витрине 31 проект в семи отраслях — стройка и промышленность, город и безопасность, наука, образование, бизнес, здоровье, игры; у 27 есть живое демо. Все они — в каталоге на сайте, с фильтром по отраслям.
+**[Сигма-аудит](https://polinom-sigma-audit.up.railway.app/)** — проверяет публичный GitHub-репозиторий по 26 правилам методологии «Сигма» — за 30 секунд и без установки.<br>
+<sub>Python · FastAPI · React · TypeScript — [демо](https://polinom-sigma-audit.up.railway.app/)</sub>
+
+**[Платформа АРХИ](https://archi-nsu.vercel.app/)** — читает графики стройки, применяет регламенты и сама пишет ответственному, когда норма нарушена: объект, предписание, срок.<br>
+<sub>FastAPI · SQLite · aiogram · JavaScript — [демо](https://archi-nsu.vercel.app/) · [документация](https://github.com/Barbashin1970/DOCS/tree/main/ARCHI-NSU)</sub>
+
+Всего на витрине 30 проектов, у 26 есть живое демо. Рабочие — в каталоге на сайте, в шести отраслях с фильтром: стройка и промышленность, город и безопасность, наука, образование, бизнес, здоровье. Игры — отдельным блоком, для отдыха.
 
 ## Как я работаю: SKICODING
 

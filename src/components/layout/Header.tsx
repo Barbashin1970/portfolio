@@ -23,6 +23,9 @@ export function Header() {
             <a className="nav-link hidden md:inline-flex" href="#catalog">
               {t.catalog}
             </a>
+            <a className="nav-link hidden md:inline-flex" href="#games">
+              {t.games}
+            </a>
             <a className="nav-link" href="#contact">
               {t.contact}
             </a>

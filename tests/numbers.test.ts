@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { AUDIENCES, projects } from '@/data/projects';
+import { projects } from '@/data/projects';
+import { AUDIENCE_ORDER } from '@/lib/catalog';
 import { plural } from '@/lib/plural';
 
 /**
@@ -11,7 +12,6 @@ const read = (path: string) => readFileSync(new URL(`../${path}`, import.meta.ur
 
 const total = projects.length;
 const demos = projects.filter((p) => p.demoUrl).length;
-const audiences = Object.keys(AUDIENCES).length;
 
 describe('склонение', () => {
   it.each([
@@ -43,12 +43,16 @@ describe('числа в документах сходятся с src/data/projec
 
   it('docs/INVENTORY.md', () => {
     const text = read('docs/INVENTORY.md');
+    const games = projects.filter((p) => p.audience === 'games').length;
+    const work = total - games;
     expect(text).toContain(`| Проектов на витрине | ${total}:`);
+    expect(text).toContain(`в каталоге ${work} ${plural(work, ['рабочий проект', 'рабочих проекта', 'рабочих проектов'])}`);
+    expect(text).toContain(`${games} ${plural(games, ['игра', 'игры', 'игр'])} — своей секцией`);
     expect(text).toContain(`живое демо у ${demos}`);
   });
 
-  it('отраслей в каталоге — семь, как написано в README', () => {
-    expect(audiences).toBe(7);
-    expect(read('README.md')).toContain('в семи отраслях');
+  it('отраслей в каталоге — шесть, как написано в README; игры — отдельно (Р-33)', () => {
+    expect(AUDIENCE_ORDER).toHaveLength(6);
+    expect(read('README.md')).toContain('в шести отраслях');
   });
 });

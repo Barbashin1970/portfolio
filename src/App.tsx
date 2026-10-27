@@ -7,9 +7,10 @@ import { SmoothScroll } from '@/motion/SmoothScroll';
 import { Catalog } from '@/sections/Catalog';
 import { Contact } from '@/sections/Contact';
 import { Featured } from '@/sections/Featured';
+import { Games } from '@/sections/Games';
 import { Hero } from '@/sections/Hero';
 
-/** Первая версия (Р-15): hero, избранное, каталог по отраслям, контакт, футер. */
+/** Первая версия (Р-15): hero, избранное, каталог по отраслям, игры для отдыха (Р-33), контакт, футер. */
 export default function App({ locale }: { locale: Locale }) {
   return (
     <I18nContext value={{ locale, dict: getDict(locale) }}>
@@ -20,6 +21,7 @@ export default function App({ locale }: { locale: Locale }) {
         <Hero workHref="#featured" />
         <Featured />
         <Catalog />
+        <Games />
         <Contact />
       </main>
       <Footer />

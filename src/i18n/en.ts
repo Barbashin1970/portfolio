@@ -24,6 +24,7 @@ export const en = {
     label: 'Sections',
     work: 'Work',
     catalog: 'Catalog',
+    games: 'Games',
     contact: 'Contact',
   },
   featured: {
@@ -36,8 +37,14 @@ export const en = {
     filter: 'Industry',
     all: 'All',
   },
+  games: {
+    eyebrow: 'Leisure',
+    title: 'Games for a break',
+    lead: 'Not everything here is about work. Games I made myself: they open at a link and play best on a phone. Play one on a break, or borrow an idea for your own game.',
+  },
   card: {
     demo: 'Open the demo',
+    play: 'Play',
     code: 'Code',
     newTab: 'opens in a new tab',
     screen: 'Demo screen',

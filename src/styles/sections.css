@@ -30,6 +30,13 @@
     text-wrap: balance;
   }
 
+  .section-lead {
+    max-width: 40rem;
+    margin: 1.25rem 0 0;
+    font-size: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+    color: var(--text-muted);
+  }
+
   /* ── Шапка ─────────────────────────────────────────────────────────── */
   .nav-link {
     align-items: center;

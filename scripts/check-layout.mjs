@@ -69,7 +69,8 @@ const MEASURE = `(() => {
 })()`;
 
 /**
- * Действия человека (фаза 2): фильтр каталога и переход по якорю к самой нижней секции —
+ * Действия человека (фаза 2): лента избранного, видео, фильтр каталога, число игр в своей
+ * секции и переход по якорю к самой нижней секции —
  * «Контакту» (урок accordion-scroll-lands-on-wrong-section: верхние секции не промахиваются никогда).
  */
 const INTERACT = `(async () => {
@@ -105,7 +106,7 @@ const INTERACT = `(async () => {
   // Видео не качаются заранее: адрес — только в data-src, пока человек не попросил.
   const videos = [...document.querySelectorAll('video.project-video')];
   result.videosIdle = videos.length > 0 && videos.every((video) => !video.getAttribute('src') && video.dataset.src);
-  const toggle = document.querySelector('.video-toggle');
+  const toggle = document.querySelector('#catalog .video-toggle');
   toggle?.scrollIntoView({ block: 'center' });
   toggle?.click();
   let played = false;
@@ -115,14 +116,17 @@ const INTERACT = `(async () => {
   }
   result.videoPlays = played;
   toggle?.click();
+  // Каталог — рабочие проекты; игры — своя секция с той же сеткой, поэтому счёт — по секции.
+  const gridSize = (section) => document.querySelectorAll(section + ' .catalog-grid > li').length;
   const chips = [...document.querySelectorAll('.catalog-filter button')];
-  const games = chips.find((button) => button.textContent.includes('Игры'));
-  games?.click();
+  const health = chips.find((button) => button.textContent.includes('Здоровье'));
+  health?.click();
   await sleep(300);
-  result.filter = { pressed: games?.getAttribute('aria-pressed') ?? null, shown: document.querySelectorAll('.catalog-grid > li').length };
+  result.filter = { pressed: health?.getAttribute('aria-pressed') ?? null, shown: gridSize('#catalog') };
   chips[0]?.click();
   await sleep(300);
-  result.filterAll = document.querySelectorAll('.catalog-grid > li').length;
+  result.filterAll = gridSize('#catalog');
+  result.games = gridSize('#games');
   document.querySelector('header a[href="#contact"]')?.click();
   await sleep(200);
   await settle();
@@ -138,6 +142,16 @@ const INTERACT = `(async () => {
     });
   for (let i = 0; i < 50 && !shown(); i++) await sleep(100);
   result.contactShown = shown();
+  // И всё, что выше низа экрана, проявилось: переход пролетел каталог и игры, появление
+  // не должно застрять ни в одной секции.
+  const hidden = () =>
+    [...document.querySelectorAll('[data-reveal]')].filter((el) => {
+      if (el.getBoundingClientRect().top > innerHeight) return false;
+      const style = getComputedStyle(el);
+      return style.visibility !== 'visible' || Number(style.opacity) < 0.9;
+    }).length;
+  for (let i = 0; i < 50 && hidden() > 0; i++) await sleep(100);
+  result.hiddenAbove = hidden();
   return result;
 })()`;
 
@@ -152,11 +166,13 @@ export function judgeActions(a, screen, expected) {
   expect(Math.abs(t.last - (t.width - t.head)) <= 2, `в конце ленты последняя карточка кончается на ${t.last} px, край колонки — ${t.width - t.head} px`);
   expect(a.videosIdle, 'видео начали качаться до просьбы посетителя');
   expect(a.videoPlays, 'по кнопке «Видео» ролик не заиграл за 5 с');
-  expect(a.filter.pressed === 'true', `фильтр «Игры»: aria-pressed=${a.filter.pressed}`);
-  expect(a.filter.shown === expected.games, `фильтр «Игры»: карточек ${a.filter.shown}, в данных ${expected.games}`);
-  expect(a.filterAll === expected.total, `фильтр «Все»: карточек ${a.filterAll}, в данных ${expected.total}`);
+  expect(a.filter.pressed === 'true', `фильтр «Здоровье»: aria-pressed=${a.filter.pressed}`);
+  expect(a.filter.shown === expected.health, `фильтр «Здоровье»: карточек ${a.filter.shown}, в данных ${expected.health}`);
+  expect(a.filterAll === expected.work, `фильтр «Все»: карточек ${a.filterAll}, рабочих проектов в данных ${expected.work}`);
+  expect(a.games === expected.games, `в секции игр карточек ${a.games}, игр в данных ${expected.games}`);
   expect(Math.abs(a.anchor.top - a.anchor.header) <= 8, `якорь «Контакт»: верх секции ${a.anchor.top}, шапка ${a.anchor.header}`);
   expect(a.contactShown, '«Контакт» не проявился за 5 с после перехода по якорю');
+  expect(a.hiddenAbove === 0, `выше низа экрана не проявились блоки: ${a.hiddenAbove}`);
   return problems;
 }
 
@@ -202,7 +218,8 @@ async function main() {
   const screens = only ? SCREENS.filter((screen) => screen.name.includes(only)) : SCREENS;
   // Сколько карточек ждать после фильтра — из данных, а не числом в проверке.
   const { projects } = await import('../src/data/projects.ts');
-  const expected = { total: projects.length, games: projects.filter((p) => p.audience === 'games').length };
+  const count = (audience) => projects.filter((p) => p.audience === audience).length;
+  const expected = { work: projects.length - count('games'), games: count('games'), health: count('health') };
   const chrome = await launchChrome();
   let failures = 0;
   try {

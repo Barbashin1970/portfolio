@@ -26,11 +26,13 @@ Two things, and you can check both.
 ## Selected work
 
 - **[RAGRAF](https://ragraf.up.railway.app/)** — AI you can audit: every verdict shows its inputs, formula and threshold. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/RAGRAF_DOCS)
-- **[Sigma — situation centre](https://sigma-operator.vercel.app/operator/hospital-fire)** — AI prompts for emergency dispatch operators: incident scenarios, a video wall and a certification trainer. [Code](https://github.com/Barbashin1970/demo-sigma-main)
+- **[LEYKA](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS)** — a kanban board and a messenger in one product: a team’s tasks, discussions and deadlines in one window. The demo needs a sign-in. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS)
 - **[SIMA — Novosibirsk open data](https://nsk-opendata-bot.up.railway.app/)** — answers questions about the city from open data, with no neural network at runtime. [Code](https://github.com/Barbashin1970/NSK_OpenData_Bot)
 - **[AI in Teaching](https://barbashin1970.github.io/PROMPT-Professor/)** — a professional development course for NSU faculty. [Code](https://github.com/Barbashin1970/PROMPT-Professor)
+- **[Sigma audit](https://polinom-sigma-audit.up.railway.app/)** — audits a public GitHub repository against 26 rules of the Sigma methodology, in 30 seconds and with nothing to install.
+- **[ARCHI Platform](https://archi-nsu.vercel.app/)** — reads construction schedules, applies the rules and messages the person in charge when one is broken. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/ARCHI-NSU)
 
-The portfolio holds 31 projects across seven industries, 27 of them with a live demo; all of them are in the site’s catalog, filterable by industry.
+The portfolio holds 30 projects, 26 of them with a live demo. Work projects are in the site’s catalog across six industries, with a filter; games have their own section, for a break.
 
 ## How I work: SKICODING
 

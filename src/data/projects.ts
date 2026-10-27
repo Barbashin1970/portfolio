@@ -83,7 +83,8 @@ const docsLink = (folder: string): ExtraLink => ({
 });
 
 export const projects: Project[] = [
-  // ── Избранные: четыре, список подтверждён Олегом 2026-10-27 (Р-19) ──
+  // ── Избранные: шесть, список Олега от 2026-10-27 (Р-19). Порядок записей — порядок ленты
+  //    избранного и каталога: сильные проекты идут первыми ──
   {
     slug: 'ragraf',
     visibility: 'private',
@@ -100,25 +101,24 @@ export const projects: Project[] = [
     extraLinks: [docsLink('RAGRAF_DOCS')],
   },
   {
-    slug: 'sigma',
-    visibility: 'public',
+    slug: 'leyka',
+    visibility: 'private',
     tier: 'featured',
-    audience: 'city',
+    // Продукт для управления командой — бизнес, а не наука (Олег, 2026-10-27).
+    audience: 'business',
     year: 2026,
-    title: { ru: 'Сигма — ситуационный центр', en: 'Sigma — situation centre' },
+    title: { ru: 'LEYKA', en: 'LEYKA' },
     tagline: {
-      ru: 'ИИ-подсказки оператору ЕДДС: сценарии ЧП, видеостена и тренажёр с аттестацией',
-      en: 'AI prompts for emergency dispatch operators: incident scenarios, a video wall and a certification trainer',
+      ru: 'Канбан-доска и мессенджер в одном продукте: задачи, обсуждения и сроки команды — в одном окне, с ИИ-модератором и диалоговым ассистентом',
+      en: 'A kanban board and a messenger in one product: a team’s tasks, discussions and deadlines in one window, with an AI moderator and a conversational assistant',
     },
-    stack: ['React 19', 'Vite 8', 'Tailwind 4', 'TypeScript'],
-    demoUrl: 'https://sigma-operator.vercel.app/operator/hospital-fire',
-    repoUrl: `${GH}/demo-sigma-main`,
-    extraLinks: [
-      {
-        label: { ru: 'Ранний прототип фреймворка', en: 'Early framework prototype' },
-        url: 'https://sigma-three-theta.vercel.app/',
-      },
-    ],
+    stack: ['FastAPI', 'SQLite', 'React', 'TanStack Query'],
+    extraLinks: [docsLink('LEYKA_DOCS')],
+    // Демо есть, но открывается только после входа: гостевого доступа нет (INVENTORY).
+    demoNote: {
+      ru: 'Демо открывается только после входа: что умеет система, показывает видео',
+      en: 'The demo opens only after signing in: the video shows what the system does',
+    },
   },
   {
     slug: 'sima',
@@ -153,32 +153,24 @@ export const projects: Project[] = [
       { label: { ru: 'Зеркало на Vercel', en: 'Vercel mirror' }, url: 'https://ai-in-the-education.vercel.app/' },
     ],
   },
-
-  // ── Стройка и промышленность ────────────────────────────────────────
   {
-    slug: 'safety',
-    visibility: 'public',
-    tier: 'catalog',
-    audience: 'industry',
+    slug: 'sigma-audit',
+    visibility: 'private',
+    tier: 'featured',
+    audience: 'science',
     year: 2026,
-    title: { ru: 'ИИ-помощник по технике безопасности', en: 'Site safety assistant' },
+    title: { ru: 'Сигма-аудит', en: 'Sigma audit' },
     tagline: {
-      ru: 'Собирает наряд, чек-лист и инструктаж по онтологии норм — без галлюцинаций, потому что решение принимает не LLM',
-      en: 'Builds work orders, checklists and briefings from an ontology of safety rules — no hallucinations, because no LLM makes the call',
+      ru: 'Проверяет публичный GitHub-репозиторий по 26 правилам методологии «Сигма» — за 30 секунд и без установки',
+      en: 'Audits a public GitHub repository against 26 rules of the Sigma methodology — in 30 seconds, nothing to install',
     },
-    stack: ['Python', 'Streamlit', 'pandas', 'RDF'],
-    demoUrl: 'https://safety-builder.streamlit.app/',
-    repoUrl: `${GH}/safety`,
-    // Б-17: проверено 2026-10-27 — Streamlit показал экран сна, кнопка разбудила приложение.
-    demoNote: {
-      ru: 'Демо засыпает без посетителей: нажмите кнопку на экране — оно проснётся',
-      en: 'The demo sleeps when idle: press the button on its screen to wake it up',
-    },
+    stack: ['Python', 'FastAPI', 'React', 'TypeScript'],
+    demoUrl: 'https://polinom-sigma-audit.up.railway.app/',
   },
   {
     slug: 'archi',
     visibility: 'private',
-    tier: 'catalog',
+    tier: 'featured',
     audience: 'industry',
     year: 2026,
     title: { ru: 'Платформа АРХИ', en: 'ARCHI Platform' },
@@ -190,6 +182,8 @@ export const projects: Project[] = [
     demoUrl: 'https://archi-nsu.vercel.app/',
     extraLinks: [docsLink('ARCHI-NSU')],
   },
+
+  // ── Стройка и промышленность ────────────────────────────────────────
   {
     slug: 'preconstruction',
     visibility: 'public',
@@ -222,6 +216,27 @@ export const projects: Project[] = [
 
   // ── Город и безопасность ────────────────────────────────────────────
   {
+    slug: 'sigma',
+    visibility: 'public',
+    tier: 'catalog',
+    audience: 'city',
+    year: 2026,
+    title: { ru: 'Сигма — ситуационный центр', en: 'Sigma — situation centre' },
+    tagline: {
+      ru: 'ИИ-подсказки оператору ЕДДС: сценарии ЧП, видеостена и тренажёр с аттестацией',
+      en: 'AI prompts for emergency dispatch operators: incident scenarios, a video wall and a certification trainer',
+    },
+    stack: ['React 19', 'Vite 8', 'Tailwind 4', 'TypeScript'],
+    demoUrl: 'https://sigma-operator.vercel.app/operator/hospital-fire',
+    repoUrl: `${GH}/demo-sigma-main`,
+    extraLinks: [
+      {
+        label: { ru: 'Ранний прототип фреймворка', en: 'Early framework prototype' },
+        url: 'https://sigma-three-theta.vercel.app/',
+      },
+    ],
+  },
+  {
     slug: 'smartcityprompt',
     visibility: 'public',
     tier: 'catalog',
@@ -238,20 +253,6 @@ export const projects: Project[] = [
   },
 
   // ── Наука и R&D ─────────────────────────────────────────────────────
-  {
-    slug: 'sigma-audit',
-    visibility: 'private',
-    tier: 'catalog',
-    audience: 'science',
-    year: 2026,
-    title: { ru: 'Сигма-аудит', en: 'Sigma audit' },
-    tagline: {
-      ru: 'Проверяет публичный GitHub-репозиторий по 26 правилам методологии «Сигма» — за 30 секунд и без установки',
-      en: 'Audits a public GitHub repository against 26 rules of the Sigma methodology — in 30 seconds, nothing to install',
-    },
-    stack: ['Python', 'FastAPI', 'React', 'TypeScript'],
-    demoUrl: 'https://polinom-sigma-audit.up.railway.app/',
-  },
   {
     slug: 'nsu-ai-skills',
     visibility: 'public',
@@ -294,20 +295,6 @@ export const projects: Project[] = [
     stack: ['JavaScript', 'HTML', 'CSS'],
     demoUrl: 'https://barbashin1970.github.io/ENGINEER/',
     repoUrl: `${GH}/ENGINEER`,
-  },
-  {
-    slug: 'leyka',
-    visibility: 'private',
-    tier: 'catalog',
-    audience: 'science',
-    year: 2026,
-    title: { ru: 'LEYKA', en: 'LEYKA' },
-    tagline: {
-      ru: 'Система управления проектами Центра ИИ НГУ: лента-мессенджер, ИИ-модератор и цифровой диалоговый ассистент',
-      en: 'Project management for the NSU AI Center: a messenger-style feed, an AI moderator and a conversational assistant',
-    },
-    stack: ['FastAPI', 'SQLite', 'React', 'TanStack Query'],
-    extraLinks: [docsLink('LEYKA_DOCS')],
   },
 
   // ── Образование ─────────────────────────────────────────────────────

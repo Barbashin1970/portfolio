@@ -41,7 +41,8 @@ try {
       await page.goto(project.demoUrl);
       const loaded = await page.until("document.readyState === 'complete'", LOAD_TIMEOUT_MS);
       await new Promise((resolve) => setTimeout(resolve, SETTLE_MS));
-      // Streamlit усыпляет приложение без посещений (Б-17): будим и ждём, пока проснётся.
+      // Streamlit усыпляет приложение без посещений — так было у safety, снятого с витрины
+      // 2026-10-27: будим и ждём, пока проснётся.
       if (await page.evaluate(String.raw`/gone to sleep/i.test(document.body?.innerText ?? '')`)) {
         console.log(`  ${project.slug}: приложение спит — бужу`);
         await page.evaluate(String.raw`[...document.querySelectorAll('button')].find((b) => /back up/i.test(b.textContent))?.click()`);
