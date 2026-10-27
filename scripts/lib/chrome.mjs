@@ -100,7 +100,9 @@ export async function launchChrome() {
         }
         return false;
       },
-      screenshot: async () => Buffer.from((await call('Page.captureScreenshot', { format: 'png' })).data, 'base64'),
+      /** Снимок экрана; { format: 'webp', quality, clip } — сразу в WebP и с уменьшением. */
+      screenshot: async (options = { format: 'png' }) =>
+        Buffer.from((await call('Page.captureScreenshot', options)).data, 'base64'),
       close: () => send('Target.closeTarget', { targetId }),
     };
   }
