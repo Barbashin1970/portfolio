@@ -33,6 +33,23 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 2022–2023 годы, задания по автоматизации тестирования. Batchfile у AI-SKLAD — артефакт
 подсчёта: там лежит `start.bat`.
 
+## Объём кода
+
+Справка под каталогом (Р-50). Снято 2026-10-27 по локальным клонам репозиториев Barbashin1970
+на ноутбуке Олега командой `node scripts/count-loc.mjs ~` — в CI приватных клонов нет.
+Не считаются два репозитория — личная инфраструктура и база знаний (список — во внутренней
+описи). Строки — непустые, в файлах под git.
+
+| Число | Значение | Как получено |
+|---|---|---|
+| Репозиториев с первым коммитом в 2025–2026 | 27 | клоны с `origin` на github.com/Barbashin1970; первый коммит — `git log` |
+| Строк кода | ≈ 364 тыс. (363 642): TypeScript 195 501, Python 149 935, JavaScript 10 243, Java 4 479, Shell 3 484 | одинаковые файлы в разных репозиториях — один раз (по blob git); файлы длиннее 5000 строк — сгенерированные и не в счёт: `types.gen.ts` у LEYKA (7923), `regulation_store.py` у РАГРАФ (5223) |
+| Из них тесты | ≈ 42 тыс. (41 955) | файлы в `tests/`, `__tests__/`, `*.test.*`, `test_*.py` |
+| Документация в Markdown | ≈ 275 тыс. (275 237) | без корпуса норм и отчётов НормаСтрой AI (`norma-text/`, `otchet/` — тексты сводов правил) |
+| Проектов со своим сервером | 10 | FastAPI, aiogram, Express, Spring и подобные в зависимостях или встроенный HTTP-сервер Python |
+| С базой данных | 5 | SQLite, DuckDB, SQLAlchemy и подобные в зависимостях или импортах |
+| Коммитов | 2510 | `git log` по тем же 27 клонам |
+
 ## Проекты на витрине
 
 «Бандл 200» — JS-бандл одностраничного приложения отдаётся, а не только пустая оболочка.
@@ -84,6 +101,7 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 |---|---|---|
 | Скриншоты демо, WebP: десктоп 960×600, мобильные приложения 390×844 (список — `PHONE_FIRST` в `src/data/media.ts`; GONKA и Tigra — десктоп: игры для браузера, Р-38) | 26 файлов, 607 386 байт | снять — `node scripts/capture-shots.mjs`; посчитать — `ls public/media/*.webp \| grep -v leyka \| wc -l`, `cat $(ls public/media/*.webp \| grep -v leyka) \| wc -c` |
 | Скриншот LEYKA — снимок экрана Олега: доска задач, кадр 1280×800 CSS px без полосы окна | 1 файл, 27 686 байт | `ffmpeg -i <снимок>.png -vf "crop=2560:1600:0:74,scale=960:600:flags=lanczos" -c:v libwebp -quality 72 public/media/leyka.webp` |
+| Скриншот НормаСтрой AI — снимок Олега 2026-10-27: страница «О продукте» стенда на ноутбуке, кадр 16:10 выше курсора | 1 файл, 28 440 байт | `ffmpeg -i <снимок>.png -vf "crop=2160:1350:390:0,scale=960:600:flags=lanczos" -c:v libwebp -quality 72 public/media/normastroy.webp` |
 | Видео из `ai-point`: ПТО, Boardway, Profconsalt, Boston Consulter, Пятнашки — H.264, 12–14 с, без звука | 5 файлов, от 53 до 150 КБ, вместе 484 512 байт | сжать — `node scripts/encode-video.mjs <файл> <slug> [--portrait] [--crop-top 180]`; посчитать — `cat public/media/{pto-presentation,boardway,profconsalt,boston-consulter,puzzle-15}.mp4 \| wc -c` |
 | Видео LEYKA — запись экрана Олега: доска и две задачи, 11,9 с; прокрутка карточки вырезана, поле «Исполнитель» размыто | 1 файл, 299 467 байт | `node scripts/encode-video.mjs <запись>.mov leyka --crop 2560:1600:0:74 --keep 29.2-32.5,34.75-43.45 --blur 1630:470:400:65@30.3-36.45,38-43.6`; посчитать — `wc -c public/media/leyka.mp4` |
 

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { projects } from '@/data/projects';
+import { VOLUME } from '@/data/volume';
 import { en } from '@/i18n/en';
 import { ru } from '@/i18n/ru';
 import { AUDIENCE_ORDER } from '@/lib/catalog';
@@ -67,5 +68,20 @@ describe('числа в документах сходятся с src/data/projec
   it('отраслей в каталоге — шесть, как написано в README; игры — отдельно (Р-33)', () => {
     expect(AUDIENCE_ORDER).toHaveLength(6);
     expect(read('README.md')).toContain('в шести отраслях');
+  });
+
+  // Справка об объёме (Р-50): число на сайте, в README и в описи одно. Пересчёт — только
+  // на ноутбуке (node scripts/count-loc.mjs ~), поэтому сверяются документы между собой.
+  it('объём кода: сайт, README, README-en и опись называют одни и те же числа', () => {
+    const inventory = read('docs/INVENTORY.md');
+    expect(inventory).toContain(`| Репозиториев с первым коммитом в 2025–2026 | ${VOLUME.repos} |`);
+    expect(inventory).toContain(`| Строк кода | ≈ ${VOLUME.codeK} тыс.`);
+    expect(inventory).toContain(`| Из них тесты | ≈ ${VOLUME.testsK} тыс.`);
+    expect(inventory).toContain(`| Проектов со своим сервером | ${VOLUME.servers} |`);
+    expect(inventory).toContain(`| С базой данных | ${VOLUME.databases} |`);
+    expect(read('README.md')).toContain(
+      `${VOLUME.repos} репозиториев и ≈${VOLUME.codeK} тыс. строк кода на TypeScript и Python, из них ≈${VOLUME.testsK} тыс. — тесты; у ${VOLUME.servers} проектов свой сервер, у ${VOLUME.databases} — база данных`,
+    );
+    expect(read('README-en.md')).toContain(`${VOLUME.repos} repositories and ≈${VOLUME.codeK}k lines of code`);
   });
 });

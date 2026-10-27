@@ -54,6 +54,16 @@
     color: var(--text-subtle);
   }
 
+  .section-note a {
+    color: var(--text-muted);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .section-note a:hover {
+    color: var(--text);
+  }
+
   /* ── Шапка ─────────────────────────────────────────────────────────── */
   .nav-link {
     align-items: center;

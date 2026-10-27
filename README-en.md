@@ -33,7 +33,7 @@ Three things, and you can check each one.
 - **[Sigma audit](https://polinom-sigma-audit.up.railway.app/)** — audits a public GitHub repository against 26 rules of the Sigma methodology, in 30 seconds and with nothing to install.
 - **[ARCHI Platform](https://archi-nsu.vercel.app/)** — reads construction schedules, applies the rules and messages the person in charge when one is broken. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/ARCHI-NSU)
 
-The portfolio holds 31 projects, 26 of them with a live demo. Work projects are in the site’s catalog across six industries, with a filter; games have their own section, for a break.
+The portfolio holds 31 projects, 26 of them with a live demo. Work projects are in the site’s catalog across six industries, with a filter; games have their own section, for a break. In 2025–2026: 27 repositories and ≈364k lines of code in TypeScript and Python, ≈42k of them tests; 10 projects have their own server, 5 a database ([how we counted](docs/INVENTORY.md#объём-кода)). That is the ceiling of what one person can personally review by eye — and with AI agents writing code and documentation, such review is mandatory.
 
 ## How I work: SKICODING
 

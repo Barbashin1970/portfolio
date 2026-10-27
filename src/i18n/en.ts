@@ -34,6 +34,11 @@ export const en = {
   catalog: {
     eyebrow: 'Catalog',
     title: 'Projects by industry',
+    volume:
+      'In 2025–2026: {repos} and ≈{code}k lines of code in TypeScript and Python, ≈{tests}k of them tests; {servers} have their own server, {databases} a database. That is the ceiling of what one person can personally review by eye — and with AI agents writing code and documentation, such review is mandatory.',
+    volumeRepos: ['repository', 'repositories', 'repositories'],
+    volumeProjects: ['project', 'projects', 'projects'],
+    volumeHow: 'How we counted',
     filter: 'Industry',
     all: 'All',
   },

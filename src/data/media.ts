@@ -47,8 +47,12 @@ export const PHONE_FIRST = new Set([
   'aroma-sofia',
 ]);
 
-/** Свой скриншот при демо за входом: снят владельцем, а не capture-shots. */
-const OWN_SHOTS = new Set(['leyka']);
+/**
+ * Свой скриншот, когда публичного экрана нет: снят владельцем, а не capture-shots.
+ * LEYKA — демо за входом; НормаСтрой AI — страница «О продукте» стенда на ноутбуке,
+ * кадр 16:10 вырезан выше курсора (команда — docs/INVENTORY.md, «Медиа карточек»).
+ */
+const OWN_SHOTS = new Set(['leyka', 'normastroy']);
 
 /** Скриншот — у каждого проекта с демо и у снятых вручную. */
 export const SHOTS: Record<string, string> = Object.fromEntries(

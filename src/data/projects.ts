@@ -207,14 +207,15 @@ export const projects: Project[] = [
     audience: 'industry',
     year: 2026,
     title: { ru: 'НормаСтрой AI', en: 'NormaStroy AI' },
+    // Описание — со страницы «О продукте» самого стенда (снимок Олега 2026-10-27).
     tagline: {
-      ru: 'Стенд формализации строительных норм: требования сводов правил — в машиночитаемые карточки со ссылкой на пункт и страницу и сверка с данными проекта',
-      en: 'A test bench for formalizing construction codes: requirements become machine-readable cards citing the clause and page, checked against project data',
+      ru: 'Нормы СП и ГОСТ — к работам вашего графика: стенд читает график производства работ из Plan-R, по каждой работе показывает применимые требования сводов правил, называет, каких данных не хватает для проверки, и находит то, что не сходится по календарю',
+      en: 'Construction codes matched to the works in your schedule: the bench reads the work schedule from Plan-R, shows the applicable code requirements for each work, names the data missing for a check and finds what does not add up in the calendar',
     },
     stack: ['Python', 'HTML'],
     demoNote: {
-      ru: 'Демо нет: стенд работает на ноутбуке, репозиторий закрыт',
-      en: 'No demo: the bench runs on a laptop, the repository is private',
+      ru: 'Публичного демо нет: стенд работает на ноутбуке, показ — по запросу',
+      en: 'No public demo: the bench runs on a laptop, a walkthrough on request',
     },
   },
   {
