@@ -43,7 +43,7 @@ It keeps a project clear of two traps: a code rush nobody can explain a week lat
 
 ## This repository
 
-The source of the portfolio site: pages are prerendered at build time and published on GitHub Pages. Phases 1 and 2 of 3 are done (October 2026): a first screen with a live graph, featured projects with horizontal scrolling, a catalog by industry with demo screenshots and videos, and a contact section; the English page, SEO and Lighthouse come next.
+The source of the portfolio site: pages are prerendered at build time and published on GitHub Pages. Phases 1 and 2 of 3 are done (October 2026): a first screen with a live graph, featured projects with horizontal scrolling, a catalog by industry with demo screenshots and videos, games, and a contact chat where the request is built with buttons and edited right on the site; the English page, SEO and Lighthouse come next.
 
 Vite 8 · React 19 · TypeScript 6 · Tailwind CSS 4 · shadcn/ui · GSAP + ScrollTrigger · Lenis · React Bits.
 
