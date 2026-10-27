@@ -1,6 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { projects } from '@/data/projects';
+import { en } from '@/i18n/en';
+import { ru } from '@/i18n/ru';
 import { AUDIENCE_ORDER } from '@/lib/catalog';
 import { plural } from '@/lib/plural';
 
@@ -49,6 +51,17 @@ describe('числа в документах сходятся с src/data/projec
     expect(text).toContain(`в каталоге ${work} ${plural(work, ['рабочий проект', 'рабочих проекта', 'рабочих проектов'])}`);
     expect(text).toContain(`${games} ${plural(games, ['игра', 'игры', 'игр'])} — своей секцией`);
     expect(text).toContain(`живое демо у ${demos}`);
+  });
+
+  // «Откройте любое из 20+ демо» — текст Олега в подзаголовке hero: «20+» верно, пока
+  // живых демо в данных не меньше двадцати.
+  it.each([
+    ['ru', ru.hero.lead, /(\d+)\+ демо/],
+    ['en', en.hero.lead, /(\d+)\+ demos/],
+  ])('подзаголовок hero (%s): «N+ демо» не больше, чем демо в данных', (_locale, lead, pattern) => {
+    const claimed = Number(pattern.exec(lead)?.[1]);
+    expect(claimed).toBeGreaterThan(0);
+    expect(demos).toBeGreaterThanOrEqual(claimed);
   });
 
   it('отраслей в каталоге — шесть, как написано в README; игры — отдельно (Р-33)', () => {

@@ -14,7 +14,7 @@ export const en = {
   hero: {
     eyebrow: 'Systems analyst · AI systems developer · Novosibirsk',
     title: [{ text: 'Have a task but see the risks? ' }, { text: 'Let’s test it first', accent: true }],
-    lead: 'I go through your business chain and find the points where AI takes over routine work and your staff get more done. We test it on your data, then I train your team to work with AI.',
+    lead: 'I like building platforms for universities, games, and tools for construction and industry. Open any of the 20+ demos and decide for yourself. I’ll build the same for your idea. I’ll also find where AI takes routine work off your staff, and train your team to work with it.',
     discuss: 'Discuss a task',
     discussNote: 'on Telegram, opens in a new tab',
     work: 'See the work',
