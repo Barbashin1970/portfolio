@@ -38,6 +38,15 @@
     text-wrap: balance;
   }
 
+  /*
+   * Строка заголовка в маске (Р-51): маска режет по высоте строки, а у «д», «у», «р» хвосты
+   * ниже — поле внизу строки их держит, отрицательный отступ возвращает высоту.
+   */
+  .section-title .title-line {
+    padding-bottom: 0.14em;
+    margin-bottom: -0.14em;
+  }
+
   .section-lead {
     max-width: 40rem;
     margin: 1.25rem 0 0;

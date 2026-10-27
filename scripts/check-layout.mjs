@@ -190,6 +190,16 @@ const INTERACT = `(async () => {
     }).length;
   for (let i = 0; i < 50 && hidden() > 0; i++) await sleep(100);
   result.hiddenAbove = hidden();
+  // Заголовки по строкам (Р-51): строки есть только с движением; все, что выше низа экрана,
+  // после перехода стоят на месте — сдвига по вертикали нет.
+  const titleLines = [...document.querySelectorAll('.section-title .title-line')];
+  const lineOff = () =>
+    titleLines.filter((line) => {
+      if (line.closest('.section-title').getBoundingClientRect().top > innerHeight) return false;
+      return Math.abs(new DOMMatrix(getComputedStyle(line).transform).f) > 1;
+    }).length;
+  for (let i = 0; i < 50 && lineOff() > 0; i++) await sleep(100);
+  result.titles = { lines: titleLines.length, off: lineOff() };
   // Чат (Р-37): приветствие проявилось после «печатает…»; первая кнопка ответа пишет строку
   // в поле запроса, и чат переходит ко второму шагу. Человек дописывает строку руками —
   // кнопка второго шага добавляет свою строку и правку не стирает. «Отправить» несёт ровно
@@ -279,6 +289,8 @@ export function judgeActions(a, screen, expected) {
   }
   expect(a.contactShown, '«Контакт» не проявился за 5 с после перехода по якорю');
   expect(a.hiddenAbove === 0, `выше низа экрана не проявились блоки: ${a.hiddenAbove}`);
+  expect(screen.reduce ? a.titles.lines === 0 : a.titles.lines > 0, `заголовки по строкам: строк ${a.titles.lines} при ${screen.reduce ? 'reduced-motion' : 'движении'}`);
+  expect(a.titles.off === 0, `строки заголовков выше низа экрана не на месте: ${a.titles.off}`);
   const c = a.chat;
   expect(c.greeting, 'чат: приветствие не проявилось за 5 с, когда окно на экране');
   expect(c.answered && c.step === 1 && c.firstLines === 2, `чат: первая кнопка — строк в поле ${c.firstLines}, шаг ${c.step}`);
