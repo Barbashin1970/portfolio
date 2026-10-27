@@ -6,6 +6,7 @@
 @import '@fontsource-variable/jetbrains-mono';
 @import 'lenis/dist/lenis.css';
 @import './hero.css';
+@import './sections.css';
 
 /* Только свои цвета: случайный цвет из палитры Tailwind в вёрстку не попадёт. */
 @theme {

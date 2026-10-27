@@ -1,5 +1,5 @@
 /**
- * Витрина проектов. Список на утверждение, карточки ещё не свёрстаны.
+ * Витрина проектов: галерея избранного и каталог по отраслям (фаза 2).
  *
  * Откуда данные — инвентаризация 2026-10-26: публичный GitHub API, локальные
  * клоны на ноутбуке Олега и проверка каждой демо-ссылки curl'ом.
@@ -11,7 +11,8 @@
  *   у посетителя она открылась бы как 404;
  * - нерабочие демо не публикуем: demoUrl есть только у проверенных адресов,
  *   а где демо нет — карточка ведёт на репозиторий или документацию;
- * - note — служебная пометка, на сайт не выводится.
+ * - служебные пометки — в project-notes.ts: сайт их не импортирует, и в публичный JS
+ *   они не попадают (Б-21, Р-28).
  */
 
 import type { Localized } from '@/i18n/locale';
@@ -53,12 +54,13 @@ interface ProjectBase {
   stack: string[];
   audience: Audience;
   tier: Tier;
-  /** Год последнего коммита; у проекта без репозитория — год, когда демо уже было опубликовано (источник — в note). */
+  /** Год последнего коммита; у проекта без репозитория — год, когда демо уже было опубликовано (источник — в project-notes.ts). */
   year: number;
   /** Проверенный адрес: 200 и свой контент, см. docs/INVENTORY.md. */
   demoUrl?: string;
   extraLinks?: ExtraLink[];
-  note?: string;
+  /** Что посетителю надо знать о демо до перехода — выводится на карточке. */
+  demoNote?: Localized;
 }
 
 export interface PublicProject extends ProjectBase {
@@ -81,7 +83,7 @@ const docsLink = (folder: string): ExtraLink => ({
 });
 
 export const projects: Project[] = [
-  // ── Избранные: четыре, окончательный список Олег обсудит позже ──────
+  // ── Избранные: четыре, список подтверждён Олегом 2026-10-27 (Р-19) ──
   {
     slug: 'ragraf',
     visibility: 'private',
@@ -167,7 +169,11 @@ export const projects: Project[] = [
     stack: ['Python', 'Streamlit', 'pandas', 'RDF'],
     demoUrl: 'https://safety-builder.streamlit.app/',
     repoUrl: `${GH}/safety`,
-    note: 'Из избранного убран по решению Олега, в каталоге — как демо. Streamlit усыпляет приложение без посещений: посетитель может увидеть экран «разбудить».',
+    // Б-17: проверено 2026-10-27 — Streamlit показал экран сна, кнопка разбудила приложение.
+    demoNote: {
+      ru: 'Демо засыпает без посетителей: нажмите кнопку на экране — оно проснётся',
+      en: 'The demo sleeps when idle: press the button on its screen to wake it up',
+    },
   },
   {
     slug: 'archi',
@@ -183,7 +189,6 @@ export const projects: Project[] = [
     stack: ['FastAPI', 'SQLite', 'aiogram', 'JavaScript'],
     demoUrl: 'https://archi-nsu.vercel.app/',
     extraLinks: [docsLink('ARCHI-NSU')],
-    note: 'Демо — публичная визитка изделия, собранного на РАГРАФ. Кандидат в избранные.',
   },
   {
     slug: 'preconstruction',
@@ -198,7 +203,6 @@ export const projects: Project[] = [
     },
     stack: ['Claude Code', 'Agent Skills'],
     repoUrl: `${GH}/PRECONSTRUCTION`,
-    note: 'Демо нет — карточка ведёт на репозиторий.',
   },
   {
     slug: 'stroyka-test',
@@ -214,7 +218,6 @@ export const projects: Project[] = [
     stack: ['JavaScript'],
     demoUrl: 'https://stroyka-alpha.vercel.app/',
     repoUrl: `${GH}/stroyka-test`,
-    note: 'В README только «тестовый файл» — описание уточнить у Олега.',
   },
 
   // ── Город и безопасность ────────────────────────────────────────────
@@ -248,7 +251,6 @@ export const projects: Project[] = [
     },
     stack: ['Python', 'FastAPI', 'React', 'TypeScript'],
     demoUrl: 'https://polinom-sigma-audit.up.railway.app/',
-    note: 'Кандидат в избранные: работающий инструмент, а не макет.',
   },
   {
     slug: 'nsu-ai-skills',
@@ -263,7 +265,6 @@ export const projects: Project[] = [
     },
     stack: ['Claude Code', 'Agent Skills', 'Markdown'],
     repoUrl: `${GH}/NSU-AI-SKILLS`,
-    note: 'Демо нет — карточка ведёт на репозиторий.',
   },
   {
     slug: 'md2gostdocx',
@@ -278,7 +279,6 @@ export const projects: Project[] = [
     },
     stack: ['Python', 'pandoc', 'uv'],
     repoUrl: `${GH}/MD-DOCX-CONVERTER`,
-    note: 'Демо нет; в PyPI пакета нет (404) — карточка ведёт на репозиторий.',
   },
   {
     slug: 'engineer',
@@ -308,7 +308,6 @@ export const projects: Project[] = [
     },
     stack: ['FastAPI', 'SQLite', 'React', 'TanStack Query'],
     extraLinks: [docsLink('LEYKA_DOCS')],
-    note: 'Демо — только экран входа, без гостевого доступа: карточка ведёт на публичную документацию.',
   },
 
   // ── Образование ─────────────────────────────────────────────────────
@@ -387,7 +386,6 @@ export const projects: Project[] = [
     },
     stack: ['React', 'TypeScript', 'Tailwind', 'FastAPI', 'SQLite'],
     demoUrl: 'https://berimaj.vercel.app/',
-    note: 'Живой заказчик — сильный довод для «сделаю ваш сайт». Кандидат в избранные.',
   },
 
   // ── Здоровье ────────────────────────────────────────────────────────
@@ -421,7 +419,6 @@ export const projects: Project[] = [
     extraLinks: [
       { label: { ru: 'Международная версия', en: 'International edition' }, url: 'https://sofia-europe.vercel.app/' },
     ],
-    note: 'Две версии в одной карточке: русская и международная.',
   },
   {
     slug: 'workout',
@@ -437,7 +434,6 @@ export const projects: Project[] = [
     stack: ['HTML', 'JavaScript'],
     demoUrl: 'https://workout-gogo.vercel.app/',
     repoUrl: `${GH}/workout`,
-    note: 'Адрес из репозитория (workout-eight-flax) переадресует сюда, 307.',
   },
 
   // ── Игры ────────────────────────────────────────────────────────────
@@ -468,7 +464,6 @@ export const projects: Project[] = [
     },
     stack: ['React 19', 'TypeScript', 'Socket.IO', 'PWA'],
     demoUrl: 'https://tigra-dice.vercel.app/',
-    note: 'tigra.vercel.app отвечает 402 — рабочий адрес tigra-dice.',
   },
   {
     slug: 'smart-5',
@@ -511,7 +506,6 @@ export const projects: Project[] = [
     },
     stack: ['Expo', 'React Native', 'TypeScript'],
     demoUrl: 'https://boardway-nsk.vercel.app/',
-    note: 'boardway.vercel.app — чужой проект; адрес boardway-nsk дал Олег, игра сверена по тексту бандла.',
   },
   {
     slug: 'harry-quiz',
@@ -543,7 +537,6 @@ export const projects: Project[] = [
     },
     stack: ['Expo', 'React Native'],
     demoUrl: 'https://15-puzzle-mu.vercel.app/',
-    note: 'Из ai-point: репозитория на GitHub нет, год — по ai-point (октябрь 2025). Бот в Telegram не указываем: неактуален (Олег, 2026-10-27).',
   },
   {
     slug: 'boston-consulter',
@@ -558,7 +551,6 @@ export const projects: Project[] = [
     },
     stack: ['Expo', 'React Native'],
     demoUrl: 'https://junior-consulter.vercel.app/',
-    note: 'Из ai-point, там же — «Junior Consultant». Репозитория на GitHub нет, год — по ai-point; бот не указываем.',
   },
   {
     slug: 'profconsalt',
@@ -573,6 +565,5 @@ export const projects: Project[] = [
     },
     stack: ['Expo', 'React Native'],
     demoUrl: 'https://profconsalt.vercel.app/',
-    note: 'Из ai-point. Репозитория на GitHub нет, год — по ai-point; бот не указываем.',
   },
 ];

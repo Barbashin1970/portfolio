@@ -10,4 +10,10 @@ export const CONTACTS = {
   },
   email: 'banksnab@gmail.com',
   github: 'https://github.com/Barbashin1970',
+  repo: 'https://github.com/Barbashin1970/portfolio',
 } as const;
+
+/** Письмо с темой и заготовкой (Р-13): кириллица кодируется, адрес — из CONTACTS. */
+export function mailtoHref({ subject, body }: { subject: string; body: string }): string {
+  return `mailto:${CONTACTS.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}

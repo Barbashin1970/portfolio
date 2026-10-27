@@ -68,6 +68,98 @@ const MEASURE = `(() => {
   };
 })()`;
 
+/**
+ * Действия человека (фаза 2): фильтр каталога и переход по якорю к самой нижней секции —
+ * «Контакту» (урок accordion-scroll-lands-on-wrong-section: верхние секции не промахиваются никогда).
+ */
+const INTERACT = `(async () => {
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  // Конец прокрутки — когда Lenis снял с <html> класс lenis-scrolling и страница стоит.
+  // Одной неподвижности мало: на программном рендере headless Chrome кадры замирают
+  // на 1–4 с посреди анимации, при свободном главном потоке (замер 2026-10-27).
+  const settle = async () => {
+    let last = -1;
+    let still = 0;
+    for (let i = 0; i < 150 && still < 6; i++) {
+      await sleep(100);
+      const moving = document.documentElement.classList.contains('lenis-scrolling');
+      still = !moving && Math.abs(scrollY - last) < 0.5 ? still + 1 : 0;
+      last = scrollY;
+    }
+  };
+  const result = { pinSpacer: Boolean(document.querySelector('.pin-spacer')) };
+  // Лента избранного идёт по колонке текста: первая карточка — с края заголовка секции,
+  // в конце ленты последняя кончается у правого края колонки, целиком в окне.
+  const cards = document.querySelectorAll('.featured-track > li');
+  const head = Math.round(document.querySelector('#featured .section-title').getBoundingClientRect().left);
+  const width = document.documentElement.clientWidth;
+  result.track = { head, width, first: Math.round(cards[0].getBoundingClientRect().left) };
+  const spacer = document.querySelector('.pin-spacer');
+  if (spacer) scrollTo(0, spacer.getBoundingClientRect().top + scrollY + spacer.offsetHeight - innerHeight);
+  else document.querySelector('.featured-viewport').scrollLeft = 1e6;
+  for (let i = 0; i < 50; i++) {
+    await sleep(100);
+    result.track.last = Math.round(cards[cards.length - 1].getBoundingClientRect().right);
+    if (Math.abs(result.track.last - (width - head)) <= 2) break;
+  }
+  // Видео не качаются заранее: адрес — только в data-src, пока человек не попросил.
+  const videos = [...document.querySelectorAll('video.project-video')];
+  result.videosIdle = videos.length > 0 && videos.every((video) => !video.getAttribute('src') && video.dataset.src);
+  const toggle = document.querySelector('.video-toggle');
+  toggle?.scrollIntoView({ block: 'center' });
+  toggle?.click();
+  let played = false;
+  for (let i = 0; i < 50 && !played; i++) {
+    await sleep(100);
+    played = Boolean(toggle?.closest('.project-card')?.querySelector('.project-video.is-playing'));
+  }
+  result.videoPlays = played;
+  toggle?.click();
+  const chips = [...document.querySelectorAll('.catalog-filter button')];
+  const games = chips.find((button) => button.textContent.includes('Игры'));
+  games?.click();
+  await sleep(300);
+  result.filter = { pressed: games?.getAttribute('aria-pressed') ?? null, shown: document.querySelectorAll('.catalog-grid > li').length };
+  chips[0]?.click();
+  await sleep(300);
+  result.filterAll = document.querySelectorAll('.catalog-grid > li').length;
+  document.querySelector('header a[href="#contact"]')?.click();
+  await sleep(200);
+  await settle();
+  result.anchor = {
+    top: Math.round(document.getElementById('contact')?.getBoundingClientRect().top ?? NaN),
+    header: Math.round(document.querySelector('header')?.getBoundingClientRect().height ?? NaN),
+  };
+  // После перехода «Контакт» проявился: блоки с data-reveal видны.
+  const shown = () =>
+    [...document.querySelectorAll('#contact [data-reveal]')].every((el) => {
+      const style = getComputedStyle(el);
+      return style.visibility === 'visible' && Number(style.opacity) > 0.9;
+    });
+  for (let i = 0; i < 50 && !shown(); i++) await sleep(100);
+  result.contactShown = shown();
+  return result;
+})()`;
+
+/** Ожидания к действиям: список расхождений. */
+export function judgeActions(a, screen, expected) {
+  const problems = [];
+  const expect = (ok, message) => ok || problems.push(message);
+  const pinned = screen.width >= 1024 && !screen.reduce;
+  expect(a.pinSpacer === pinned, pinned ? 'у избранного нет пина' : 'пин есть там, где его быть не должно (телефон или reduced-motion)');
+  const t = a.track;
+  expect(Math.abs(t.first - t.head) <= 2, `лента избранного начинается с ${t.first} px, а заголовок секции — с ${t.head} px`);
+  expect(Math.abs(t.last - (t.width - t.head)) <= 2, `в конце ленты последняя карточка кончается на ${t.last} px, край колонки — ${t.width - t.head} px`);
+  expect(a.videosIdle, 'видео начали качаться до просьбы посетителя');
+  expect(a.videoPlays, 'по кнопке «Видео» ролик не заиграл за 5 с');
+  expect(a.filter.pressed === 'true', `фильтр «Игры»: aria-pressed=${a.filter.pressed}`);
+  expect(a.filter.shown === expected.games, `фильтр «Игры»: карточек ${a.filter.shown}, в данных ${expected.games}`);
+  expect(a.filterAll === expected.total, `фильтр «Все»: карточек ${a.filterAll}, в данных ${expected.total}`);
+  expect(Math.abs(a.anchor.top - a.anchor.header) <= 8, `якорь «Контакт»: верх секции ${a.anchor.top}, шапка ${a.anchor.header}`);
+  expect(a.contactShown, '«Контакт» не проявился за 5 с после перехода по якорю');
+  return problems;
+}
+
 /** Ожидания к одному экрану: список расхождений. */
 export function judge(m, screen) {
   const problems = [];
@@ -108,6 +200,9 @@ async function main() {
   // --only 1440 — только экраны, в названии которых есть эта строка.
   const only = argument('--only');
   const screens = only ? SCREENS.filter((screen) => screen.name.includes(only)) : SCREENS;
+  // Сколько карточек ждать после фильтра — из данных, а не числом в проверке.
+  const { projects } = await import('../src/data/projects.ts');
+  const expected = { total: projects.length, games: projects.filter((p) => p.audience === 'games').length };
   const chrome = await launchChrome();
   let failures = 0;
   try {
@@ -119,14 +214,15 @@ async function main() {
       const m = await page.evaluate(MEASURE);
       const problems = judge(m, screen);
       if (!done) problems.push(`за ${SETTLE_TIMEOUT_MS / 1000} с страница не успокоилась`);
+      const name = `${screen.width}x${screen.height}${screen.reduce ? '-reduced' : ''}`;
+      if (shots) writeFileSync(join(shots, `${name}.png`), await page.screenshot());
+      const actions = await page.evaluate(INTERACT);
+      problems.push(...judgeActions(actions, screen, expected));
+      if (shots) writeFileSync(join(shots, `${name}-contact.png`), await page.screenshot());
       failures += problems.length;
-      const line = `${screen.name}: H1 ${m.h1?.scroll}/${m.h1?.client}, страница ${m.page.scroll}/${m.page.client}, фон ${m.graph}`;
+      const line = `${screen.name}: H1 ${m.h1?.scroll}/${m.h1?.client}, страница ${m.page.scroll}/${m.page.client}, фон ${m.graph}, якорь ${actions.anchor.top}/${actions.anchor.header}`;
       if (problems.length) console.error(`✗ ${line}\n  - ${problems.join('\n  - ')}`);
       else console.log(`✓ ${line}`);
-      if (shots) {
-        const file = `${screen.width}x${screen.height}${screen.reduce ? '-reduced' : ''}.png`;
-        writeFileSync(join(shots, file), await page.screenshot());
-      }
       await page.close();
     }
   } finally {

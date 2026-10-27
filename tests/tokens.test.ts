@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { THEME_COLOR, type Theme } from '@/boot';
+import { ACCENT_COLORS, THEME_COLOR, type Theme } from '@/boot';
 
 const css = readFileSync(new URL('../src/styles/tokens.css', import.meta.url), 'utf8');
 
@@ -50,5 +50,9 @@ describe.each<Theme>(['dark', 'light'])('токены темы %s', (theme) => {
 
   it('цвет панели браузера совпадает с фоном темы', () => {
     expect(tokens['--bg']?.toLowerCase()).toBe(THEME_COLOR[theme].toLowerCase());
+  });
+
+  it('цвета искр совпадают с акцентами темы', () => {
+    expect(ACCENT_COLORS[theme].map((c) => c.toLowerCase())).toEqual([tokens['--accent'], tokens['--accent-2']]);
   });
 });

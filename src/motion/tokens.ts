@@ -78,6 +78,7 @@ export const MAGNET = {
 export const MEDIA = {
   desktop: '(min-width: 1024px)',
   phone: '(max-width: 1023.98px)',
+  motion: '(prefers-reduced-motion: no-preference)',
   reduceMotion: '(prefers-reduced-motion: reduce)',
   desktopMotion: '(min-width: 1024px) and (prefers-reduced-motion: no-preference)',
   phoneMotion: '(max-width: 1023.98px) and (prefers-reduced-motion: no-preference)',

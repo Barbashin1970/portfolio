@@ -6,7 +6,9 @@
  * - метки шаблона заменены, #root не пуст;
  * - каждый локальный адрес из index.html ведёт на файл в dist/client;
  * - заглушки брифа («[ФИО]», «[ник]»…) не встречаются ни в одном файле dist/
- *   (урок html-guard-misses-placeholders-in-downloadable-files).
+ *   (урок html-guard-misses-placeholders-in-downloadable-files);
+ * - служебных пометок из src/data/project-notes.ts нет ни в одном файле dist/ (Б-21, Р-28).
+ *   Контроль поиска: описание проекта в бандле находится тем же способом — иначе поиск слеп.
  *
  *   npm run check:dist   (после npm run build)
  */
@@ -24,6 +26,9 @@ export const PLACEHOLDERS = [
   /<!--app-(?:html|head)-->/,
   /<!--boot-->/,
 ];
+
+/** Самый длинный кусок без кавычек и переносов: их минификатор экранирует. */
+export const fragment = (text) => text.split(/["'`\\\n]/).reduce((a, b) => (b.length > a.length ? b : a), '');
 
 const decode = (text) =>
   text.replace(/&quot;/g, '"').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&');
@@ -81,11 +86,19 @@ async function main() {
   }
 
   const files = walk(join(root, 'dist'));
-  for (const file of files) {
-    const content = readFileSync(file, 'utf8');
+  const contents = files.map((file) => readFileSync(file, 'utf8'));
+  files.forEach((file, i) => {
     for (const pattern of PLACEHOLDERS) {
-      if (pattern.test(content)) problems.push(`${relative(root, file)}: заглушка ${pattern}`);
+      if (pattern.test(contents[i])) problems.push(`${relative(root, file)}: заглушка ${pattern}`);
     }
+  });
+
+  const { projects } = await import('../src/data/projects.ts');
+  const { PROJECT_NOTES } = await import('../src/data/project-notes.ts');
+  const found = (text) => contents.some((content) => content.includes(fragment(text)));
+  if (!found(projects[0].tagline.ru)) problems.push('описание проекта не нашлось в dist/ — поиск пометок слеп');
+  for (const [slug, note] of Object.entries(PROJECT_NOTES)) {
+    if (found(note)) problems.push(`служебная пометка «${slug}» попала в dist/`);
   }
 
   for (const problem of problems) console.error(problem);
@@ -93,7 +106,9 @@ async function main() {
     console.error(`check-dist: расхождений ${problems.length}`);
     return 1;
   }
-  console.log(`check-dist: страница ru сошлась со словарём; файлов в dist/ без заглушек: ${files.length}`);
+  console.log(
+    `check-dist: страница ru сошлась со словарём; файлов в dist/ без заглушек и пометок: ${files.length}, пометок искали: ${Object.keys(PROJECT_NOTES).length}`,
+  );
   return 0;
 }
 
