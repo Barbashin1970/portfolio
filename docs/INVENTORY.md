@@ -1,6 +1,7 @@
 # Инвентаризация проектов для витрины
 
-Снято 2026-10-26. Повторять перед публикацией: адреса демо и числа меняются.
+Снято 2026-10-26, дополнено 2026-10-27 тремя играми из `ai-point`. Повторять перед
+публикацией: адреса демо и числа меняются.
 Каждое число идёт вместе с командой, которой получено.
 
 Олег разрешил показывать все проекты, включая приватные. Ссылок на код приватных
@@ -14,6 +15,7 @@
 | Ответ github.com на адрес репозитория (404 без входа) | какие локальные клоны — приватные |
 | Локальные клоны на ноутбуке Олега | приватные проекты, их README, стек из `package.json` и `requirements`, демо-адреса |
 | curl по каждому демо-адресу | код ответа, итоговый адрес, `<title>`, загрузка JS-бандла |
+| `ai-point` — первая попытка портфолио, приватный репозиторий (октябрь 2025) | три игры, которых нет на GitHub: адреса демо и описания |
 
 ## Числа
 
@@ -24,7 +26,7 @@
 | Аккаунт на GitHub с | 2022-08-07 | поле `created_at` профиля |
 | Коммитов Олега с 2026-01-01 по 29 локальным клонам | 2520 (всего 2534, остальное — github-actions и Rork) | `for d in */; do git -C "$d" rev-list --count --since=2026-01-01 HEAD; done`; авторы — `git log --since=2026-01-01 --format=%an \| sort \| uniq -c` |
 | Репозиториев с живым демо | 26 | проверка ниже |
-| Проектов на витрине | 28: 4 избранных, все 28 — в каталоге; живое демо у 24 | `src/data/projects.ts`, подсчёт по полям `tier` и `demoUrl` |
+| Проектов на витрине | 31: 4 избранных, все 31 — в каталоге; живое демо у 27 | `src/data/projects.ts`, подсчёт по полям `tier` и `demoUrl`; с README и описью сверяет `npx vitest run tests/numbers.test.ts` |
 
 Основные языки публичных репозиториев (поле `language`, без форков): Java 35, HTML 6,
 Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Java — это
@@ -66,6 +68,9 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 | REDJOHN (`redjohn`) | REDJOHN | приватный | 2026-08-21 | redjohngame.vercel.app | 200, бандл 200 |
 | Boardway (`boardway`) | boardway | приватный | 2026-05-31 | boardway-nsk.vercel.app (адрес дал Олег) | 200, бандл 200, в бандле текст игры |
 | Гарри Поттер — Magic Quiz (`harry-quiz`) | harrypotterquiz | публичный | 2026-05-31 | harryquiz.vercel.app | 200, бандл 200 |
+| Пятнашки (`puzzle-15`) | из `ai-point`, на GitHub нет | — | 2025, по `ai-point` | 15-puzzle-mu.vercel.app | 200, бандл 200, `<title>` «Пятнашки» (2026-10-27) |
+| Boston Consulter (`boston-consulter`) | из `ai-point`, на GitHub нет | — | 2025, по `ai-point` | junior-consulter.vercel.app | 200, бандл 200, `<title>` «Boston Consulter» |
+| Profconsalt — раннер (`profconsalt`) | из `ai-point`, на GitHub нет | — | 2025, по `ai-point` | profconsalt.vercel.app | 200, бандл 200, `<title>` «Profconsalt» |
 
 ★ — избранные: горизонтальная галерея. Документация DOCS проверена по трём папкам:
 `RAGRAF_DOCS`, `LEYKA_DOCS`, `ARCHI-NSU` — все отвечают 200.

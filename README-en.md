@@ -30,7 +30,7 @@ Two things, and you can check both.
 - **[SIMA — Novosibirsk open data](https://nsk-opendata-bot.up.railway.app/)** — answers questions about the city from open data, with no neural network at runtime. [Code](https://github.com/Barbashin1970/NSK_OpenData_Bot)
 - **[AI in Teaching](https://barbashin1970.github.io/PROMPT-Professor/)** — a professional development course for NSU faculty. [Code](https://github.com/Barbashin1970/PROMPT-Professor)
 
-The portfolio holds 28 projects across seven industries, 24 of them with a live demo; the catalog will appear on the site together with the project cards.
+The portfolio holds 31 projects across seven industries, 27 of them with a live demo; the catalog will appear on the site together with the project cards.
 
 ## How I work: SKICODING
 

@@ -53,7 +53,7 @@ interface ProjectBase {
   stack: string[];
   audience: Audience;
   tier: Tier;
-  /** Год последнего коммита. */
+  /** Год последнего коммита; у проекта без репозитория — год, когда демо уже было опубликовано (источник — в note). */
   year: number;
   /** Проверенный адрес: 200 и свой контент, см. docs/INVENTORY.md. */
   demoUrl?: string;
@@ -527,5 +527,52 @@ export const projects: Project[] = [
     stack: ['Expo', 'React Native'],
     demoUrl: 'https://harryquiz.vercel.app/',
     repoUrl: `${GH}/harrypotterquiz`,
+  },
+
+  // ── Игры из первой попытки портфолио (ai-point, 2025): Олег разрешил публиковать 2026-10-27 ──
+  {
+    slug: 'puzzle-15',
+    visibility: 'private',
+    tier: 'catalog',
+    audience: 'games',
+    year: 2025,
+    title: { ru: 'Пятнашки', en: '15 Puzzle' },
+    tagline: {
+      ru: 'Классическая головоломка в фирменном стиле заказчика: логика, рейтинг и соревнование',
+      en: 'The classic sliding puzzle in a client’s branding: logic, a leaderboard and competition',
+    },
+    stack: ['Expo', 'React Native'],
+    demoUrl: 'https://15-puzzle-mu.vercel.app/',
+    note: 'Из ai-point: репозитория на GitHub нет, год — по ai-point (октябрь 2025). Бот в Telegram не указываем: неактуален (Олег, 2026-10-27).',
+  },
+  {
+    slug: 'boston-consulter',
+    visibility: 'private',
+    tier: 'catalog',
+    audience: 'games',
+    year: 2025,
+    title: { ru: 'Boston Consulter', en: 'Boston Consulter' },
+    tagline: {
+      ru: 'Игра-погружение в профессию бизнес-консультанта и её карьерные перспективы',
+      en: 'A game that walks you through a business consultant’s job and career prospects',
+    },
+    stack: ['Expo', 'React Native'],
+    demoUrl: 'https://junior-consulter.vercel.app/',
+    note: 'Из ai-point, там же — «Junior Consultant». Репозитория на GitHub нет, год — по ai-point; бот не указываем.',
+  },
+  {
+    slug: 'profconsalt',
+    visibility: 'private',
+    tier: 'catalog',
+    audience: 'games',
+    year: 2025,
+    title: { ru: 'Profconsalt — раннер', en: 'Profconsalt runner' },
+    tagline: {
+      ru: 'Раннер на 90 секунд о сдаче отчётности: беспечный предприниматель уворачивается от бизнес-проблем и собирает бонусы',
+      en: 'A 90-second runner about filing reports: a carefree entrepreneur dodges business problems and collects bonuses',
+    },
+    stack: ['Expo', 'React Native'],
+    demoUrl: 'https://profconsalt.vercel.app/',
+    note: 'Из ai-point. Репозитория на GitHub нет, год — по ai-point; бот не указываем.',
   },
 ];
