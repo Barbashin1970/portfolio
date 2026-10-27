@@ -19,7 +19,7 @@ From an idea and a spec to a working prototype — for universities, industry an
 ## What I do
 
 - **AI you can audit** — hybrid AI and AI agents where a written rule makes the call and the system shows its inputs, formula and threshold.
-- **Semantic graphs** — RDF, OWL and SHACL ontologies of rules and regulations.
+- **Semantic graphs** — RDF and SHACL ontologies of rules and regulations.
 - **Digital platforms** for universities and industry.
 - **Prototypes at a link** — websites, PWAs, trainers and games.
 
