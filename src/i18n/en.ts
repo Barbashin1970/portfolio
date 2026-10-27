@@ -16,7 +16,6 @@ export const en = {
     title: [{ text: 'AI that works ' }, { text: 'for your team', accent: true }],
     lead: 'I like building platforms for universities, games, and tools for construction and industry. Open any of the 20+ demos and decide for yourself. I’ll build the same for your idea. I’ll also find where AI takes routine work off your staff, and train your team to work with it.',
     discuss: 'Discuss a task',
-    discussNote: 'on Telegram, opens in a new tab',
     work: 'See the work',
     hint: 'Scroll',
   },

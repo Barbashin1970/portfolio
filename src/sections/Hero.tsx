@@ -1,9 +1,8 @@
 import { useRef, useState, type CSSProperties } from 'react';
-import { ArrowDown, ArrowUpRight } from 'lucide-react';
+import { ArrowDown, MessageCircle } from 'lucide-react';
 import Magnet from '@/components/fx/Magnet';
 import { splitReveal } from '@/components/fx/SplitText';
 import { Button } from '@/components/ui/button';
-import { CONTACTS } from '@/data/contacts';
 import { useI18n } from '@/i18n/context';
 import { titleHtml, titleWords } from '@/lib/title';
 import { gsap, useGSAP } from '@/motion/gsap';
@@ -110,11 +109,11 @@ export function Hero({ workHref }: { workHref?: string }) {
               maxOffset={MAGNET.maxOffset}
               spring={MAGNET.spring}
             >
+              {/* К чату в «Контакте», а не в Telegram: запрос собирается там (Р-46). */}
               <Button asChild>
-                <a href={CONTACTS.telegram.url} target="_blank" rel="noopener">
+                <a href="#contact">
                   {t.discuss}
-                  <ArrowUpRight />
-                  <span className="sr-only"> ({t.discussNote})</span>
+                  <MessageCircle />
                 </a>
               </Button>
             </Magnet>

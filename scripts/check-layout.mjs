@@ -62,6 +62,7 @@ const MEASURE = `(() => {
     splitChars: h1 ? h1.querySelectorAll('.split-char').length : -1,
     graph: document.querySelector('.hero-bg')?.dataset.graph ?? null,
     staticGraphShown: getComputedStyle(document.querySelector('.hero-graph')).visibility !== 'hidden',
+    heroDiscuss: document.querySelector('.hero-actions a')?.getAttribute('href') ?? null,
     featuredFocus: [...document.querySelectorAll('.is-featured :is(.project-shot, .project-video)')].map(
       (el) => getComputedStyle(el).objectPosition,
     ),
@@ -106,11 +107,16 @@ const INTERACT = `(async () => {
     result.track.last = Math.round(cards[cards.length - 1].getBoundingClientRect().right);
     if (Math.abs(result.track.last - (width - head)) <= 2) break;
   }
-  // В конце ленты счётчик — последняя карточка, полоса заполнена (Р-44).
-  await sleep(200);
-  result.track.count = document.querySelector('.featured-count')?.textContent.replace(/\\s+/g, ' ').trim() ?? '';
+  // В конце ленты счётчик — последняя карточка, полоса заполнена (Р-44). На свайпе счётчик
+  // догоняет прокрутку в следующем кадре, а кадры на программном рендере замирают — ждём до 5 с.
+  const total = String(cards.length).padStart(2, '0');
   const fill = document.querySelector('.featured-fill');
-  result.track.fill = fill ? new DOMMatrix(getComputedStyle(fill).transform).a : 0;
+  for (let i = 0; i < 50; i++) {
+    result.track.count = document.querySelector('.featured-count')?.textContent.replace(/\\s+/g, ' ').trim() ?? '';
+    result.track.fill = fill ? new DOMMatrix(getComputedStyle(fill).transform).a : 0;
+    if (result.track.count === total + ' / ' + total && result.track.fill > 0.98) break;
+    await sleep(100);
+  }
   // Видео не качаются заранее: адрес — только в data-src, пока человек не попросил.
   const videos = [...document.querySelectorAll('video.project-video')];
   result.videosIdle = videos.length > 0 && videos.every((video) => !video.getAttribute('src') && video.dataset.src);
@@ -270,6 +276,8 @@ export function judge(m, screen) {
     }
     // До фазы 2 кнопка одна: «Смотреть работы» вернётся вместе с карточками.
     expect(m.firstScreen.some((i) => i.sel === '.hero-actions a'), 'в hero нет ни одной кнопки');
+    // «Обсудить задачу» листает к чату в «Контакте», а не открывает Telegram (Р-46).
+    expect(m.heroDiscuss === '#contact', `«Обсудить задачу» ведёт на ${m.heroDiscuss}, а не к чату`);
   }
   // На десктопе колонка картинки избранного уже кадра: он держится левого верхнего угла,
   // где у скриншотов логотип и название, и режется только справа (Олег, 2026-10-27).
