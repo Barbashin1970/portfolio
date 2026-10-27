@@ -8,11 +8,14 @@ import { getLenis } from '@/motion/lenis';
 import { EASE, MEDIA } from '@/motion/tokens';
 
 const FEATURED = featuredProjects(projects);
+const pad = (n: number) => String(n).padStart(2, '0');
 
 /**
  * Избранные проекты. Сильный эффект секции (PLAN §2): на десктопе без reduced-motion —
  * пин и горизонтальная прокрутка, привязанная к скроллу; на телефоне и при reduced-motion —
- * обычный ряд со свайпом и snap, без пина (договорённости 6 и 7).
+ * обычный ряд со свайпом и snap, без пина (договорённости 6 и 7). Счётчик «01 / 06» и полоса
+ * под лентой — часть того же эффекта (Р-44): на пине их ведёт тот же ScrollTrigger,
+ * на свайпе — прокрутка ленты.
  */
 export function Featured() {
   const { dict } = useI18n();
@@ -22,11 +25,38 @@ export function Featured() {
   useGSAP(
     () => {
       const mm = gsap.matchMedia();
-      mm.add(MEDIA.desktopMotion, () => {
+      // Функция условий зовётся, когда совпало хоть одно: пин, телефон или reduced-motion покрывают всё.
+      mm.add({ pin: MEDIA.desktopMotion, phone: MEDIA.phone, reduce: MEDIA.reduceMotion }, (context) => {
         const section = scope.current;
         const viewport = section?.querySelector<HTMLElement>('.featured-viewport');
         const track = section?.querySelector<HTMLElement>('.featured-track');
-        if (!section || !viewport || !track) return undefined;
+        const count = section?.querySelector<HTMLElement>('.featured-current');
+        const fill = section?.querySelector<HTMLElement>('.featured-fill');
+        if (!section || !viewport || !track || !count || !fill) return undefined;
+
+        const show = (progress: number) => {
+          count.textContent = pad(Math.round(progress * (FEATURED.length - 1)) + 1);
+          gsap.set(fill, { scaleX: progress });
+        };
+
+        if (!context.conditions?.pin) {
+          // Свайп: счётчик и полоса идут за прокруткой ленты, раз в кадр.
+          let frame = 0;
+          const ratio = () => {
+            const max = viewport.scrollWidth - viewport.clientWidth;
+            return max > 0 ? Math.min(1, viewport.scrollLeft / max) : 0;
+          };
+          const onScroll = () => {
+            cancelAnimationFrame(frame);
+            frame = requestAnimationFrame(() => show(ratio()));
+          };
+          viewport.addEventListener('scroll', onScroll, { passive: true });
+          show(ratio());
+          return () => {
+            viewport.removeEventListener('scroll', onScroll);
+            cancelAnimationFrame(frame);
+          };
+        }
 
         section.dataset.mode = 'pin';
         // Ход ленты — до последней карточки у правого края колонки: поля ленты не в счёт.
@@ -46,6 +76,7 @@ export function Featured() {
             scrub: true,
             invalidateOnRefresh: true,
             anticipatePin: 1,
+            onUpdate: (self) => show(self.progress),
           },
         });
 
@@ -89,6 +120,14 @@ export function Featured() {
             </li>
           ))}
         </ul>
+      </div>
+      <div className="container-page featured-progress" aria-hidden="true">
+        <span className="featured-count">
+          <span className="featured-current">01</span> / {pad(FEATURED.length)}
+        </span>
+        <span className="featured-bar">
+          <span className="featured-fill" />
+        </span>
       </div>
     </section>
   );

@@ -58,7 +58,8 @@ export function ProjectCard({ project, variant }: { project: Project; variant: '
         <ProjectMedia
           project={project}
           alt={`${t.screen}: ${title}`}
-          tilt={variant !== 'featured'}
+          tilt={variant === 'catalog'}
+          stage={variant !== 'featured'}
           videoRef={videoRef}
           videoState={videoState}
           loadingLabel={t.videoLoading}

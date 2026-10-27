@@ -69,6 +69,19 @@
     background: var(--glass);
   }
 
+  /* Прогресс страницы по низу шапки (Р-44): масштаб по ширине, без JavaScript — пустая. */
+  .scroll-progress {
+    position: absolute;
+    right: 0;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    pointer-events: none;
+  }
+
   /* ── Карточка проекта ──────────────────────────────────────────────── */
   /*
    * position: relative — карточка держит свои sr-only (они position: absolute). Без этого их
@@ -159,6 +172,33 @@
   .project-media.has-shot,
   .phone-frame {
     background: var(--border-strong);
+  }
+
+  /*
+   * Сцена (Р-45): в каталоге и играх скриншот лежит на подложке цвета страницы с полями
+   * и скруглён целиком, как окно; подложка под картинкой, пока она грузится, — в самом окне.
+   * Олег 2026-10-27: скриншот во всю ширину со скруглёнными нижними углами давал у шва
+   * с описанием зазубрины и двойную линию.
+   */
+  .project-media.is-stage {
+    padding: clamp(0.75rem, 0.5rem + 1vw, 1.25rem);
+    background: var(--bg);
+  }
+
+  .shot-frame,
+  .project-media.is-stage .tilted-card__front {
+    background: var(--border-strong);
+    box-shadow:
+      0 0 0 1px var(--border),
+      0 18px 36px -24px rgb(0 0 0 / 0.5);
+  }
+
+  .shot-frame {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    border-radius: 12px;
   }
 
   .skeleton-block {
@@ -353,6 +393,44 @@
     scroll-snap-type: none;
   }
 
+  /* Счётчик и полоса ленты (Р-44): где ты в избранном и сколько осталось. */
+  .featured-progress {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .featured-count {
+    flex: none;
+    font: 500 13px / 1 var(--font-mono);
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .featured-current {
+    color: var(--text);
+  }
+
+  .featured-bar {
+    position: relative;
+    flex: 1;
+    max-width: 16rem;
+    height: 2px;
+    overflow: hidden;
+    border-radius: 1px;
+    background: var(--border-strong);
+  }
+
+  .featured-fill {
+    position: absolute;
+    inset: 0;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+  }
+
   @media (min-width: 1024px) {
     .project-card.is-featured {
       display: grid;
@@ -391,6 +469,14 @@
   [aria-pressed='true'] > .filter-count {
     color: inherit;
     opacity: 0.7;
+  }
+
+  /*
+   * Раздача карт в играх (Р-44): повёрнутая карта углом выходит за край узкого экрана.
+   * clip, а не hidden: секция не становится контейнером прокрутки, вертикаль не режется.
+   */
+  #games {
+    overflow-x: clip;
   }
 
   .catalog-grid {

@@ -106,6 +106,11 @@ const INTERACT = `(async () => {
     result.track.last = Math.round(cards[cards.length - 1].getBoundingClientRect().right);
     if (Math.abs(result.track.last - (width - head)) <= 2) break;
   }
+  // В конце ленты счётчик — последняя карточка, полоса заполнена (Р-44).
+  await sleep(200);
+  result.track.count = document.querySelector('.featured-count')?.textContent.replace(/\\s+/g, ' ').trim() ?? '';
+  const fill = document.querySelector('.featured-fill');
+  result.track.fill = fill ? new DOMMatrix(getComputedStyle(fill).transform).a : 0;
   // Видео не качаются заранее: адрес — только в data-src, пока человек не попросил.
   const videos = [...document.querySelectorAll('video.project-video')];
   result.videosIdle = videos.length > 0 && videos.every((video) => !video.getAttribute('src') && video.dataset.src);
@@ -137,6 +142,9 @@ const INTERACT = `(async () => {
     top: Math.round(document.getElementById('contact')?.getBoundingClientRect().top ?? NaN),
     header: Math.round(document.querySelector('header')?.getBoundingClientRect().height ?? NaN),
   };
+  // Полоса прогресса страницы (Р-44): у «Контакта» почти полная; при reduced-motion пустая.
+  const progress = document.querySelector('.scroll-progress');
+  result.progress = progress ? new DOMMatrix(getComputedStyle(progress).transform).a : -1;
   // После перехода «Контакт» проявился: блоки с data-reveal видны.
   const shown = () =>
     [...document.querySelectorAll('#contact [data-reveal]')].every((el) => {
@@ -148,7 +156,7 @@ const INTERACT = `(async () => {
   // И всё, что выше низа экрана, проявилось: переход пролетел каталог и игры, появление
   // не должно застрять ни в одной секции.
   const hidden = () =>
-    [...document.querySelectorAll('[data-reveal]')].filter((el) => {
+    [...document.querySelectorAll('[data-reveal], [data-deal]')].filter((el) => {
       if (el.getBoundingClientRect().top > innerHeight) return false;
       const style = getComputedStyle(el);
       return style.visibility !== 'visible' || Number(style.opacity) < 0.9;
@@ -226,6 +234,9 @@ export function judgeActions(a, screen, expected) {
   const t = a.track;
   expect(Math.abs(t.first - t.head) <= 2, `лента избранного начинается с ${t.first} px, а заголовок секции — с ${t.head} px`);
   expect(Math.abs(t.last - (t.width - t.head)) <= 2, `в конце ленты последняя карточка кончается на ${t.last} px, край колонки — ${t.width - t.head} px`);
+  const last = String(expected.featured).padStart(2, '0');
+  expect(t.count === `${last} / ${last}` && t.fill > 0.98, `в конце ленты счётчик «${t.count}», полоса ${t.fill.toFixed(2)}`);
+  expect(screen.reduce ? a.progress === 0 : a.progress > 0.8, `полоса прогресса страницы у «Контакта»: ${a.progress.toFixed(2)}`);
   expect(a.videosIdle, 'видео начали качаться до просьбы посетителя');
   expect(a.videoPlays, 'по кнопке «Видео» ролик не заиграл за 5 с');
   expect(a.filter.pressed === 'true', `фильтр «Здоровье»: aria-pressed=${a.filter.pressed}`);
@@ -296,7 +307,13 @@ async function main() {
   const { projects } = await import('../src/data/projects.ts');
   const count = (audience) => projects.filter((p) => p.audience === audience).length;
   const { CONTACTS } = await import('../src/data/contacts.ts');
-  const expected = { work: projects.length - count('games'), games: count('games'), health: count('health'), site: CONTACTS.site };
+  const expected = {
+    work: projects.length - count('games'),
+    games: count('games'),
+    health: count('health'),
+    featured: projects.filter((p) => p.tier === 'featured').length,
+    site: CONTACTS.site,
+  };
   const chrome = await launchChrome();
   let failures = 0;
   try {

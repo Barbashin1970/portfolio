@@ -1,14 +1,29 @@
+import { useRef } from 'react';
 import { useI18n } from '@/i18n/context';
+import { gsap, useGSAP } from '@/motion/gsap';
+import { EASE, MEDIA } from '@/motion/tokens';
 import { ThemeToggle } from './ThemeToggle';
 
 /**
  * Шапка фиксированной высоты (--header-h в tokens.css). Переходы по ссылкам-якорям
  * перехватывает motion/anchors.ts: высота шапки замеряется, пин учитывается.
  * На телефоне из разделов — только «Контакт»: к работам ведёт кнопка первого экрана.
+ * По низу шапки — полоса прогресса страницы, привязанная к скроллу (Р-44): страница длинная,
+ * а так видно, сколько осталось. При reduced-motion полосы нет.
  */
 export function Header() {
   const { dict } = useI18n();
   const t = dict.nav;
+  const bar = useRef<HTMLSpanElement>(null);
+
+  useGSAP(() => {
+    const mm = gsap.matchMedia();
+    mm.add(MEDIA.motion, () => {
+      gsap.fromTo(bar.current, { scaleX: 0 }, { scaleX: 1, ease: EASE.scrub, scrollTrigger: { start: 0, end: 'max', scrub: true } });
+    });
+    return () => mm.revert();
+  });
+
   return (
     <header className="glass fixed inset-x-0 top-0 z-50 h-(--header-h) border-x-0 border-t-0">
       <div className="container-page flex h-full items-center justify-between gap-4">
@@ -33,6 +48,7 @@ export function Header() {
           <ThemeToggle label={dict.header.theme} />
         </div>
       </div>
+      <span ref={bar} className="scroll-progress" aria-hidden="true" />
     </header>
   );
 }

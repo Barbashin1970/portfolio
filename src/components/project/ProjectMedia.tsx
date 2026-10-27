@@ -14,6 +14,11 @@ interface ProjectMediaProps {
   alt: string;
   /** Наклон картинки (каталог); на тач-экранах и при reduced-motion TiltedCard гасит его сам. */
   tilt?: boolean;
+  /**
+   * Сцена (Р-45): скриншот лежит на подложке с полями и скруглён целиком — каталог и игры.
+   * Тогда шов между картинкой и описанием — одна прямая линия, без зазубрин скругления.
+   */
+  stage?: boolean;
   videoRef?: Ref<HTMLVideoElement>;
   videoState?: VideoState;
   /** Подпись скелетона, пока видео грузится: «Видео загружается». */
@@ -34,6 +39,7 @@ export function ProjectMedia({
   project,
   alt,
   tilt = false,
+  stage = false,
   videoRef,
   videoState = 'idle',
   loadingLabel,
@@ -44,6 +50,7 @@ export function ProjectMedia({
   const video = VIDEOS[project.slug];
   const phone = PHONE_FIRST.has(project.slug);
   const loading = Boolean(video) && videoState === 'loading';
+  const staged = stage && Boolean(shot) && !phone;
 
   const videoEl = video && (
     <>
@@ -70,6 +77,11 @@ export function ProjectMedia({
       <img src={asset(shot)} alt={alt} width={390} height={844} loading="lazy" decoding="async" />
       {videoEl}
     </div>
+  ) : staged && !tilt ? (
+    <div className="shot-frame">
+      <img className="project-shot" src={asset(shot)} alt={alt} width={960} height={600} loading="lazy" decoding="async" />
+      {videoEl}
+    </div>
   ) : (
     <>
       <img className="project-shot" src={asset(shot)} alt={alt} width={960} height={600} loading="lazy" decoding="async" />
@@ -78,14 +90,14 @@ export function ProjectMedia({
   );
 
   return (
-    <div className={cn('project-media', phone && 'is-phone', shot && !phone && 'has-shot', !shot && 'is-fallback')}>
+    <div className={cn('project-media', phone && 'is-phone', shot && !phone && 'has-shot', staged && 'is-stage', !shot && 'is-fallback')}>
       {tilt ? (
         <TiltedCard
           containerWidth="100%"
           containerHeight="100%"
           imageWidth="100%"
           imageHeight="100%"
-          radius={16}
+          radius={staged ? 12 : 16}
           rotateAmplitude={8}
           scaleOnHover={1.03}
           glare={0.25}
