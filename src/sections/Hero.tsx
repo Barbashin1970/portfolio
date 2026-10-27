@@ -93,7 +93,7 @@ export function Hero({ workHref }: { workHref?: string }) {
     <section ref={scope} id="top" aria-labelledby="hero-title" className="relative isolate flex min-h-svh flex-col pt-(--header-h)">
       <HeroBackground start={introDone} />
       <div className="container-page flex flex-1 flex-col justify-center pt-6 pb-8 lg:py-10">
-        <div className="max-w-216">
+        <div className="max-w-256">
           <p className="hero-eyebrow label-mono" data-intro="eyebrow">
             {t.eyebrow}
           </p>

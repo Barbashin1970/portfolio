@@ -14,8 +14,11 @@
     font-family: var(--font-display);
     font-weight: 720;
     font-variation-settings: 'SHRP' 40;
-    /* 10vw: самый длинный неразрывный кусок («до работающего», ~8,3 em) помещается и на 320 px (Б-19). */
-    font-size: clamp(2rem, 10vw, 6.5rem);
+    /*
+     * 10vw: самая длинная группа («программистов») помещается и на 320 px (Б-19).
+     * Потолок 5,5rem: на десктопе заголовок ложится в три ровные строки.
+     */
+    font-size: clamp(2rem, 10vw, 5.5rem);
     line-height: 0.97;
     letter-spacing: -0.03em;
     text-wrap: balance;
