@@ -62,6 +62,9 @@ const MEASURE = `(() => {
     splitChars: h1 ? h1.querySelectorAll('.split-char').length : -1,
     graph: document.querySelector('.hero-bg')?.dataset.graph ?? null,
     staticGraphShown: getComputedStyle(document.querySelector('.hero-graph')).visibility !== 'hidden',
+    featuredFocus: [...document.querySelectorAll('.is-featured :is(.project-shot, .project-video)')].map(
+      (el) => getComputedStyle(el).objectPosition,
+    ),
     deadAnchors: [...document.querySelectorAll('a[href^="#"]')]
       .map((a) => a.getAttribute('href'))
       .filter((href) => href.length > 1 && !document.getElementById(decodeURIComponent(href.slice(1)))),
@@ -189,6 +192,12 @@ export function judge(m, screen) {
     }
     // До фазы 2 кнопка одна: «Смотреть работы» вернётся вместе с карточками.
     expect(m.firstScreen.some((i) => i.sel === '.hero-actions a'), 'в hero нет ни одной кнопки');
+  }
+  // На десктопе колонка картинки избранного уже кадра: он держится левого верхнего угла,
+  // где у скриншотов логотип и название, и режется только справа (Олег, 2026-10-27).
+  if (screen.width >= 1024) {
+    const off = m.featuredFocus.filter((position) => position !== '0% 0%');
+    expect(m.featuredFocus.length > 0 && off.length === 0, `кадр избранного не у левого края: ${off.join(', ') || 'картинок нет'}`);
   }
   expect(m.deadAnchors.length === 0, `ссылки на якоря, которых нет на странице: ${m.deadAnchors.join(', ')}`);
   expect(m.hydrationErrors === 0, `ошибок гидратации: ${m.hydrationErrors}`);
