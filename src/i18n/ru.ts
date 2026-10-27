@@ -29,6 +29,7 @@ export const ru = {
   },
   nav: {
     label: 'Разделы',
+    menu: 'Меню разделов',
     work: 'Работы',
     catalog: 'Каталог',
     games: 'Игры',

@@ -141,12 +141,33 @@ const INTERACT = `(async () => {
   await sleep(300);
   result.filterAll = gridSize('#catalog');
   result.games = gridSize('#games');
-  document.querySelector('header a[href="#contact"]')?.click();
+  // На телефоне разделы — в меню-бургере (Р-47): открываем его и выбираем «Контакт»;
+  // в меню столько же разделов, сколько в шапке десктопа, и после выбора оно закрывается.
+  const burger = document.querySelector('.nav-menu summary');
+  // Видимость — по размерам: у скрытого родителя getComputedStyle потомка не скажет «none».
+  if (burger && burger.getClientRects().length > 0) {
+    burger.click();
+    await sleep(300);
+    const shown = [...document.querySelectorAll('.nav-menu-list a')].filter((link) => link.getBoundingClientRect().height > 0);
+    result.menu = { links: shown.length, sections: document.querySelectorAll('.nav-desktop a').length };
+    document.querySelector('.nav-menu-list a[href="#contact"]')?.click();
+    await sleep(100);
+    result.menu.closed = !document.querySelector('.nav-menu').open;
+  } else {
+    document.querySelector('header nav a[href="#contact"]')?.click();
+  }
   await sleep(200);
   await settle();
+  // Под шапкой — начало содержимого «Контакта» с зазором --anchor-gap: край секции выше
+  // на её верхнее поле. Меряем край секции — его не сдвигает появление блоков.
+  const contact = document.getElementById('contact');
+  const rootStyle = getComputedStyle(document.documentElement);
+  const gap = parseFloat(rootStyle.getPropertyValue('--anchor-gap')) * parseFloat(rootStyle.fontSize);
+  const header = Math.round(document.querySelector('header')?.getBoundingClientRect().height ?? NaN);
   result.anchor = {
-    top: Math.round(document.getElementById('contact')?.getBoundingClientRect().top ?? NaN),
-    header: Math.round(document.querySelector('header')?.getBoundingClientRect().height ?? NaN),
+    top: Math.round(contact?.getBoundingClientRect().top ?? NaN),
+    header,
+    expected: Math.round(header + gap - parseFloat(getComputedStyle(contact).paddingTop)),
   };
   // Полоса прогресса страницы (Р-44): у «Контакта» почти полная; при reduced-motion пустая.
   const progress = document.querySelector('.scroll-progress');
@@ -249,7 +270,13 @@ export function judgeActions(a, screen, expected) {
   expect(a.filter.shown === expected.health, `фильтр «Здоровье»: карточек ${a.filter.shown}, в данных ${expected.health}`);
   expect(a.filterAll === expected.work, `фильтр «Все»: карточек ${a.filterAll}, рабочих проектов в данных ${expected.work}`);
   expect(a.games === expected.games, `в секции игр карточек ${a.games}, игр в данных ${expected.games}`);
-  expect(Math.abs(a.anchor.top - a.anchor.header) <= 8, `якорь «Контакт»: верх секции ${a.anchor.top}, шапка ${a.anchor.header}`);
+  expect(Math.abs(a.anchor.top - a.anchor.expected) <= 8, `якорь «Контакт»: край секции ${a.anchor.top}, ожидался ${a.anchor.expected} (шапка ${a.anchor.header} и зазор)`);
+  if (screen.width < 768) {
+    const m = a.menu;
+    expect(m && m.links === m.sections && m.sections > 0 && m.closed, `меню телефона: пунктов ${m?.links} из ${m?.sections}, после выбора ${m?.closed ? 'закрылось' : 'открыто'}`);
+  } else {
+    expect(!a.menu, 'бургер виден на десктопе');
+  }
   expect(a.contactShown, '«Контакт» не проявился за 5 с после перехода по якорю');
   expect(a.hiddenAbove === 0, `выше низа экрана не проявились блоки: ${a.hiddenAbove}`);
   const c = a.chat;
@@ -339,7 +366,7 @@ async function main() {
       problems.push(...judgeActions(actions, screen, expected));
       if (shots) writeFileSync(join(shots, `${name}-contact.png`), await page.screenshot());
       failures += problems.length;
-      const line = `${screen.name}: H1 ${m.h1?.scroll}/${m.h1?.client}, страница ${m.page.scroll}/${m.page.client}, фон ${m.graph}, якорь ${actions.anchor.top}/${actions.anchor.header}`;
+      const line = `${screen.name}: H1 ${m.h1?.scroll}/${m.h1?.client}, страница ${m.page.scroll}/${m.page.client}, фон ${m.graph}, якорь ${actions.anchor.top}/${actions.anchor.expected}`;
       if (problems.length) console.error(`✗ ${line}\n  - ${problems.join('\n  - ')}`);
       else console.log(`✓ ${line}`);
       await page.close();

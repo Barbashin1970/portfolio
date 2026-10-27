@@ -21,6 +21,7 @@ export const en = {
   },
   nav: {
     label: 'Sections',
+    menu: 'Sections menu',
     work: 'Work',
     catalog: 'Catalog',
     games: 'Games',

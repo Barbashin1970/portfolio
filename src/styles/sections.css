@@ -9,10 +9,18 @@
     padding-block: var(--section-y);
   }
 
-  /* Переход по якорю не прячет начало секции под шапкой (запасной путь без JavaScript). */
-  #top,
-  .section-block {
+  /*
+   * Переход по якорю ставит под шапку не край секции, а начало её содержимого: верхнее
+   * поле секции уходит под шапку, до надписи над заголовком остаётся --anchor-gap
+   * (Олег, 2026-10-27: зазор был «столь большим»). Lenis и запасной путь без JavaScript
+   * берут этот отступ сами.
+   */
+  #top {
     scroll-margin-top: var(--header-h);
+  }
+
+  .section-block {
+    scroll-margin-top: calc(var(--header-h) + var(--anchor-gap) - var(--section-y));
   }
 
   .section-block:focus {
@@ -66,6 +74,64 @@
 
   .nav-link:hover {
     color: var(--text);
+    background: var(--glass);
+  }
+
+  /* Меню телефона (Р-47): бургер раскрывает разделы карточкой под шапкой. */
+  .nav-menu summary {
+    list-style: none;
+  }
+
+  .nav-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .nav-burger {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: var(--r-sm);
+    color: var(--text);
+    cursor: pointer;
+    transition: background-color var(--dur-fast) var(--ease-out);
+  }
+
+  .nav-burger:hover {
+    background: var(--glass);
+  }
+
+  .nav-burger svg {
+    width: 1.375rem;
+    height: 1.375rem;
+  }
+
+  .nav-menu-list {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: var(--gutter);
+    left: var(--gutter);
+    margin: 0;
+    padding: 0.5rem;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: 0 24px 48px -24px rgb(0 0 0 / 0.5);
+    list-style: none;
+  }
+
+  .nav-menu-list a {
+    display: flex;
+    align-items: center;
+    min-height: 3rem;
+    padding-inline: 1rem;
+    border-radius: var(--r-sm);
+    font: 500 17px / 1 var(--font-text);
+    color: var(--text);
+    text-decoration: none;
+  }
+
+  .nav-menu-list a:hover {
     background: var(--glass);
   }
 
@@ -380,12 +446,14 @@
     scroll-snap-align: start;
   }
 
+  /* На пине начало уже под шапкой с тем же зазором — переход по якорю ставит край секции. */
   .featured[data-mode='pin'] {
     display: flex;
     flex-direction: column;
     justify-content: center;
     min-height: 100svh;
-    padding-block: calc(var(--header-h) + 1.5rem) 2rem;
+    padding-block: calc(var(--header-h) + var(--anchor-gap)) 2rem;
+    scroll-margin-top: 0;
   }
 
   .featured[data-mode='pin'] .featured-viewport {
@@ -849,7 +917,19 @@
   }
 }
 
+/* Меню телефона выезжает из-под шапки: opacity и сдвиг, как у реплик чата. */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(calc(var(--appear-chat) * -1));
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .nav-menu[open] .nav-menu-list {
+    animation: menu-in var(--dur-fast) var(--ease-out);
+  }
+
   .skeleton-block {
     animation: skeleton-pulse var(--dur-hint) var(--ease-in-out) infinite;
   }
