@@ -199,6 +199,24 @@ export const projects: Project[] = [
     stack: ['Claude Code', 'Agent Skills'],
     repoUrl: `${GH}/PRECONSTRUCTION`,
   },
+  // Добавлен 2026-10-27 по просьбе Олега (Р-49): демо и открытых документов нет — стенд локальный.
+  {
+    slug: 'normastroy',
+    visibility: 'private',
+    tier: 'catalog',
+    audience: 'industry',
+    year: 2026,
+    title: { ru: 'НормаСтрой AI', en: 'NormaStroy AI' },
+    tagline: {
+      ru: 'Стенд формализации строительных норм: требования сводов правил — в машиночитаемые карточки со ссылкой на пункт и страницу и сверка с данными проекта',
+      en: 'A test bench for formalizing construction codes: requirements become machine-readable cards citing the clause and page, checked against project data',
+    },
+    stack: ['Python', 'HTML'],
+    demoNote: {
+      ru: 'Демо нет: стенд работает на ноутбуке, репозиторий закрыт',
+      en: 'No demo: the bench runs on a laptop, the repository is private',
+    },
+  },
   {
     slug: 'stroyka-test',
     visibility: 'public',

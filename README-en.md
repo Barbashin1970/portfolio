@@ -33,7 +33,7 @@ Three things, and you can check each one.
 - **[Sigma audit](https://polinom-sigma-audit.up.railway.app/)** — audits a public GitHub repository against 26 rules of the Sigma methodology, in 30 seconds and with nothing to install.
 - **[ARCHI Platform](https://archi-nsu.vercel.app/)** — reads construction schedules, applies the rules and messages the person in charge when one is broken. [Documentation](https://github.com/Barbashin1970/DOCS/tree/main/ARCHI-NSU)
 
-The portfolio holds 30 projects, 26 of them with a live demo. Work projects are in the site’s catalog across six industries, with a filter; games have their own section, for a break.
+The portfolio holds 31 projects, 26 of them with a live demo. Work projects are in the site’s catalog across six industries, with a filter; games have their own section, for a break.
 
 ## How I work: SKICODING
 

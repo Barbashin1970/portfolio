@@ -18,9 +18,10 @@ describe('данные витрины (UC-2)', () => {
     for (const p of projects.filter((p) => p.visibility === 'private')) expect(p.repoUrl, p.slug).toBeUndefined();
   });
 
-  it('у карточки без демо есть код или документация', () => {
+  // Карточка без демо не тупик: ведёт к коду или документам, а если их нет — говорит почему (Р-49).
+  it('у карточки без демо есть код, документация или пометка, почему их нет', () => {
     for (const p of projects.filter((p) => !p.demoUrl)) {
-      expect(Boolean(p.repoUrl || p.extraLinks?.length), p.slug).toBe(true);
+      expect(Boolean(p.repoUrl || p.extraLinks?.length || p.demoNote), p.slug).toBe(true);
     }
   });
 

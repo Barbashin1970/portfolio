@@ -26,7 +26,7 @@
 | Аккаунт на GitHub с | 2022-08-07 | поле `created_at` профиля |
 | Коммитов Олега с 2026-01-01 по 29 локальным клонам | 2520 (всего 2534, остальное — github-actions и Rork) | `for d in */; do git -C "$d" rev-list --count --since=2026-01-01 HEAD; done`; авторы — `git log --since=2026-01-01 --format=%an \| sort \| uniq -c` |
 | Репозиториев с живым демо | 26 | проверка ниже |
-| Проектов на витрине | 30: 6 избранных; в каталоге 21 рабочий проект, 9 игр — своей секцией; живое демо у 26 | `src/data/projects.ts`, подсчёт по полям `tier`, `audience` и `demoUrl`; с README и описью сверяет `npx vitest run tests/numbers.test.ts` |
+| Проектов на витрине | 31: 6 избранных; в каталоге 22 рабочих проекта, 9 игр — своей секцией; живое демо у 26 | `src/data/projects.ts`, подсчёт по полям `tier`, `audience` и `demoUrl`; с README и описью сверяет `npx vitest run tests/numbers.test.ts` |
 
 Основные языки публичных репозиториев (поле `language`, без форков): Java 35, HTML 6,
 Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Java — это
@@ -46,6 +46,7 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 | ★ ИИ в учебном процессе (`prompt-professor`) | PROMPT-Professor | публичный | 2026-10-14 | barbashin1970.github.io/PROMPT-Professor/; ai-in-the-education.vercel.app | 200 и 200 |
 | ★ Платформа АРХИ (`archi`) | ARCHI-NSU-Public — визитка; документация — DOCS | приватный | 2026-09-19 | archi-nsu.vercel.app | 200 |
 | PRECONSTRUCTION (`preconstruction`) | PRECONSTRUCTION | публичный | 2026-06-13 | — | ссылка на репозиторий |
+| НормаСтрой AI (`normastroy`) | NORMA-STROY | приватный | 2026-09-25 | — | демо нет, стенд локальный; на карточке — пометка об этом (Р-49) |
 | Тест по ИИ для строителей (`stroyka-test`) | stroyka-test | публичный | 2026-04-13 | stroyka-alpha.vercel.app | 200 |
 | Промпт-конструктор умного города (`smartcityprompt`) | smartcityprompt | публичный | 2026-03-25 | smartcityprompt.vercel.app | 200 |
 | ★ Сигма-аудит (`sigma-audit`) | POLINOM | приватный | 2026-06-13 | polinom-sigma-audit.up.railway.app | 200, переадресует на `/ru` |
@@ -101,7 +102,6 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 | ИИ-помощник по ТБ (`safety`, safety-builder.streamlit.app) | снят с витрины 2026-10-27: «слабоват — старая архитектура» (Олег) |
 | POLINOM-JAVA | публичного адреса нет: его GitHub Pages отвечает 404 |
 | SMART-DUEL | сборка «СМАРТ» под Яндекс Игры; публичного адреса пока нет, сама игра на витрине как `smart-5` |
-| NORMA-STROY | демо пока нет |
 | FREEWAY | личная инфраструктура, не проект для заказчика |
 | ARCHI-NSU | изделие лежит во внутреннем git НГУ; на витрине его визитка `archi` |
 | MY-VOLUME | граф знаний, а не проект для заказчика |
