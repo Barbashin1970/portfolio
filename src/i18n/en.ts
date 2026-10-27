@@ -5,7 +5,7 @@ export const en = {
   meta: {
     title: 'Oleg Barbashin — systems analyst and AI systems developer',
     description:
-      'Have a task but see the risks? Let’s test it first: a prototype of your idea you open at a link, and documentation that follows the standard and is tied to the product’s code.',
+      'I go through your business chain and find where AI takes routine work off your staff. We test it on your data, and I train your team. Prototypes and standard-compliant documentation, too.',
   },
   header: {
     name: 'Oleg Barbashin',
@@ -14,7 +14,7 @@ export const en = {
   hero: {
     eyebrow: 'Systems analyst · AI systems developer · Novosibirsk',
     title: [{ text: 'Have a task but see the risks? ' }, { text: 'Let’s test it first', accent: true }],
-    lead: 'Two things usually needed fast: build a prototype of your idea, open it at a link and run through all your scenarios. And documentation that follows the standard and is tied to the product’s code.',
+    lead: 'I go through your business chain and find the points where AI takes over routine work and your staff get more done. We test it on your data, then I train your team to work with AI.',
     discuss: 'Discuss a task',
     discussNote: 'on Telegram, opens in a new tab',
     work: 'See the work',
@@ -40,7 +40,7 @@ export const en = {
   games: {
     eyebrow: 'Leisure',
     title: 'Games for a break',
-    lead: 'Not everything here is about work. Games I made myself: they open at a link and play best on a phone. Play one on a break, or borrow an idea for your own game.',
+    lead: 'Not everything here is about work. Games I made myself open at a link: some on a phone, others in a browser on a big screen. Play one on a break, or borrow an idea for your own game.',
   },
   card: {
     demo: 'Open the demo',

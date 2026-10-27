@@ -81,7 +81,7 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 
 | Что | Сколько | Команда |
 |---|---|---|
-| Скриншоты демо, WebP: десктоп 960×600, мобильные приложения 390×844 | 26 файлов, 611 300 байт | снять — `node scripts/capture-shots.mjs`; посчитать — `ls public/media/*.webp \| grep -v leyka \| wc -l`, `cat $(ls public/media/*.webp \| grep -v leyka) \| wc -c` |
+| Скриншоты демо, WebP: десктоп 960×600, мобильные приложения 390×844 (список — `PHONE_FIRST` в `src/data/media.ts`; GONKA и Tigra — десктоп: игры для браузера, Р-38) | 26 файлов, 607 386 байт | снять — `node scripts/capture-shots.mjs`; посчитать — `ls public/media/*.webp \| grep -v leyka \| wc -l`, `cat $(ls public/media/*.webp \| grep -v leyka) \| wc -c` |
 | Скриншот LEYKA — снимок экрана Олега: доска задач, кадр 1280×800 CSS px без полосы окна | 1 файл, 27 686 байт | `ffmpeg -i <снимок>.png -vf "crop=2560:1600:0:74,scale=960:600:flags=lanczos" -c:v libwebp -quality 72 public/media/leyka.webp` |
 | Видео из `ai-point`: ПТО, Boardway, Profconsalt, Boston Consulter, Пятнашки — H.264, 12–14 с, без звука | 5 файлов, от 53 до 150 КБ, вместе 484 512 байт | сжать — `node scripts/encode-video.mjs <файл> <slug> [--portrait] [--crop-top 180]`; посчитать — `cat public/media/{pto-presentation,boardway,profconsalt,boston-consulter,puzzle-15}.mp4 \| wc -c` |
 | Видео LEYKA — запись экрана Олега: доска и две задачи, 11,9 с; прокрутка карточки вырезана, поле «Исполнитель» размыто | 1 файл, 299 467 байт | `node scripts/encode-video.mjs <запись>.mov leyka --crop 2560:1600:0:74 --keep 29.2-32.5,34.75-43.45 --blur 1630:470:400:65@30.3-36.45,38-43.6`; посчитать — `wc -c public/media/leyka.mp4` |

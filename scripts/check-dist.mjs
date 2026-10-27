@@ -1,7 +1,8 @@
 /**
  * Сторож собранной страницы. Фаза 1 — RU; фаза 3 добавит EN, hreflang, canonical, JSON-LD.
  *
- * - H1, title и description в HTML совпадают со словарём — LCP не ждёт JavaScript (Р-04);
+ * - H1, подзаголовок hero, title и description в HTML совпадают со словарём — LCP
+ *   не ждёт JavaScript (Р-04);
  * - lang, translate="no", notranslate (урок browser-translator-breaks-react-dom);
  * - метки шаблона заменены, #root не пуст;
  * - каждый локальный адрес из index.html ведёт на файл в dist/client;
@@ -52,6 +53,9 @@ export function checkPage(html, facts) {
   const h1s = [...html.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/g)];
   expect(h1s.length === 1, `H1 должен быть один, найдено ${h1s.length}`);
   expect(h1s[0] && textOf(h1s[0][1]) === facts.h1, `текст H1 не совпадает со словарём: «${h1s[0] ? textOf(h1s[0][1]) : ''}»`);
+  // Подзаголовок несёт главную работу (Р-36) и тоже не ждёт JavaScript.
+  const lead = /<p class="hero-lead"[^>]*>([\s\S]*?)<\/p>/.exec(html)?.[1];
+  expect(lead !== undefined && textOf(lead) === facts.lead, `подзаголовок hero не совпадает со словарём: «${lead ? textOf(lead) : ''}»`);
 
   expect(/<div id="root"[^>]*>\s*<[a-z]/.test(html), '#root пуст — предсборка не сработала');
   return problems;

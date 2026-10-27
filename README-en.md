@@ -3,7 +3,7 @@
 # Oleg Barbashin
 
 **Systems analyst and AI systems developer**<br>
-A prototype of your idea you can try before investing, and documentation tied to the product’s code. Novosibirsk, Russia.
+I find where AI takes routine work off your staff, and I train your team to work with it. Prototypes before you invest, and documentation tied to the code. Novosibirsk, Russia.
 
 <a href="https://barbashin1970.github.io/portfolio/"><img src=".github/readme/open-site-en.svg" alt="Open the site" height="52"></a>&nbsp;
 <a href="https://t.me/OlegBarbashin"><img src=".github/readme/telegram-en.svg" alt="Message on Telegram" height="52"></a>
@@ -18,8 +18,9 @@ A prototype of your idea you can try before investing, and documentation tied to
 
 ## What I do
 
-Two things, and you can check both.
+Three things, and you can check each one.
 
+- **Where AI speeds up your staff.** I go through your business chain — how work flows from a request to a result — and find the points where AI takes routine work off people. We test it on your data, then I train your staff to work with AI on your own tasks. A training example: a continuing-education course for Novosibirsk State University lecturers.
 - **A prototype you can try.** Your idea becomes a working system at a link — interface, data, scenarios, and an AI module on your data if needed — before you decide on a team and a budget.
 - **Documentation tied to the code.** Specifications and GOST 19 documentation sets, R&D reports. Every number comes with the command that produced it, and the build fails if a document drifts from the code.
 

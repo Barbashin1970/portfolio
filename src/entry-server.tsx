@@ -30,5 +30,6 @@ export function pageFacts(locale: Locale) {
     title: dict.meta.title,
     description: dict.meta.description,
     h1: titleText(titleWords(dict.hero.title, locale)),
+    lead: dict.hero.lead,
   };
 }

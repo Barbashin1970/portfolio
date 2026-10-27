@@ -32,10 +32,10 @@ export const VIDEOS: Record<string, ProjectVideo> = {
 /**
  * Мобильные приложения снимаются экраном телефона и стоят в карточке в рамке телефона;
  * остальные — экраном десктопа. Этот же список читает scripts/capture-shots.mjs.
+ * GONKA и Tigra задуманы для браузера на большом экране — их снимает десктоп
+ * (Олег, 2026-10-27: «так правдивее»).
  */
 export const PHONE_FIRST = new Set([
-  'gonka',
-  'tigra',
   'smart-5',
   'redjohn',
   'boardway',
