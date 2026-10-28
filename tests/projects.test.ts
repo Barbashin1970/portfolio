@@ -1,4 +1,4 @@
-import { existsSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { CONTACTS, mailtoHref } from '@/data/contacts';
 import { SHOTS, VIDEOS } from '@/data/media';
@@ -39,6 +39,13 @@ describe('данные витрины (UC-2)', () => {
   it('safety снят с витрины (Р-34), его скриншота нет', () => {
     expect(projects.some((p) => p.slug === 'safety')).toBe(false);
     expect(publicFile('media/safety.webp')).toBe(false);
+  });
+
+  // Текст Олега — дословно (2026-10-28): расшифровка названия — первая фраза описания.
+  it('СИМА: расшифровка названия — текст Олега, в карточке и README', () => {
+    const phrase = 'СИМА — система интеллектуального муниципального анализа.';
+    expect(projects.find((p) => p.slug === 'sima')?.tagline.ru.startsWith(phrase)).toBe(true);
+    expect(readFileSync(new URL('../README.md', import.meta.url), 'utf8')).toContain(phrase);
   });
 
   it('служебные пометки живут отдельно и относятся к настоящим проектам (Б-21)', () => {

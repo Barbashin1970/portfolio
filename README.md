@@ -34,7 +34,7 @@
 **[LEYKA](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS)** — канбан-доска и мессенджер в одном продукте: задачи, обсуждения и сроки команды — в одном окне, с ИИ-модератором и диалоговым ассистентом.<br>
 <sub>FastAPI · SQLite · React · TanStack Query — [документация](https://github.com/Barbashin1970/DOCS/tree/main/LEYKA_DOCS); демо открывается только после входа</sub>
 
-**[СИМА — открытые данные Новосибирска](https://nsk-opendata-bot.up.railway.app/)** — отвечает на вопросы о городе по открытым данным: отключения, воздух, транспорт, стройки — без нейросети в рантайме.<br>
+**[СИМА — открытые данные Новосибирска](https://nsk-opendata-bot.up.railway.app/)**. СИМА — система интеллектуального муниципального анализа. Отвечает на вопросы о городе по открытым данным: отключения, воздух, транспорт, стройки — без нейросети в рантайме.<br>
 <sub>Python · DuckDB · Open-Meteo · OpenStreetMap — [демо](https://nsk-opendata-bot.up.railway.app/) · [код](https://github.com/Barbashin1970/NSK_OpenData_Bot)</sub>
 
 **[ИИ в учебном процессе](https://barbashin1970.github.io/PROMPT-Professor/)** — курс повышения квалификации для преподавателей НГУ: лекции, библиотека промптов, конструктор и тесты.<br>

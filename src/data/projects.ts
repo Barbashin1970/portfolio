@@ -128,9 +128,10 @@ export const projects: Project[] = [
     audience: 'city',
     year: 2026,
     title: { ru: 'СИМА — открытые данные Новосибирска', en: 'SIMA — Novosibirsk open data' },
+    // Расшифровка названия — текст Олега дословно (2026-10-28).
     tagline: {
-      ru: 'Отвечает на вопросы о городе по открытым данным — отключения, воздух, транспорт, стройки — без нейросети в рантайме',
-      en: 'Answers questions about the city from open data — outages, air quality, transit, construction — with no neural network at runtime',
+      ru: 'СИМА — система интеллектуального муниципального анализа. Отвечает на вопросы о городе по открытым данным — отключения, воздух, транспорт, стройки — без нейросети в рантайме',
+      en: 'SIMA — System for Intelligent Municipal Analysis. Answers questions about the city from open data — outages, air quality, transit, construction — with no neural network at runtime',
     },
     stack: ['Python', 'DuckDB', 'Open-Meteo', 'OpenStreetMap'],
     demoUrl: 'https://nsk-opendata-bot.up.railway.app/',
