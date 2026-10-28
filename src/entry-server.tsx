@@ -31,5 +31,7 @@ export function pageFacts(locale: Locale) {
     description: dict.meta.description,
     h1: titleText(titleWords(dict.hero.title, locale)),
     lead: dict.hero.lead,
+    /** Подпись к фото в «Контакте» (Р-52). */
+    name: dict.header.name,
   };
 }

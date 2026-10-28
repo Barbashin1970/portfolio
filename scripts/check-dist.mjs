@@ -2,7 +2,7 @@
  * Сторож собранной страницы. Фаза 1 — RU; фаза 3 добавит EN, hreflang, canonical, JSON-LD.
  *
  * - H1, подзаголовок hero, title и description в HTML совпадают со словарём — LCP
- *   не ждёт JavaScript (Р-04);
+ *   не ждёт JavaScript (Р-04); фото в «Контакте» — с подписью из словаря (Р-52);
  * - lang, translate="no", notranslate (урок browser-translator-breaks-react-dom);
  * - метки шаблона заменены, #root не пуст;
  * - каждый локальный адрес из index.html ведёт на файл в dist/client;
@@ -56,6 +56,10 @@ export function checkPage(html, facts) {
   // Подзаголовок несёт главную работу (Р-36) и тоже не ждёт JavaScript.
   const lead = /<p class="hero-lead"[^>]*>([\s\S]*?)<\/p>/.exec(html)?.[1];
   expect(lead !== undefined && textOf(lead) === facts.lead, `подзаголовок hero не совпадает со словарём: «${lead ? textOf(lead) : ''}»`);
+  // Фото Олега в «Контакте» (Р-52) — в странице и с подписью; файл по его адресу ищет обход ниже.
+  const photo = /<img\b[^>]*\bclass="contact-photo"[^>]*>/.exec(html)?.[0];
+  const alt = photo && /\balt="([^"]*)"/.exec(photo)?.[1];
+  expect(alt !== undefined && decode(alt) === facts.name, `фото в «Контакте»: ${photo ? `подпись «${alt}» не из словаря` : 'нет в странице'}`);
 
   expect(/<div id="root"[^>]*>\s*<[a-z]/.test(html), '#root пуст — предсборка не сработала');
   return problems;

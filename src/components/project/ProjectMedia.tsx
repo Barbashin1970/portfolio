@@ -2,9 +2,8 @@ import type { Ref } from 'react';
 import TiltedCard from '@/components/fx/TiltedCard';
 import { PHONE_FIRST, SHOTS, VIDEOS } from '@/data/media';
 import type { Project } from '@/data/projects';
+import { asset } from '@/lib/asset';
 import { cn } from '@/lib/utils';
-
-const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 export type VideoState = 'idle' | 'loading' | 'playing';
 

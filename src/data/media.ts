@@ -60,3 +60,13 @@ export const SHOTS: Record<string, string> = Object.fromEntries(
     .filter((project) => project.demoUrl || OWN_SHOTS.has(project.slug))
     .map((project) => [project.slug, `media/${project.slug}.webp`]),
 );
+
+/**
+ * Фото Олега в «Контакте» (Р-52) — его снимок, низ срезан по рукаву под загнутыми пальцами:
+ * шорты и колени в кадр не входят. Портрет — левая колонка, лицо — кружок в шапке чата.
+ * Размеры — как у файлов: их сверяет tests/media.test.ts. Команды — docs/INVENTORY.md.
+ */
+export const PHOTO = {
+  portrait: { file: 'media/oleg.webp', width: 720, height: 1040 },
+  avatar: { file: 'media/oleg-avatar.webp', width: 132, height: 132 },
+} as const;

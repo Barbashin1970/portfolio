@@ -172,19 +172,28 @@ const INTERACT = `(async () => {
   // Полоса прогресса страницы (Р-44): у «Контакта» почти полная; при reduced-motion пустая.
   const progress = document.querySelector('.scroll-progress');
   result.progress = progress ? new DOMMatrix(getComputedStyle(progress).transform).a : -1;
-  // После перехода «Контакт» проявился: блоки с data-reveal видны.
-  const shown = () =>
-    [...document.querySelectorAll('#contact [data-reveal]')].every((el) => {
-      const style = getComputedStyle(el);
-      return style.visibility === 'visible' && Number(style.opacity) > 0.9;
-    });
+  // Появление запускается, когда верх блока прошёл 90 % экрана (раздача карт — 88 %): ниже
+  // этой линии блок законно ждёт прокрутки. Выше 85 % экрана — обязан проявиться.
+  const line = innerHeight * 0.85;
+  // После перехода «Контакт» проявился: блоки с data-reveal выше линии видны. На коротком
+  // телефоне окно чата под фото (Р-52) — ниже линии, оно проявится при прокрутке.
+  const shown = () => {
+    const blocks = [...document.querySelectorAll('#contact [data-reveal]')].filter((el) => el.getBoundingClientRect().top < line);
+    return (
+      blocks.length > 0 &&
+      blocks.every((el) => {
+        const style = getComputedStyle(el);
+        return style.visibility === 'visible' && Number(style.opacity) > 0.9;
+      })
+    );
+  };
   for (let i = 0; i < 50 && !shown(); i++) await sleep(100);
   result.contactShown = shown();
-  // И всё, что выше низа экрана, проявилось: переход пролетел каталог и игры, появление
+  // И всё, что выше линии, проявилось: переход пролетел каталог и игры, появление
   // не должно застрять ни в одной секции.
   const hidden = () =>
     [...document.querySelectorAll('[data-reveal], [data-deal]')].filter((el) => {
-      if (el.getBoundingClientRect().top > innerHeight) return false;
+      if (el.getBoundingClientRect().top > line) return false;
       const style = getComputedStyle(el);
       return style.visibility !== 'visible' || Number(style.opacity) < 0.9;
     }).length;
@@ -200,6 +209,14 @@ const INTERACT = `(async () => {
     }).length;
   for (let i = 0; i < 50 && lineOff() > 0; i++) await sleep(100);
   result.titles = { lines: titleLines.length, off: lineOff() };
+  // Фото Олега (Р-52): портрет и кружок в шапке чата загрузились; на десктопе фото — портрет,
+  // пока колонка одна — полоса шире высоты.
+  const photo = document.querySelector('.contact-photo');
+  const avatar = document.querySelector('.chat-avatar');
+  const loaded = (img) => Boolean(img && img.complete && img.naturalWidth > 0);
+  for (let i = 0; i < 50 && !(loaded(photo) && loaded(avatar)); i++) await sleep(100);
+  const photoBox = photo ? photo.getBoundingClientRect() : null;
+  result.photo = { loaded: loaded(photo), avatar: loaded(avatar), ratio: photoBox ? photoBox.width / photoBox.height : NaN };
   // Чат (Р-37): приветствие проявилось после «печатает…»; первая кнопка ответа пишет строку
   // в поле запроса, и чат переходит ко второму шагу. Человек дописывает строку руками —
   // кнопка второго шага добавляет свою строку и правку не стирает. «Отправить» несёт ровно
@@ -288,9 +305,13 @@ export function judgeActions(a, screen, expected) {
     expect(!a.menu, 'бургер виден на десктопе');
   }
   expect(a.contactShown, '«Контакт» не проявился за 5 с после перехода по якорю');
-  expect(a.hiddenAbove === 0, `выше низа экрана не проявились блоки: ${a.hiddenAbove}`);
+  expect(a.hiddenAbove === 0, `выше линии появления не проявились блоки: ${a.hiddenAbove}`);
   expect(screen.reduce ? a.titles.lines === 0 : a.titles.lines > 0, `заголовки по строкам: строк ${a.titles.lines} при ${screen.reduce ? 'reduced-motion' : 'движении'}`);
   expect(a.titles.off === 0, `строки заголовков выше низа экрана не на месте: ${a.titles.off}`);
+  const p = a.photo;
+  expect(p.loaded && p.avatar, `фото в «Контакте» ${p.loaded ? 'есть' : 'не загрузилось за 5 с'}, кружок в чате ${p.avatar ? 'есть' : 'не загрузился'}`);
+  const portrait = screen.width >= 1024;
+  expect(portrait ? p.ratio < 1 : p.ratio > 1, `фото в «Контакте»: ширина к высоте ${p.ratio.toFixed(2)}, а ждали ${portrait ? 'портрет' : 'полосу'}`);
   const c = a.chat;
   expect(c.greeting, 'чат: приветствие не проявилось за 5 с, когда окно на экране');
   expect(c.answered && c.step === 1 && c.firstLines === 2, `чат: первая кнопка — строк в поле ${c.firstLines}, шаг ${c.step}`);

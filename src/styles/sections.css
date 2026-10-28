@@ -595,6 +595,30 @@
     color: var(--text-muted);
   }
 
+  /* Фото Олега (Р-52). Пока колонка одна — полоса 4:3 с верха кадра: голова и плечи, чат
+     не уезжает вниз. На десктопе — портрет целиком (кадр 720×1040) в пустой левой колонке,
+     не шире половины снимка: на ретине он чёткий. Место залито до загрузки, как у карточек. */
+  .contact-photo {
+    display: block;
+    width: 100%;
+    max-width: 28rem;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    margin-top: 2rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    object-fit: cover;
+    object-position: 50% 0%;
+  }
+
+  @media (min-width: 1024px) {
+    .contact-photo {
+      max-width: 22.5rem;
+      aspect-ratio: 9 / 13;
+    }
+  }
+
   .chat {
     overflow: hidden;
     border: 1px solid var(--border-strong);
@@ -612,15 +636,12 @@
   }
 
   .chat-avatar {
-    display: grid;
     flex: none;
-    place-items: center;
     width: 2.75rem;
     height: 2.75rem;
     border-radius: 50%;
-    background: var(--accent);
-    color: var(--on-accent);
-    font: 700 15px / 1 var(--font-display);
+    background: var(--bg);
+    object-fit: cover;
   }
 
   .chat-name {

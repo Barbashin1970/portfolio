@@ -3,7 +3,9 @@ import { Check, Copy, Send, Share2 } from 'lucide-react';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { FilterChip, FilterChips } from '@/components/ui/filter-chips';
 import { CONTACTS, mailShareHref, mailtoHref, telegramHref, telegramShareHref } from '@/data/contacts';
+import { PHOTO } from '@/data/media';
 import { useI18n } from '@/i18n/context';
+import { asset } from '@/lib/asset';
 import { answerOf, hasStep, nextStep, REQUEST_MAX, setStepLine, STEPS, stepOptions, type StepId } from '@/lib/request';
 import { cn } from '@/lib/utils';
 import { gsap, ScrollTrigger, useGSAP } from '@/motion/gsap';
@@ -21,6 +23,8 @@ const INTRO_PROPS = 'opacity,visibility,transform';
  *
  * Сильный эффект секции — «печатает…» перед приветствием при первом показе окна. При
  * reduced-motion и если окно уже на экране — приветствие сразу.
+ *
+ * Под текстом слева — фото Олега, в шапке чата — его лицо (Р-52): пишут живому человеку.
  */
 export function Contact() {
   const { dict } = useI18n();
@@ -36,10 +40,6 @@ export function Contact() {
   const message = text.trim();
   const done = STEPS.every((step) => hasStep(t, text, step));
   const chosen = answerOf(t, text, active);
-  const initials = dict.header.name
-    .split(' ')
-    .map((word) => word[0])
-    .join('');
 
   useGSAP(
     () => {
@@ -113,14 +113,29 @@ export function Contact() {
             {t.title}
           </h2>
           <p className="contact-lead">{t.lead}</p>
+          <img
+            className="contact-photo"
+            src={asset(PHOTO.portrait.file)}
+            alt={dict.header.name}
+            width={PHOTO.portrait.width}
+            height={PHOTO.portrait.height}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
 
         <div data-reveal>
           <div className="chat">
             <div className="chat-head">
-              <span className="chat-avatar" aria-hidden="true">
-                {initials}
-              </span>
+              <img
+                className="chat-avatar"
+                src={asset(PHOTO.avatar.file)}
+                alt=""
+                width={PHOTO.avatar.width}
+                height={PHOTO.avatar.height}
+                loading="lazy"
+                decoding="async"
+              />
               <div>
                 <p className="chat-name">{dict.header.name}</p>
                 <p className="chat-status">Telegram · @{CONTACTS.telegram.handle}</p>
