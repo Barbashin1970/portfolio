@@ -566,7 +566,8 @@ export const projects: Project[] = [
     tier: 'catalog',
     audience: 'games',
     year: 2025,
-    title: { ru: 'Profconsalt — раннер', en: 'Profconsalt runner' },
+    // Название — Олега (2026-10-30): «так точнее»; в самой игре заголовок — Profconsalt.
+    title: { ru: 'Беспечный предприниматель', en: 'The Carefree Entrepreneur' },
     tagline: {
       ru: 'Раннер на 90 секунд о сдаче отчётности: беспечный предприниматель уворачивается от бизнес-проблем и собирает бонусы',
       en: 'A 90-second runner about filing reports: a carefree entrepreneur dodges business problems and collects bonuses',

@@ -87,7 +87,7 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 | Гарри Поттер — Magic Quiz (`harry-quiz`) | harrypotterquiz | публичный | 2026-05-31 | harryquiz.vercel.app | 200, бандл 200 |
 | Пятнашки (`puzzle-15`) | из `ai-point`, на GitHub нет | — | 2025, по `ai-point` | 15-puzzle-mu.vercel.app | 200, бандл 200, `<title>` «Пятнашки» (2026-10-27) |
 | Boston Consulter (`boston-consulter`) | из `ai-point`, на GitHub нет | — | 2025, по `ai-point` | junior-consulter.vercel.app | 200, бандл 200, `<title>` «Boston Consulter» |
-| Profconsalt — раннер (`profconsalt`) | из `ai-point`, на GitHub нет | — | 2025, по `ai-point` | profconsalt.vercel.app | 200, бандл 200, `<title>` «Profconsalt» |
+| Беспечный предприниматель (`profconsalt`) — название Олега с 2026-10-30, в игре — Profconsalt | из `ai-point`, на GitHub нет | — | 2025, по `ai-point` | profconsalt.vercel.app | 200, бандл 200, `<title>` «Profconsalt» |
 
 ★ — избранные: горизонтальная галерея. Документация DOCS проверена по трём папкам:
 `RAGRAF_DOCS`, `LEYKA_DOCS`, `ARCHI-NSU` — все отвечают 200.
@@ -103,7 +103,7 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 | Скриншот LEYKA — снимок экрана Олега: доска задач, кадр 1280×800 CSS px без полосы окна | 1 файл, 27 686 байт | `ffmpeg -i <снимок>.png -vf "crop=2560:1600:0:74,scale=960:600:flags=lanczos" -c:v libwebp -quality 72 public/media/leyka.webp` |
 | Скриншот НормаСтрой AI — снимок Олега 2026-10-27: страница «О продукте» стенда на ноутбуке, кадр 16:10 выше курсора | 1 файл, 28 440 байт | `ffmpeg -i <снимок>.png -vf "crop=2160:1350:390:0,scale=960:600:flags=lanczos" -c:v libwebp -quality 72 public/media/normastroy.webp` |
 | Фото Олега для «Контакта» (Р-52) — его снимок 720×1280, прислан 2026-10-28: портрет 720×1040, низ срезан по рукаву под загнутыми пальцами (шорты и колени не входят); лицо для шапки чата — квадрат 460 px, ужатый до 132×132. Метаданные сняты; исходник лежит в `.private/`, в репозиторий не идёт | 2 файла: 55 492 и 3 104 байта | `ffmpeg -i <снимок>.JPG -vf "crop=720:1040:0:0" -map_metadata -1 -c:v libwebp -quality 80 -compression_level 6 public/media/oleg.webp`; `ffmpeg -i <снимок>.JPG -vf "crop=460:460:165:80,scale=132:132:flags=lanczos" -map_metadata -1 -c:v libwebp -quality 82 -compression_level 6 public/media/oleg-avatar.webp`; посчитать — `wc -c public/media/oleg*.webp` |
-| Видео из `ai-point`: ПТО, Boardway, Profconsalt, Boston Consulter, Пятнашки — H.264, 12–14 с, без звука | 5 файлов, от 53 до 150 КБ, вместе 484 512 байт | сжать — `node scripts/encode-video.mjs <файл> <slug> [--portrait] [--crop-top 180]`; посчитать — `cat public/media/{pto-presentation,boardway,profconsalt,boston-consulter,puzzle-15}.mp4 \| wc -c` |
+| Видео из `ai-point`: ПТО, Boardway, «Беспечный предприниматель» (Profconsalt), Boston Consulter, Пятнашки — H.264, 12–14 с, без звука | 5 файлов, от 53 до 150 КБ, вместе 484 512 байт | сжать — `node scripts/encode-video.mjs <файл> <slug> [--portrait] [--crop-top 180]`; посчитать — `cat public/media/{pto-presentation,boardway,profconsalt,boston-consulter,puzzle-15}.mp4 \| wc -c` |
 | Видео LEYKA — запись экрана Олега: доска и две задачи, 11,9 с; прокрутка карточки вырезана, поле «Исполнитель» размыто | 1 файл, 299 467 байт | `node scripts/encode-video.mjs <запись>.mov leyka --crop 2560:1600:0:74 --keep 29.2-32.5,34.75-43.45 --blur 1630:470:400:65@30.3-36.45,38-43.6`; посчитать — `wc -c public/media/leyka.mp4` |
 
 Видео Сигмы из `ai-point` не взято: в нём ранний прототип фреймворка, а не демо ЕДДС.
