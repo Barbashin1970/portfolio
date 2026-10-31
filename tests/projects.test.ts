@@ -31,9 +31,21 @@ describe('данные витрины (UC-2)', () => {
       'leyka',
       'sima',
       'prompt-professor',
-      'sigma-audit',
+      'polinom-python',
       'archi',
     ]);
+  });
+
+  // Названия Олега (2026-10-31, Р-53): два варианта POLINOM, старое имя нигде не осталось.
+  it('POLINOM: карточки Polinom-Python и Polinom-Java, «Сигма-аудит» не осталось', () => {
+    const titles = projects.filter((p) => p.slug.startsWith('polinom-')).map((p) => [p.title.ru, p.title.en]);
+    expect(titles).toEqual([
+      ['Polinom-Python', 'Polinom-Python'],
+      ['Polinom-Java', 'Polinom-Java'],
+    ]);
+    for (const file of ['README.md', 'README-en.md']) {
+      expect(readFileSync(new URL(`../${file}`, import.meta.url), 'utf8'), file).not.toMatch(/Сигма-аудит|Sigma audit/);
+    }
   });
 
   it('safety снят с витрины (Р-34), его скриншота нет', () => {

@@ -155,13 +155,15 @@ export const projects: Project[] = [
       { label: { ru: 'Зеркало на Vercel', en: 'Vercel mirror' }, url: 'https://ai-in-the-education.vercel.app/' },
     ],
   },
+  // Названия POLINOM — Олега (2026-10-31, Р-53), до того — «Сигма-аудит»; так же подписан
+  // переключатель Python и Java в самих демо. Java-вариант — в каталоге, «Наука и R&D».
   {
-    slug: 'sigma-audit',
+    slug: 'polinom-python',
     visibility: 'private',
     tier: 'featured',
     audience: 'science',
     year: 2026,
-    title: { ru: 'Сигма-аудит', en: 'Sigma audit' },
+    title: { ru: 'Polinom-Python', en: 'Polinom-Python' },
     tagline: {
       ru: 'Проверяет публичный GitHub-репозиторий по 26 правилам методологии «Сигма» — за 30 секунд и без установки',
       en: 'Audits a public GitHub repository against 26 rules of the Sigma methodology — in 30 seconds, nothing to install',
@@ -274,6 +276,22 @@ export const projects: Project[] = [
   },
 
   // ── Наука и R&D ─────────────────────────────────────────────────────
+  // Добавлен 2026-10-31 по просьбе Олега (Р-53). Описание — по коду: 12 детекторов — список
+  // в FileScanner.java, приватные репозитории демо не принимает (web-playground/backend/github.py).
+  {
+    slug: 'polinom-java',
+    visibility: 'private',
+    tier: 'catalog',
+    audience: 'science',
+    year: 2026,
+    title: { ru: 'Polinom-Java', en: 'Polinom-Java' },
+    tagline: {
+      ru: 'Проверяет Java-проект из публичного GitHub-репозитория по методологии «Сигма»: 12 детекторов ищут циклы без предела, экспоненциальную рекурсию, ReDoS, XXE, запросы к базе без лимита и кэш без границ',
+      en: 'Audits a Java project from a public GitHub repository against the Sigma methodology: 12 detectors look for unbounded loops, exponential recursion, ReDoS, XXE, database queries with no limit and unbounded caches',
+    },
+    stack: ['Java', 'FastAPI', 'React', 'TypeScript'],
+    demoUrl: 'https://polinom-java.up.railway.app/',
+  },
   {
     slug: 'nsu-ai-skills',
     visibility: 'public',

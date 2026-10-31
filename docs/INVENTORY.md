@@ -1,6 +1,6 @@
 # Инвентаризация проектов для витрины
 
-Снято 2026-10-26, дополнено 2026-10-27 тремя играми из `ai-point`. Повторять перед
+Снято 2026-10-26, дополнено 2026-10-27 тремя играми из `ai-point` и 2026-10-31 — Polinom-Java. Повторять перед
 публикацией: адреса демо и числа меняются.
 Каждое число идёт вместе с командой, которой получено.
 
@@ -25,8 +25,8 @@
 | Приватных на GitHub | 17 | `curl -o /dev/null -w '%{http_code}' https://github.com/Barbashin1970/<repo>` по remote локальных клонов |
 | Аккаунт на GitHub с | 2022-08-07 | поле `created_at` профиля |
 | Коммитов Олега с 2026-01-01 по 29 локальным клонам | 2520 (всего 2534, остальное — github-actions и Rork) | `for d in */; do git -C "$d" rev-list --count --since=2026-01-01 HEAD; done`; авторы — `git log --since=2026-01-01 --format=%an \| sort \| uniq -c` |
-| Репозиториев с живым демо | 26 | проверка ниже |
-| Проектов на витрине | 31: 6 избранных; в каталоге 22 рабочих проекта, 9 игр — своей секцией; живое демо у 26 | `src/data/projects.ts`, подсчёт по полям `tier`, `audience` и `demoUrl`; с README и описью сверяет `npx vitest run tests/numbers.test.ts` |
+| Репозиториев с живым демо | 27 | проверка ниже |
+| Проектов на витрине | 32: 6 избранных; в каталоге 23 рабочих проекта, 9 игр — своей секцией; живое демо у 27 | `src/data/projects.ts`, подсчёт по полям `tier`, `audience` и `demoUrl`; с README и описью сверяет `npx vitest run tests/numbers.test.ts` |
 
 Основные языки публичных репозиториев (поле `language`, без форков): Java 35, HTML 6,
 Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Java — это
@@ -66,7 +66,8 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 | НормаСтрой AI (`normastroy`) | NORMA-STROY | приватный | 2026-09-25 | — | демо нет, стенд локальный; на карточке — пометка об этом (Р-49) |
 | Тест по ИИ для строителей (`stroyka-test`) | stroyka-test | публичный | 2026-04-13 | stroyka-alpha.vercel.app | 200 |
 | Промпт-конструктор умного города (`smartcityprompt`) | smartcityprompt | публичный | 2026-03-25 | smartcityprompt.vercel.app | 200 |
-| ★ Сигма-аудит (`sigma-audit`) | POLINOM | приватный | 2026-06-13 | polinom-sigma-audit.up.railway.app | 200, переадресует на `/ru` |
+| ★ Polinom-Python (`polinom-python`) — до 2026-10-31 «Сигма-аудит» | POLINOM | приватный | 2026-06-13 | polinom-sigma-audit.up.railway.app | 200, переадресует на `/ru` (и 2026-10-31) |
+| Polinom-Java (`polinom-java`) — с 2026-10-31 (Р-53) | POLINOM-JAVA | приватный | 2026-05-13 | polinom-java.up.railway.app | 200, `<title>` «Sigma-Java Playground — Аудит Java-кода по методологии Sigma» (2026-10-31) |
 | NSU-AI-SKILLS (`nsu-ai-skills`) | NSU-AI-SKILLS | публичный | 2026-10-15 | — | ссылка на репозиторий |
 | md2gostdocx (`md2gostdocx`) | MD-DOCX-CONVERTER | публичный | 2026-09-06 | — (в PyPI пакета нет: 404) | ссылка на репозиторий |
 | Инженерный калькулятор (`engineer`) | ENGINEER | публичный | 2026-10-06 | barbashin1970.github.io/ENGINEER/ | 200 |
@@ -99,7 +100,7 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 
 | Что | Сколько | Команда |
 |---|---|---|
-| Скриншоты демо, WebP: десктоп 960×600, мобильные приложения 390×844 (список — `PHONE_FIRST` в `src/data/media.ts`; GONKA и Tigra — десктоп: игры для браузера, Р-38) | 26 файлов, 607 386 байт | снять — `node scripts/capture-shots.mjs`; посчитать — `ls public/media/*.webp \| grep -v leyka \| wc -l`, `cat $(ls public/media/*.webp \| grep -v leyka) \| wc -c` |
+| Скриншоты демо, WebP: десктоп 960×600, мобильные приложения 390×844 (список — `PHONE_FIRST` в `src/data/media.ts`; GONKA и Tigra — десктоп: игры для браузера, Р-38); Polinom-Java снят 2026-10-31 | 27 файлов, 639 006 байт | снять — `node scripts/capture-shots.mjs`; посчитать без своих снимков и фото — `ls public/media/*.webp \| grep -v -E 'leyka\|normastroy\|oleg' \| wc -l`, `cat $(ls public/media/*.webp \| grep -v -E 'leyka\|normastroy\|oleg') \| wc -c` |
 | Скриншот LEYKA — снимок экрана Олега: доска задач, кадр 1280×800 CSS px без полосы окна | 1 файл, 27 686 байт | `ffmpeg -i <снимок>.png -vf "crop=2560:1600:0:74,scale=960:600:flags=lanczos" -c:v libwebp -quality 72 public/media/leyka.webp` |
 | Скриншот НормаСтрой AI — снимок Олега 2026-10-27: страница «О продукте» стенда на ноутбуке, кадр 16:10 выше курсора | 1 файл, 28 440 байт | `ffmpeg -i <снимок>.png -vf "crop=2160:1350:390:0,scale=960:600:flags=lanczos" -c:v libwebp -quality 72 public/media/normastroy.webp` |
 | Фото Олега для «Контакта» (Р-52) — его снимок 720×1280, прислан 2026-10-28: портрет 720×1040, низ срезан по рукаву под загнутыми пальцами (шорты и колени не входят); лицо для шапки чата — квадрат 460 px, ужатый до 132×132. Метаданные сняты; исходник лежит в `.private/`, в репозиторий не идёт | 2 файла: 55 492 и 3 104 байта | `ffmpeg -i <снимок>.JPG -vf "crop=720:1040:0:0" -map_metadata -1 -c:v libwebp -quality 80 -compression_level 6 public/media/oleg.webp`; `ffmpeg -i <снимок>.JPG -vf "crop=460:460:165:80,scale=132:132:flags=lanczos" -map_metadata -1 -c:v libwebp -quality 82 -compression_level 6 public/media/oleg-avatar.webp`; посчитать — `wc -c public/media/oleg*.webp` |
@@ -122,7 +123,6 @@ Python 4, JavaScript 3, TypeScript 2, CSS 2, Shell 1, Kotlin 1, Batchfile 1. Jav
 | Что | Почему |
 |---|---|
 | ИИ-помощник по ТБ (`safety`, safety-builder.streamlit.app) | снят с витрины 2026-10-27: «слабоват — старая архитектура» (Олег) |
-| POLINOM-JAVA | публичного адреса нет: его GitHub Pages отвечает 404 |
 | SMART-DUEL | сборка «СМАРТ» под Яндекс Игры; публичного адреса пока нет, сама игра на витрине как `smart-5` |
 | FREEWAY | личная инфраструктура, не проект для заказчика |
 | ARCHI-NSU | изделие лежит во внутреннем git НГУ; на витрине его визитка `archi` |
